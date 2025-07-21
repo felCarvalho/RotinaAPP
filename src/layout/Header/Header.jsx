@@ -32,7 +32,11 @@ export function Header() {
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between pt-5 pb-2.5">
           {!verificarWidth({ largura: 800 }) && (
-            <Button className="min-h-10 min-w-10 !p-0" ariaLabel="Menu-rápido">
+            <Button
+              onClick={() => openID({ name: "menu-h-mobile", id: 300, status: true })}
+              className="min-h-10 min-w-10 !p-0"
+              ariaLabel="Menu-rápido"
+            >
               <i className="text-lg">
                 <FontAwesomeIcon icon={faBars} />
               </i>
