@@ -19,7 +19,7 @@ export function NavMobile() {
             exit={{ x: -500, scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 15, mass: 1, bounce: 0.3 }}
           >
-            <div className="absolute right-15 left-0 z-50 flex h-full flex-col items-center justify-start bg-white">
+            <div className="absolute right-auto left-0 z-50 flex h-full flex-col items-center justify-start bg-white">
               <Nav classNameUL="p-3 m-2" classNameLI="py-2 px-3 border-b border-blue-50 rounded-full my-2">
                 <Button className="bg-white">
                   <i className="text-blue-400">
