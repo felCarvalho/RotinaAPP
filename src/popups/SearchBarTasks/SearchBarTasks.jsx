@@ -29,15 +29,13 @@ export function SearchBarTasks() {
   useEffect(() => {
     const time = setTimeout(() => {
       setSearchTasks({ search: search_rotina });
-      searchTask({ search: filterSearch });
+      searchTask();
     }, 1000);
 
     return () => {
       clearTimeout(time);
     };
   }, [filterSearch, searchTask, setSearchTasks, search_rotina]);
-
-  console.log({ filterSearch, dataSearch });
 
   return (
     <>
