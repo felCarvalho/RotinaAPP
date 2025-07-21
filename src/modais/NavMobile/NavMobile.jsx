@@ -21,11 +21,11 @@ export function NavMobile() {
           >
             <div className="absolute right-auto left-0 z-50 flex h-full flex-col items-center justify-start bg-white">
               <Nav classNameUL="p-3 m-2" classNameLI="py-2 px-3 border-b border-blue-50 rounded-full my-2">
-                <Button className="bg-white">
+                <span className="flex min-h-10 min-w-10 items-center justify-center rounded-full shadow-md shadow-blue-50">
                   <i className="text-blue-400">
                     <FontAwesomeIcon icon={faAngleRight} />
                   </i>
-                </Button>
+                </span>
               </Nav>
               <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center py-5">
                 <Button onClick={() => closeID({ name: "menu-h-mobile", id: 300, status: false })}>
