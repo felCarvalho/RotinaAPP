@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { parseAsString, useQueryStates } from "nuqs";
 
 export function SearchBarTasks() {
-  const { searchTask, filterSearch, setSearchTasks } = RotinaStore();
+  const { searchTask, setSearchTasks } = RotinaStore();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useQueryStates(
@@ -35,7 +35,7 @@ export function SearchBarTasks() {
     return () => {
       clearTimeout(time);
     };
-  }, [filterSearch, searchTask, setSearchTasks, search_rotina]);
+  }, [searchTask, setSearchTasks, search_rotina]);
 
   return (
     <>
