@@ -24,7 +24,7 @@ export function Nav({ classNameUL, classNameLI, onClick, children }) {
                 <i>{l?.icon}</i>
                 <P className={`${!verificarWidth({ largura: 360 }) ? "w-40" : ""} truncate text-[18px]`} title={l?.text} />
               </span>
-              <div>{children}</div>
+              {children}
             </NavLink>
           </motion.li>
         ))}
