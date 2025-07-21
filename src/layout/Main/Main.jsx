@@ -6,7 +6,7 @@ export function Main() {
 
   return (
     <div>
-      {pathname !== "/inicio/buscar" && <Tasks></Tasks>}
+      {pathname === "/inicio" && <Tasks></Tasks>}
       <Outlet />
     </div>
   );

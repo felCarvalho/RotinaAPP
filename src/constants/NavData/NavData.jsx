@@ -1,31 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTable, faRightFromBracket, faTrash, faUser } from "@fortawesome/free-solid-svg-icons";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 export const NavLinks = [
   {
-    link: "Buscar",
+    text: "Buscar",
     icon: <FontAwesomeIcon icon={faSearch} />,
-    genericIcon: <FontAwesomeIcon icon={faAngleRight} />,
+    link: "/inicio/buscar",
   },
   {
-    link: "Ver dados por categoria",
+    text: "Ver dados por categoria",
     icon: <FontAwesomeIcon icon={faTable} />,
-    genericIcon: <FontAwesomeIcon icon={faAngleRight} />,
+    link: "/inicio/infomações-categorias",
   },
   {
-    link: "Lixeira",
+    text: "Lixeira",
     icon: <FontAwesomeIcon icon={faTrash} />,
-    genericIcon: <FontAwesomeIcon icon={faAngleRight} />,
+    link: "/inicio/configurações/lixeira",
   },
   {
-    link: "Perfil",
+    text: "Perfil",
     icon: <FontAwesomeIcon icon={faUser} />,
-    genericIcon: <FontAwesomeIcon icon={faAngleRight} />,
+    link: "/inicio/configurações/user",
   },
   {
-    link: "Sair",
+    text: "Sair",
     icon: <FontAwesomeIcon icon={faRightFromBracket} />,
-    genericIcon: <FontAwesomeIcon icon={faAngleRight} />,
+    link: "/login",
+
   },
 ];

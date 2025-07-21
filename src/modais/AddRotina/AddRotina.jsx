@@ -13,7 +13,7 @@ import { AnimatePresence } from "framer-motion";
 
 export function CreateRotina() {
   const { closeID, openID, isRenderID } = TelasStore();
-  const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, filterSearch, searchTask } = RotinaStore();
+  const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, searchTask } = RotinaStore();
   const [isOpen, setOpen] = useState(false);
   const [task, setTask] = useState({
     rotina: "",
