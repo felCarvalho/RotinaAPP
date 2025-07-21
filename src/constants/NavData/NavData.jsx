@@ -15,12 +15,12 @@ export const NavLinks = [
   {
     text: "Lixeira",
     icon: <FontAwesomeIcon icon={faTrash} />,
-    link: "inicio/configurações/lixeira",
+    link: "/inicio/configurações/lixeira",
   },
   {
     text: "Perfil",
     icon: <FontAwesomeIcon icon={faUser} />,
-    link: "inicio/configurações/user",
+    link: "/inicio/configurações/user",
   },
   {
     text: "Sair",
