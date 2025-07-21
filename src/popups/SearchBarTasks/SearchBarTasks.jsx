@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { parseAsString, useQueryStates } from "nuqs";
 
 export function SearchBarTasks() {
-  const { searchTask, filterSearch, setSearchTasks, dataSearch } = RotinaStore();
+  const { searchTask, filterSearch, setSearchTasks } = RotinaStore();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useQueryStates(
