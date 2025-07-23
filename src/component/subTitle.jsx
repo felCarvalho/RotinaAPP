@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 //'categoria fica envolvida pelo h3 já pré estilizado
 export function H3({ children, title, className, ...props }) {
   return (
-    <motion.h3 {...props} className={`${className} text-shadow-blue-100 text-sm font-medium tracking-wide text-shadow-xs`}>
+    <motion.h3 {...props} className={`${className} text-sm font-medium tracking-wide text-shadow-blue-100 text-shadow-xs`}>
       {children} {title}
     </motion.h3>
   );
