@@ -20,7 +20,11 @@ export function NavMobile() {
             transition={{ type: "spring", stiffness: 100, damping: 15, mass: 1, bounce: 0.3 }}
           >
             <div className="absolute right-auto left-0 z-50 flex h-full flex-col items-center justify-start bg-white">
-              <Nav classNameUL="p-3 m-2" classNameLI="py-2 px-3 border-b border-blue-50 rounded-full my-2">
+              <Nav
+                onClick={() => closeID({ name: "menu-h-mobile", id: 300, status: false })}
+                classNameUL="p-3 m-2"
+                classNameLI="py-2 px-3 border-b border-blue-50 rounded-full my-2"
+              >
                 <span className="flex min-h-10 min-w-10 items-center justify-center rounded-full shadow-md shadow-blue-50">
                   <i className="text-blue-400">
                     <FontAwesomeIcon icon={faAngleRight} />
