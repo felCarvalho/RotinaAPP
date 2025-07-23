@@ -8,7 +8,7 @@ import { useResizeView } from "../../hooks/UseResizeView";
 import { TelasStore } from "../../store/UseTelasFixos";
 import { RotinaStore } from "../../store/UseRotina";
 import { useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export function Header() {
   const { verificarWidth } = useResizeView();
@@ -22,6 +22,7 @@ export function Header() {
   });
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   function verificarLengthTasks() {
     return tasks.length !== 0;
@@ -44,7 +45,7 @@ export function Header() {
           )}
           <H1 title="Minha Rotina" className="text-blue-400" />
 
-          <Button className="min-h-10 min-w-10 !p-0" ariaLabel="Configurações">
+          <Button className="min-h-10 min-w-10 !p-0" ariaLabel="Configurações" onClick={() => navigate("/inicio/configuracoes")}>
             <i className="text-lg">
               <FontAwesomeIcon icon={faGear} />
             </i>
@@ -77,7 +78,6 @@ export function Header() {
                 <p className="text-blue-400">Filtro</p>
               </Button>
             )}
-
             {verificarLengthTasks() && filterMobile?.isMobile && (
               <div className="absolute top-24 right-20 left-20 z-50 flex h-40 flex-col justify-start rounded-3xl bg-white shadow-2xl shadow-blue-50">
                 <div className="p-2">
