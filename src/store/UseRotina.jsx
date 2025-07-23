@@ -37,7 +37,10 @@ export const RotinaStore = create(
       //task atual
       taskObj: {},
       //ativa/desativa funções extras
-      statusFunction: {},
+      statusFunction: {
+        lixeira: false,
+        extras: false,
+      },
 
       //armazenando categoria atual
       setCategoria: (categoriaTask, id) => {
@@ -534,12 +537,7 @@ export const RotinaStore = create(
       },
 
       //atualiza as permissões de ativação de funções
-      setStatusFunction: ({ boleano }) => {
-        set({
-          statusFunction: boleano,
-        });
-      },
-
+      setStatusFunction: (boleano) => set((s) => ({ ...s, statusFunction: { ...s.statusFunction, ...boleano } })),
       //caputra e envia o filter atual
       setFilter: ({ id }) => {
         const { filtragemCategorias } = get();
