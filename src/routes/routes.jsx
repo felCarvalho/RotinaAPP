@@ -2,6 +2,7 @@ import { createBrowserRouter, redirect } from "react-router";
 import Layout from "../layout/LayoutPrincipal/Layout";
 import { Main } from "../layout/Main/Main";
 import { SearchTasks } from "../pages/SearchTasks/SearchTasks";
+import { Config } from "../pages/Configuracao/Config";
 
 const routes = createBrowserRouter([
   {
@@ -14,12 +15,16 @@ const routes = createBrowserRouter([
         loader: () => redirect("/inicio"),
       },
       {
-        path: "inicio",
+        path: "/inicio",
         element: <Main />,
         children: [
           {
             path: "buscar",
             element: <SearchTasks />,
+          },
+          {
+            path: "configuracoes",
+            element: <Config />,
           },
         ],
       },
