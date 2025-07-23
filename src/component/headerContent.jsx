@@ -11,7 +11,7 @@ export function HeaderContent({ iconBack, title, iconClosed, className, btnBack,
           type="button"
           whileTap={{ scale: 0.9 }}
           className="min-h-11 min-w-11 rounded-full bg-blue-400 !p-0 text-white shadow-2xl shadow-blue-100"
-          ariaLabel=" Voltar"
+          ariaLabel="Voltar"
         >
           <FontAwesomeIcon icon={iconBack} />
         </Button>
