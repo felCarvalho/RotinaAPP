@@ -71,7 +71,7 @@ export default function MainLayout() {
   }, [uuidTelas, OnScroll, verificarOpenModal, navigate]);
 
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-dvh m-0">
       <ScrollRestoration />
       <Header />
       <main className={pathname === "/inicio/buscar" ? "pt-40 pb-32" : "pt-40 pb-8"}>
