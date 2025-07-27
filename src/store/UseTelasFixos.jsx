@@ -33,7 +33,7 @@ export const TelasStore = create(
       },
     }),
     {
-      partialize: (s) => Object.fromEntries(Object.entries(s).filter(([key, value]) => typeof value !== "function")),
+      partialize: (s) => Object.fromEntries(Object.entries(s).filter(([, value]) => typeof value !== "function")),
       name: "Telas-store",
     },
   ),

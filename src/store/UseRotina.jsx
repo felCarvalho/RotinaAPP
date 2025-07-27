@@ -623,7 +623,7 @@ export const RotinaStore = create(
     }),
 
     {
-      partialize: (state) => Object.fromEntries(Object.entries(state).filter(([key, value]) => typeof value !== "function")),
+      partialize: (state) => Object.fromEntries(Object.entries(state).filter(([, value]) => typeof value !== "function")),
       name: "Rotina-store",
     },
   ),
