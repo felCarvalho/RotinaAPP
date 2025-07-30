@@ -9,7 +9,7 @@ export const DataConfig = [
   {
     id: "temas",
     title: "Temas",
-    description: "Altere o visual com temas variados.",
+    description: "Altere o visual com temas claro ou escuro.",
     alert: "",
     link: "/inicio/configuracoes/temas",
   },
@@ -30,7 +30,7 @@ export const DataConfig = [
   {
     id: "limpar",
     title: "Limpar dados",
-    description: "Apague Rotinas, lixeira e dados de login.",
+    description: "Apague suas Rotinas ativas e deletadas.",
     alert: "",
     link: "/inicio/configuracoes/limpar-dados",
   },
