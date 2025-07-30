@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LayoutStore } from "../../store/UseLayout";
 
 export function Config() {
-  //
   const { setLayout } = LayoutStore();
   //estado global e função para atualizar o mesmo
   const { statusFunction, setStatusFunction } = RotinaStore();
@@ -49,7 +48,7 @@ export function Config() {
   }
 
   return (
-    <div className="h-full rounded-[50px] bg-white shadow-sm shadow-blue-50">
+    <div className="h-full rounded-[50px] bg-white p-5 shadow-sm shadow-blue-50">
       <HeaderContent
         btnBack={() => {
           navigate(-1);
@@ -62,9 +61,9 @@ export function Config() {
         title="Configurações"
         iconBack={faAngleLeft}
         iconClosed={faX}
-        classNameHeader="p-5"
+        classNameHeader=""
       />
-      <div className="box-border h-[300px] overflow-auto px-5">
+      <div className="box-border h-[300px] overflow-auto">
         {DataConfig.map((c) => (
           <div
             key={c?.id}
