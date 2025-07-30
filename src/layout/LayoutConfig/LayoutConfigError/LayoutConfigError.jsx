@@ -10,7 +10,7 @@ export function LayoutConfigError({ desktop, mobile, icon }) {
 
   return (
     <div className="h-full w-full">
-      {verificarWidth({ largura: 799 }) ? (
+      {verificarWidth({ largura: 1000 }) ? (
         <div className="flex h-full w-full items-center justify-center">
           <P title={desktop} className="!text-lg text-blue-400" />
         </div>
