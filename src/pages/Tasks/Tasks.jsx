@@ -46,7 +46,7 @@ export function Tasks() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1, opacity: 0, transition: "" }}
-            transition={{ type: "spring", delay: 0.3, }}
+            transition={{ type: "spring", delay: 0.3 }}
             key={t?.id}
             className="mx-3 mb-4 flex flex-col gap-4 overflow-hidden rounded-full bg-gradient-to-r from-blue-50 p-3 shadow-sm shadow-blue-50 select-none"
           >
