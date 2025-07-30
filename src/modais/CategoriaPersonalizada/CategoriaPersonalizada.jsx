@@ -58,7 +58,7 @@ export function CreateCategoria() {
                 btnClosed={() => closeID({ name: "create-category", id: 200, status: false })}
               />
               <div>
-                <form className="pt-8" onSubmit={OnSubmit}>
+                <form className="mt-16" onSubmit={OnSubmit}>
                   <label className="flex flex-col gap-1">
                     <P title="Criar Categoria" className="text-blue-400" />
                     <Input name="category" onChange={Handle} placeholder="Exemplo: 'Produtos industrializados'" />

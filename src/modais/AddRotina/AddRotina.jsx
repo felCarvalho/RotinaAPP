@@ -91,7 +91,7 @@ export function CreateRotina() {
                 btnBack={() => closeID({ name: "create-rotina", id: 100, status: false })}
                 btnClosed={() => closeID({ name: "create-rotina", id: 100, status: false })}
               />
-              <div className="relative pt-8">
+              <div className="relative mt-16">
                 <form className="flex flex-col justify-center gap-5" onSubmit={onSubmit}>
                   <label className="flex flex-col gap-1">
                     <P title="Rotina:" className="text-blue-400" />
