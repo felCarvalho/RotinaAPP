@@ -4,6 +4,7 @@ import { faX, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { HeaderContent } from "../../component/headerContent";
 //import { Input } from "../../component/input";
 //import { H3 } from "../../component/subTitle";
+
 import { useNavigate, useOutletContext } from "react-router";
 
 export function LimparDados() {
@@ -13,7 +14,7 @@ export function LimparDados() {
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 p-5 shadow-sm shadow-blue-50">
       <HeaderContent
-        title="Perfil"
+        title="Limpar Dados"
         iconBack={faAngleLeft}
         iconClosed={faX}
         btnBack={() => {
@@ -28,7 +29,7 @@ export function LimparDados() {
         }}
         classNameBtn="bg-white !text-blue-400"
       />
-      <div className="py-8"></div>
+      <div></div>
     </div>
   );
 }
