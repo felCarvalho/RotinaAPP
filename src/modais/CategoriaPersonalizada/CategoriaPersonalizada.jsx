@@ -49,21 +49,22 @@ export function CreateCategoria() {
             exit={{ y: 500, scale: 0 }}
             transition={{ type: "spring", stiffness: 150, damping: 15, mass: 1, bounce: 0.3 }}
           >
-            <div className="absolute right-2 left-2 rounded-[50px] bg-white p-5 shadow-2xl shadow-blue-100">
+            <div className="absolute right-2 left-2 rounded-[50px] bg-white shadow-2xl shadow-blue-100">
               <HeaderContent
                 iconBack={faAngleLeft}
                 iconClosed={faX}
                 title={!verificarWidth({ largura: 360 }) ? "Categoria P." : "Categoria Personalizada"}
                 btnBack={() => closeID({ name: "create-category", id: 200, status: false })}
                 btnClosed={() => closeID({ name: "create-category", id: 200, status: false })}
+                classNameHeaderDiv="!backdrop-blur-none"
               />
               <div>
-                <form className="mt-16" onSubmit={OnSubmit}>
+                <form className="mt-20 px-5" onSubmit={OnSubmit}>
                   <label className="flex flex-col gap-1">
                     <P title="Criar Categoria" className="text-blue-400" />
                     <Input name="category" onChange={Handle} placeholder="Exemplo: 'Produtos industrializados'" />
                   </label>
-                  <div className="mt-8 flex flex-row items-center justify-center gap-5">
+                  <div className="mt-8 mb-5 flex flex-row items-center justify-center gap-5">
                     <Button
                       type="submmit"
                       className="flex max-w-min flex-row justify-start gap-2 bg-blue-400 text-sm font-medium"

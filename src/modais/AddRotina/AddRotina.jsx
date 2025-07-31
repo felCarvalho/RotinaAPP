@@ -82,7 +82,7 @@ export function CreateRotina() {
           >
             <div
               onDoubleClick={() => setOpen(false)}
-              className="absolute right-2 left-2 rounded-[50px] bg-white p-5 shadow-2xl shadow-blue-100"
+              className="absolute right-2 left-2 rounded-[50px] bg-white shadow-2xl shadow-blue-100"
             >
               <HeaderContent
                 iconBack={faAngleLeft}
@@ -90,8 +90,9 @@ export function CreateRotina() {
                 iconClosed={faX}
                 btnBack={() => closeID({ name: "create-rotina", id: 100, status: false })}
                 btnClosed={() => closeID({ name: "create-rotina", id: 100, status: false })}
+                classNameHeaderDiv="!backdrop-blur-none"
               />
-              <div className="relative mt-16">
+              <div className="relative mt-20 px-5">
                 <form className="flex flex-col justify-center gap-5" onSubmit={onSubmit}>
                   <label className="flex flex-col gap-1">
                     <P title="Rotina:" className="text-blue-400" />
@@ -178,7 +179,7 @@ export function CreateRotina() {
                       onChange={HandleInput}
                     />
                   </label>
-                  <div className="flex flex-row items-center justify-center gap-5">
+                  <div className="flex flex-row items-center justify-center gap-5 mb-5">
                     <Button type="submit" className="flex flex-row justify-start gap-2">
                       <p className="text-base font-medium text-white">confirmar</p>
 

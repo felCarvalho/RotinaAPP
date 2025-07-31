@@ -69,7 +69,7 @@ export function Renomear() {
     <>
       {statusModal() && (
         <Overlay initial={{ scale: 0.2, opacity: 0.3 }} animate={{ scale: 1, opacity: 1 }}>
-          <div className="absolute right-2 left-2 rounded-[50px] bg-white p-5 shadow-2xl shadow-blue-100">
+          <div className="absolute right-2 left-2 rounded-[50px] bg-white shadow-2xl shadow-blue-100">
             <HeaderContent
               title="Renomear Rotina"
               iconBack={faAngleLeft}
@@ -84,13 +84,14 @@ export function Renomear() {
                   setQuery(null);
                 }, 300)
               }
+              classNameHeaderDiv="!backdrop-blur-none"
             />
-            <form className="mt-16" onSubmit={onSubmit}>
+            <form className="mt-20 px-5" onSubmit={onSubmit}>
               <label className="flex flex-col gap-1">
                 <p className="text-base text-blue-400">Renomear:</p>
                 <Input name="renomear" placeholder="renomear rotina..." value={value?.renomear} onChange={Handle} />
               </label>
-              <div className="mt-10 flex flex-row items-center justify-center gap-5">
+              <div className="mt-10 mb-5 flex flex-row items-center justify-center gap-5">
                 <Button type="submit" className="flex flex-row justify-start gap-2 bg-blue-400 font-medium">
                   <p>Confirmar</p>
                   <i>
