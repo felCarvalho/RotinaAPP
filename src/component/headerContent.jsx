@@ -9,12 +9,15 @@ export function HeaderContent({
   classNameHeader,
   classNameBtn,
   classNameTitle,
+  classNameHeaderDiv,
   btnBack,
   btnClosed,
 }) {
   return (
     <header className={`${classNameHeader} relative`}>
-      <div className="absolute right-0 left-0 z-10 flex flex-row justify-between">
+      <div
+        className={`absolute right-0 left-0 z-10 flex flex-row justify-between rounded-t-[50px] p-5 backdrop-blur-3xl ${classNameHeaderDiv}`}
+      >
         <div className="flex flex-row items-center gap-2">
           <Button
             onClick={btnBack}
