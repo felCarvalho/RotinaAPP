@@ -23,6 +23,7 @@ export function BtnSearchPopup() {
             className="fixed bottom-15 z-40 flex w-full justify-center"
           >
             <Button
+              type="button"
               onClick={() => navigate("/inicio/buscar")}
               className="flex max-w-full flex-row items-center gap-2 bg-white/80 opacity-95 backdrop-blur-3xl"
             >

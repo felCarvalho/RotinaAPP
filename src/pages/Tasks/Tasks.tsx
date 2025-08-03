@@ -13,11 +13,14 @@ import { H3 } from "../../component/subTitle";
 
 export function Tasks() {
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, data, tasks } = RotinaStore();
+  const { updateStatus, deletarTask, dataFiltro, categorias, tasks } = RotinaStore();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
-    offShift: 0,
+    offShift: {
+      crossAxis: false,
+      mainAxis: true,
+    },
   });
   const [isPopup, setPopup] = useState({
     id: "",
@@ -47,7 +50,7 @@ export function Tasks() {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 1, opacity: 0, transition: "" }}
+            exit={{ scale: 1, opacity: 0 }}
             transition={{ type: "spring", delay: 0.3 }}
             key={t?.id}
             className="mx-3 mb-4 flex flex-col gap-4 overflow-hidden rounded-full bg-gradient-to-r from-blue-50 p-3 shadow-sm shadow-blue-50 select-none"
@@ -76,14 +79,13 @@ export function Tasks() {
                 </div>
                 <div>
                   <P
+                    title={t?.rotina}
                     className={
                       t?.status
                         ? `${!verificarWidth({ largura: 375 }) ? "w-40" : "w-60"} truncate text-left text-blue-200 italic line-through`
                         : `${!verificarWidth({ largura: 375 }) ? "w-40" : "w-60"} truncate text-left text-blue-400`
                     }
-                  >
-                    {t?.rotina}
-                  </P>
+                  />
                 </div>
               </div>
               <div>
@@ -108,12 +110,13 @@ export function Tasks() {
                 {verificarWidth({ largura: 700 }) && (
                   <div className="flex flex-row items-center justify-center gap-2">
                     <Button
+                      type="button"
                       onClick={() =>
                         setTimeout(() => {
                           setQuery((s) => ({
                             ...s,
                             renomear: t?.id,
-                            modal: !s?.status,
+                            modal: !s,
                           }));
                         }, 300)
                       }
@@ -123,7 +126,7 @@ export function Tasks() {
                         <FontAwesomeIcon icon={faPencil} />
                       </i>
                     </Button>
-                    <Button onClick={() => deletarTask({ id: t?.id })} className="min-h-9 min-w-9 !p-0">
+                    <Button type="button" onClick={() => deletarTask({ id: t?.id })} className="min-h-9 min-w-9 !p-0">
                       <i>
                         <FontAwesomeIcon icon={faTrash} />
                       </i>
@@ -139,12 +142,13 @@ export function Tasks() {
                     >
                       <div className="flex flex-col gap-2">
                         <Button
+                          type="button"
                           onClick={() => {
                             setTimeout(() => {
                               setQuery((s) => ({
                                 ...s,
                                 renomear: isPopup?.id,
-                                modal: !s?.status,
+                                modal: !s,
                               }));
                               setPopup((s) => ({
                                 ...s,
@@ -161,6 +165,7 @@ export function Tasks() {
                           <p className="font-medium text-blue-400">Renomear</p>
                         </Button>
                         <Button
+                          type="button"
                           onClick={() => {
                             setPopup((s) => ({
                               ...s,
@@ -177,12 +182,13 @@ export function Tasks() {
                           <p className="font-medium text-blue-400">Apagar</p>
                         </Button>
                         <Button
+                          type="button"
                           onClick={() => {
                             setTimeout(() => {
                               setQuery((s) => ({
                                 ...s,
                                 detalhes: isPopup?.id,
-                                modal: !s?.status,
+                                modal: !s,
                               }));
                               setPopup((s) => ({
                                 ...s,
@@ -208,19 +214,20 @@ export function Tasks() {
               <div className="flex flex-row items-center justify-center gap-0.5 text-[10px]">
                 <H3 title="categoria:" className="text-sm font-medium text-blue-400" />
                 <P
-                  title={categorias.map((c) => c?.id === t?.categoriaID && c?.categoria)}
+                  title={categorias.find((c) => c?.id === t?.categoriaID)?.categoria ?? ""}
                   className="text-sm font-medium text-blue-300"
                 />
               </div>
               {verificarWidth({ largura: 700 }) && (
                 <div>
                   <Button
+                    type="button"
                     onClick={() => {
                       setTimeout(() => {
                         setQuery((s) => ({
                           ...s,
                           detalhes: t?.id,
-                          modal: !s?.status,
+                          modal: !s,
                         }));
                         setPopup((s) => ({
                           ...s,

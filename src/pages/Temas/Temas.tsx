@@ -4,43 +4,44 @@ import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { Radio } from "../../component/radio";
-import { useNavigate, useOutletContext } from "react-router";
+import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect, useCallback } from "react";
 import { useResizeView } from "../../hooks/UseResizeView";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { LayoutStore } from "../../store/UseLayout";
+import * as z from "zod";
+
+const localStorageTypes = z.object({
+  modoClaro: z.boolean(),
+  modoEscuro: z.boolean(),
+});
 
 export function Temas() {
   const navigate = useNavigate();
-  const { setLayout } = useOutletContext();
+  const { setLayout, isLayout } = LayoutStore();
   const { verificarWidth } = useResizeView();
-  const [prefersTheme, setPrefes] = useState(() => {
-    try {
-      const storagePrefersTheme = localStorage.getItem("tema");
-      const getPrefers = JSON.parse(storagePrefersTheme);
-
-      return getPrefers;
-    } catch (e) {
-      return {
-        modoClaro: true,
-        modoEscuro: false,
-      };
-    }
-  });
-  const [onTema, setTema] = useState(() => {
+  const [onTema, setTema] = useState<z.infer<typeof localStorageTypes>>(() => {
     try {
       const storageTema = localStorage.getItem("tema");
-      const getTemas = JSON.parse(storageTema);
+      const getTemas = storageTema ? JSON.parse(storageTema) : null;
+      const verificarTemas = getTemas ? localStorageTypes.safeParse(getTemas) : null;
 
-      return getTemas;
+      if (verificarTemas?.success) {
+        return verificarTemas.data;
+      }
     } catch (e) {
       return {
         modoClaro: true,
         modoEscuro: false,
       };
     }
+    return {
+      modoClaro: true,
+      modoEscuro: false,
+    };
   });
 
   const focusThemeLight = useCallback(() => {
@@ -62,20 +63,23 @@ export function Temas() {
         iconBack={faAngleLeft}
         iconClosed={faX}
         btnBack={() => {
-          setLayout({ isMobileLayout: false });
+          setLayout({
+            isMobileLayout: false,
+            isDesktopLayout: false,
+          });
           navigate("/inicio/configuracoes");
         }}
         btnClosed={() => {
-          setLayout({ isMobileLayout: false });
+          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
           navigate("/inicio/configuracoes");
         }}
         classNameBtn="bg-white !text-blue-400"
         classNameHeaderDiv="!backdrop-blur-[20px] bg-blue-50/80"
       />
       <div className="px-3.5 pt-5">
-        <div className="scroll-bar h-90 overflow-y-auto rounded-2xl border-b border-b-blue-50 px-1 pb-2 pt-20 shadow-sm shadow-blue-50">
+        <div className="scroll-bar h-90 overflow-y-auto rounded-2xl border-b border-b-blue-50 px-1 pt-20 pb-2 shadow-sm shadow-blue-50">
           <div className="flex w-full flex-col items-start justify-around gap-5 rounded-3xl bg-white py-4">
-            <div className="flex px-4 w-full flex-row items-center justify-around gap-5 rounded-2xl bg-white">
+            <div className="flex w-full flex-row items-center justify-around gap-5 rounded-2xl bg-white px-4">
               <motion.button
                 onClick={() =>
                   setTema((s) => ({

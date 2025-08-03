@@ -19,7 +19,7 @@ export function SearchBarTasks() {
   );
   const { search_rotina } = search;
 
-  function Handle(e) {
+  function Handle(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch((p) => ({
       ...p,
       search_rotina: e.target.value,

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type copy = {
+interface copy {
   text: string;
 };
 

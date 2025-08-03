@@ -31,7 +31,10 @@ export function SearchTasks() {
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
-    offShift: 0,
+    offShift: {
+      mainAxis: true,
+      crossAxis: false,
+    },
   });
 
   function verificarDataSearch() {
@@ -62,7 +65,7 @@ export function SearchTasks() {
               <div className="flex flex-row items-center gap-1">
                 <H3 title="Categoria:" className={`max-w-min truncate text-blue-400`} />
                 <P
-                  title={categorias.map((c) => c?.id === t?.categoriaID && c?.categoria)}
+                  title={categorias.find((c) => c?.id === t?.categoriaID)?.categoria ?? ""}
                   className={`${!verificarWidth({ largura: 375 }) ? "w-20" : "w-50"} truncate text-blue-300`}
                 />
               </div>
@@ -125,7 +128,7 @@ export function SearchTasks() {
                           setSearch((s) => ({
                             ...s,
                             renomear: isPopup?.id,
-                            modal: !s?.status,
+                            modal: !s,
                           }));
                           setPopup((s) => ({
                             ...s,
@@ -165,7 +168,7 @@ export function SearchTasks() {
                           setSearch((s) => ({
                             ...s,
                             detalhes: isPopup?.id,
-                            modal: !s?.status,
+                            modal: !s,
                           }));
                           setPopup((s) => ({
                             ...s,

@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 interface RadioType {
   children?: React.ReactNode;
   id?: string;
-  checked: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  checked?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   ariaLabel?: string;
   classNameRadio?: string;
   classNameLabel?: string;

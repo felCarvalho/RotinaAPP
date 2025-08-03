@@ -1,4 +1,4 @@
-import { motion, HTMLMotionProps } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 
 interface typeP extends HTMLMotionProps<"p"> {
   children?: React.ReactNode;

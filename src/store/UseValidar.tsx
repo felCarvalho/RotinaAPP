@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 
-type types = {
+interface types {
   message: string;
   icon: IconProp | null;
   timeOut?: ReturnType<typeof setTimeout> | null;

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type scrollTypes = {
+interface scrollTypes {
   OnScroll: ({
     scrollValue,
     scrollH,

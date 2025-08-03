@@ -4,7 +4,7 @@ interface InputType extends HTMLMotionProps<"input"> {
   value?: string;
   name?: string;
   className?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   type: string;
   placeholder: string;
   status?: boolean;

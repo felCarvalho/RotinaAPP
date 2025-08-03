@@ -3,13 +3,14 @@ import { faX, faAngleLeft, faArrowRightFromBracket } from "@fortawesome/free-sol
 import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { Input } from "../../component/input";
-import { useNavigate, useOutletContext } from "react-router";
 import { H3 } from "../../component/subTitle";
 import { P } from "../../component/paragrafo";
+import { LayoutStore } from "../../store/UseLayout";
+import { useNavigate } from "react-router";
 
 export function Perfil() {
   const navigate = useNavigate();
-  const { setLayout } = useOutletContext();
+  const { setLayout, isLayout } = LayoutStore();
 
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 shadow-sm shadow-blue-50">
@@ -18,11 +19,11 @@ export function Perfil() {
         iconBack={faAngleLeft}
         iconClosed={faX}
         btnBack={() => {
-          setLayout({ isMobileLayout: false });
+          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
           navigate("/inicio/configuracoes");
         }}
         btnClosed={() => {
-          setLayout({ isMobileLayout: false });
+          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
           navigate("/inicio/configuracoes");
         }}
         classNameBtn="bg-white !text-blue-400"

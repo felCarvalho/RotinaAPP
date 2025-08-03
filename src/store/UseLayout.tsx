@@ -23,7 +23,7 @@ export const LayoutStore = create<LayoutTypes>()(
         })),
     }),
     {
-      partialize: (s) => Object.fromEntries(Object.entries(s).filter(([_, value]) => typeof value !== "function")),
+      partialize: (s) => Object.fromEntries(Object.entries(s).filter(([, value]) => typeof value !== "function")),
       name: "Telas-store",
     },
   ),

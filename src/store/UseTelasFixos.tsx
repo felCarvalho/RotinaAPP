@@ -1,18 +1,18 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type types = {
+interface types {
   name: string;
   id: number;
   status?: boolean;
-};
+}
 
-type TelasFunctionTypes = {
+interface TelasFunctionTypes {
   openID: ({ name, id, status }: types) => void;
   closeID: ({ name, id }: types) => void;
   isRenderID: ({ name, id }: types) => boolean;
   uuidTelas: types[];
-};
+}
 
 export const TelasStore = create<TelasFunctionTypes>()(
   persist(

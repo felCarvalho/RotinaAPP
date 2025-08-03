@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 
 interface SearchFloat {
   onBack: () => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => string;
-  values: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
-export function SearchFloatBar({ onBack, onChange, values }: SearchFloat) {
+export function SearchFloatBar({ onBack, onChange, value }: SearchFloat) {
   return (
     <motion.form
       className="fixed right-5 bottom-15 left-5 flex items-center justify-center gap-5"
@@ -28,7 +28,7 @@ export function SearchFloatBar({ onBack, onChange, values }: SearchFloat) {
       <Input
         type=""
         onChange={onChange}
-        value={values}
+        value={value}
         placeholder="Pesquise suas Rotinas..."
         className="border-blue-100 bg-white/80 opacity-95 !shadow-2xl shadow-blue-100 backdrop-blur-3xl placeholder:font-semibold placeholder:tracking-wide focus:border-white focus:bg-white/90 focus:outline-white"
       />
