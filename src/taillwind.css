@@ -1,23 +1,2 @@
 @import "tailwindcss";
 @import "tailwind-scrollbar-hide/v4";
-
-body,
-div {
-  scrollbar-gutter: stable both-edges;
-}
-
-.scroll-bar::-webkit-scrollbar-button {
-  display: none !important;
-}
-
-.scroll-bar::-webkit-scrollbar {
-  width: 5px;
-  background-color: aliceblue;
-  border-radius: 40%;
-  border: 3px solid transparent;
-}
-
-.scroll-bar::-webkit-scrollbar-thumb {
-  background-color: rgba(147, 195, 247, 0.847);
-  border-radius: 40%;
-}
