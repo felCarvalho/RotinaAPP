@@ -89,7 +89,7 @@ export function SearchTasks() {
                   onClick={() => updateStatus({ id: t?.id })}
                   className={`border border-blue-50 text-[13px] font-semibold ${!t?.status ? "bg-blue-400" : "bg-white"}`}
                 >
-                  <p className={t?.status ? "text-blue-300" : "text-white"}>
+                  <p className={t?.status ? "text-xs text-blue-300" : "text-xs text-white"}>
                     {t?.status ? "rotina incompleta" : "rotina concluída"}
                   </p>
                 </Button>
@@ -128,7 +128,7 @@ export function SearchTasks() {
                           setSearch((s) => ({
                             ...s,
                             renomear: isPopup?.id,
-                            modal: !s,
+                            modal: true,
                           }));
                           setPopup((s) => ({
                             ...s,
@@ -168,7 +168,7 @@ export function SearchTasks() {
                           setSearch((s) => ({
                             ...s,
                             detalhes: isPopup?.id,
-                            modal: !s,
+                            modal: true,
                           }));
                           setPopup((s) => ({
                             ...s,
