@@ -24,7 +24,8 @@ const schemaTasks = z.object({
 
 export function CreateRotina() {
   const { closeID, openID, isRenderID } = TelasStore();
-  const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, searchTask } = RotinaStore();
+  const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, categorias, searchTask, tasks } =
+    RotinaStore();
   const [isOpen, setOpen] = useState(false);
   const [task, setTask] = useState<z.infer<typeof schemaTasks>>({
     rotina: "",
@@ -45,8 +46,10 @@ export function CreateRotina() {
   }
 
   function verificarDados() {
-    return !categoriaTasks && !uuid;
+    return !categoriaTasks?.categoria && !uuid;
   }
+
+  console.log({ task, tasks, categoriaTasks, categorias, uuid });
 
   const selectionCategory = useCallback(
     ({ category }: { category: string }) => {
@@ -76,7 +79,7 @@ export function CreateRotina() {
 
     const validar = schemaTasks.parse(task);
 
-    if (validar || verificarDados()) {
+    if (!validar?.rotina.trim() || verificarDados()) {
       return;
     }
 
@@ -108,6 +111,7 @@ export function CreateRotina() {
                 btnClosed={() => closeID({ name: "create-rotina", id: 100, status: false })}
                 classNameHeaderDiv="!backdrop-blur-none"
               />
+
               <div className="relative mt-20 px-5">
                 <form className="flex flex-col justify-center gap-5" onSubmit={onSubmit}>
                   <label className="flex flex-col gap-1">
