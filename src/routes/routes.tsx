@@ -41,8 +41,8 @@ const routes = createBrowserRouter([
                 index: true,
                 element: (
                   <LayoutConfigError
-                    mobile="Volte a tela de configurações clicando no btn abaixo!"
-                    desktop="Escolha uma confguração para ver os detalhes aqui!"
+                    desktop="Selecione alguma configuração para ver mais detalhes dela aqui"
+                    mobile="Aperte no btn abaixo para ir para pagina de configurações"
                     icon={faArrowUp}
                   />
                 ),
