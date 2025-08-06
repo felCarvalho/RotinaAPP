@@ -1,5 +1,5 @@
 //import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
@@ -21,7 +21,7 @@ const localStorageTypes = z.object({
 
 export function Temas() {
   const navigate = useNavigate();
-  const { setLayout, isLayout } = LayoutStore();
+  const { setLayout } = LayoutStore();
   const { verificarWidth } = useResizeView();
   const [onTema, setTema] = useState<z.infer<typeof localStorageTypes>>(() => {
     try {
@@ -57,11 +57,11 @@ export function Temas() {
   }, [onTema]);
 
   return (
-    <div className="z-50 h-full rounded-[50px] bg-blue-50 shadow-sm shadow-blue-50">
+    <div className="z-50 h-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
       <HeaderContent
         title="Temas"
         iconBack={faAngleLeft}
-        iconClosed={faX}
+        iconClosed={null}
         btnBack={() => {
           setLayout({
             isMobileLayout: false,
@@ -69,97 +69,93 @@ export function Temas() {
           });
           navigate("/inicio/configuracoes");
         }}
-        btnClosed={() => {
-          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
-          navigate("/inicio/configuracoes");
-        }}
+        btnClosed={undefined}
         classNameBtn="bg-white !text-blue-400"
         classNameHeaderDiv="!backdrop-blur-[20px] bg-blue-50/80"
+        classNameBtnClosed="!min-w-0 !min-h-0 bg-transparent"
       />
-      <div className="px-3.5 pt-5">
-        <div className="scroll-bar h-90 overflow-y-auto rounded-2xl border-b border-b-blue-50 px-1 pt-20 pb-2 shadow-sm shadow-blue-50">
-          <div className="flex w-full flex-col items-start justify-around gap-5 rounded-3xl bg-white py-4">
-            <div className="flex w-full flex-row items-center justify-around gap-5 rounded-2xl bg-white px-4">
-              <motion.button
-                onClick={() =>
-                  setTema((s) => ({
-                    ...s,
-                    modoClaro: true,
-                    modoEscuro: false,
-                  }))
-                }
-                whileTap={{ scale: 0.9, opacity: 0.5 }}
-                transition={{ type: "spring" }}
-                className={`${focusThemeLight()} flex flex-col items-center justify-center rounded-2xl p-2`}
-              >
-                <div className="rounded-full bg-white p-4 shadow-md shadow-blue-50">
-                  <img src="../../../assets/Innovation-bro.svg" alt="" sizes="" className="w-36" />
-                </div>
-                <div className="flex flex-row items-center justify-center gap-2 pt-2">
-                  <H3 title={!verificarWidth({ largura: 1000 }) ? "Claro" : "Modo claro"} className="text-blue-400" />
-                  <i className="text-lg text-blue-400">
-                    <FontAwesomeIcon icon={onTema?.modoClaro ? faCircleCheck : faCircleXmark} />
-                  </i>
-                </div>
-              </motion.button>
-              <motion.button
-                onClick={() =>
-                  setTema((s) => ({
-                    ...s,
-                    modoClaro: false,
-                    modoEscuro: true,
-                  }))
-                }
-                whileTap={{ scale: 0.9, opacity: 0.5 }}
-                transition={{ type: "spring" }}
-                className={`${focusThemeDark()}flex flex-col items-center justify-center rounded-2xl p-2`}
-              >
-                <div className="rounded-full bg-blue-950 p-4">
-                  <img src="../../../assets/Innovation-amico.svg" alt="" sizes="" className="w-36" />
-                </div>
-                <div className="flex flex-row items-center justify-center gap-2 pt-2">
-                  <H3
-                    title={!verificarWidth({ largura: 1000 }) ? "Escuro" : "Modo escuro"}
-                    className={onTema?.modoEscuro ? "text-blue-50" : "text - blue - 950"}
-                  />
-                  <i className={`text-lg ${onTema?.modoEscuro ? "text-blue-50" : "text-blue-950"} `}>
-                    <FontAwesomeIcon icon={onTema?.modoEscuro ? faCircleCheck : faCircleXmark} />
-                  </i>
-                </div>
-              </motion.button>
-            </div>
-            <div className="flex flex-col gap-4">
-              <label className="flex flex-col items-start justify-center gap-2 px-2">
-                <H3 title="Modo claro" className="text-blue-400" />
-                <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                  <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
-                  <P
-                    title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma mlehor legibilidade."
-                    className={"text-blue-300"}
-                  />
-                </div>
-              </label>
-              <label className="flex flex-col items-start justify-center gap-2 px-2">
-                <H3 title="Modo escuro" className="text-blue-400" />
-                <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                  <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
-                  <P
-                    title="Aplica o modo escuro para toda a interface, deixano a visão dos elementos de tela menos brilhantes e deixando o foco apenas nos textos..."
-                    className={"text-blue-300"}
-                  />
-                </div>
-              </label>
-              <label className="flex flex-col items-start justify-center gap-2 px-2">
-                <H3 title="Modo automático" className="text-blue-400" />
-                <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                  <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
-                  <P
-                    title="Aplicando o modo automatico voçê ficará como a interface no mesmo modo que o seu dispositivo está... ideal para quem quer seguir sua preferencial pessoal."
-                    className={"text-blue-300"}
-                  />
-                </div>
-              </label>
-            </div>
+      <div className="scroll-hide max-h-full overflow-auto rounded-t-[50px] px-4 pt-25">
+        <div className="flex h-full w-full flex-col items-start justify-around rounded-3xl bg-white py-5">
+          <div className="flex w-full flex-row items-center justify-around bg-white px-5">
+            <motion.button
+              onClick={() =>
+                setTema((s) => ({
+                  ...s,
+                  modoClaro: true,
+                  modoEscuro: false,
+                }))
+              }
+              whileTap={{ scale: 0.9, opacity: 0.5 }}
+              transition={{ type: "spring" }}
+              className={`${focusThemeLight()} flex flex-col items-center justify-center rounded-2xl p-2`}
+            >
+              <div className="rounded-full bg-white shadow-md shadow-blue-50">
+                <img src="../../../assets/Innovation-bro.svg" alt="" sizes="" className="w-36" />
+              </div>
+              <div className="flex flex-row items-center justify-center gap-2 pt-2">
+                <H3 title={!verificarWidth({ largura: 1000 }) ? "Claro" : "Modo claro"} className="text-blue-400" />
+                <i className="text-lg text-blue-400">
+                  <FontAwesomeIcon icon={onTema?.modoClaro ? faCircleCheck : faCircleXmark} />
+                </i>
+              </div>
+            </motion.button>
+            <motion.button
+              onClick={() =>
+                setTema((s) => ({
+                  ...s,
+                  modoClaro: false,
+                  modoEscuro: true,
+                }))
+              }
+              whileTap={{ scale: 0.9, opacity: 0.5 }}
+              transition={{ type: "spring" }}
+              className={`${focusThemeDark()}flex flex-col items-center justify-center rounded-2xl p-2`}
+            >
+              <div className="rounded-full bg-blue-950">
+                <img src="../../../assets/Innovation-amico.svg" alt="" sizes="" className="w-36" />
+              </div>
+              <div className="flex flex-row items-center justify-center gap-2 pt-2">
+                <H3
+                  title={!verificarWidth({ largura: 1000 }) ? "Escuro" : "Modo escuro"}
+                  className={onTema?.modoEscuro ? "text-blue-50" : "text-blue-950"}
+                />
+                <i className={`text-lg ${onTema?.modoEscuro ? "text-blue-50" : "text-blue-950"} `}>
+                  <FontAwesomeIcon icon={onTema?.modoEscuro ? faCircleCheck : faCircleXmark} />
+                </i>
+              </div>
+            </motion.button>
+          </div>
+          <div className="flex flex-col gap-4 px-3">
+            <label className="flex flex-col items-start justify-center gap-2 px-2">
+              <H3 title="Modo claro" className="text-blue-400" />
+              <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
+                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
+                <P
+                  title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma mlehor legibilidade."
+                  className={"text-blue-300"}
+                />
+              </div>
+            </label>
+            <label className="flex flex-col items-start justify-center gap-2 px-2">
+              <H3 title="Modo escuro" className="text-blue-400" />
+              <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
+                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
+                <P
+                  title="Aplica o modo escuro para toda a interface, deixano a visão dos elementos de tela menos brilhantes e deixando o foco apenas nos textos..."
+                  className={"text-blue-300"}
+                />
+              </div>
+            </label>
+            <label className="flex flex-col items-start justify-center gap-2 px-2">
+              <H3 title="Modo automático" className="text-blue-400" />
+              <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
+                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
+                <P
+                  title="Aplicando o modo automatico voçê ficará como a interface no mesmo modo que o seu dispositivo está... ideal para quem quer seguir sua preferencial pessoal."
+                  className={"text-blue-300"}
+                />
+              </div>
+            </label>
           </div>
         </div>
       </div>
