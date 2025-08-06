@@ -13,7 +13,7 @@ import { H3 } from "../../component/subTitle";
 
 export function Tasks() {
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, tasks } = RotinaStore();
+  const { updateStatus, deletarTask, dataFiltro, categorias, tasks, lixeira, filterId } = RotinaStore();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
@@ -37,7 +37,7 @@ export function Tasks() {
     },
   );
 
-  console.log(tasks);
+  console.log({ tasks, filterId, lixeira });
 
   function verificarData() {
     return dataFiltro.length > 0;
@@ -116,7 +116,7 @@ export function Tasks() {
                           setQuery((s) => ({
                             ...s,
                             renomear: t?.id,
-                            modal: !s,
+                            modal: true,
                           }));
                         }, 300)
                       }
@@ -148,7 +148,7 @@ export function Tasks() {
                               setQuery((s) => ({
                                 ...s,
                                 renomear: isPopup?.id,
-                                modal: !s,
+                                modal: true,
                               }));
                               setPopup((s) => ({
                                 ...s,
@@ -188,7 +188,7 @@ export function Tasks() {
                               setQuery((s) => ({
                                 ...s,
                                 detalhes: isPopup?.id,
-                                modal: !s,
+                                modal: true,
                               }));
                               setPopup((s) => ({
                                 ...s,
@@ -227,7 +227,7 @@ export function Tasks() {
                         setQuery((s) => ({
                           ...s,
                           detalhes: t?.id,
-                          modal: !s,
+                          modal: true,
                         }));
                         setPopup((s) => ({
                           ...s,
