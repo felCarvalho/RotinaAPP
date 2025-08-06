@@ -16,7 +16,7 @@ export function Radio({ children, id, checked, onChange, ariaLabel, classNameRad
       whileTap={{ scale: 0.9 }}
       transition={{ type: "spring" }}
       htmlFor={id}
-      className={`${classNameLabel} item-center relative flex`}
+      className={`${classNameLabel} relative flex items-center`}
     >
       <input
         type="checkbox"
