@@ -118,7 +118,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       //variavel de controle para filtro de categorias
       filterControlCategorias: false,
       //id atual do filtro(logica)
-      filterId: "",
+      filterId: "todas",
       //filtro atual(string)
       filter: "",
       //variavel de controle para filtro de status
@@ -132,11 +132,11 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       setCategoria: (categoriaTask) => {
         const { categorias } = get();
 
-        if (categoriaTask?.categoria || categoriaTask?.id) {
+        if (!categoriaTask?.categoria.trim() || !categoriaTask?.id.trim()) {
           return;
         }
         //verificamos se já existe uma categoria igual em categorias
-        const controlCategoria = categorias.some((categoria) => categoria.categoria === categoriaTask?.categoria);
+        const controlCategoria = categorias.some((categoria) => categoria?.categoria === categoriaTask?.categoria);
 
         //negamos o true para false, e aplicamos a lógica para adicionar nova categoria sem perder as anteriores
         if (!controlCategoria) {
@@ -199,7 +199,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         //captura dados utilizados
         const { tasks } = get();
 
-        if (!filterId) {
+        if (filterId === "todas") {
           return set({
             dataFiltro: tasks,
           });
@@ -226,7 +226,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       searchTask: () => {
         const { tasks, filterSearch } = get();
 
-        const buscandoTasks = tasks.filter((t) => t.rotina.toLowerCase().includes(filterSearch));
+        const buscandoTasks = tasks.filter((t) => t?.rotina.toLowerCase().includes(filterSearch));
 
         set({
           dataSearch: filterSearch ? buscandoTasks : [],
@@ -261,18 +261,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set({
-            dataSearch: tasksUpdate,
-          });
           searchTask();
         }
       },
@@ -308,7 +305,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        /*if (filterId !== null && filterControlCategorias !== null) {
           filtragemCategorias(filterId);
         }
 
@@ -320,6 +317,18 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           set({
             dataSearch: deleteTasks,
           });
+          searchTask();
+        }*/
+
+        if (filterControlCategorias && filterId) {
+          filtragemCategorias(filterId);
+        }
+
+        if (filtroControlStatus) {
+          filtragemStatus(statusBoolean);
+        }
+
+        if (filterSearch) {
           searchTask();
         }
       },
@@ -353,18 +362,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set({
-            dataSearch: renomearTasks,
-          });
           searchTask();
         }
       },
@@ -388,6 +394,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
               lixeira: restaurarLixeira,
               tasks: [...state.tasks, buscaTask].flat(),
               dataFiltro: [...state.dataFiltro, buscaTask].flat(),
+              dataSearch: [...state.dataSearch, buscaTask].flat(),
             }) as Partial<RotinaStoreTypes>,
         );
 
@@ -402,18 +409,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set((state) => ({
-            dataSearch: [...state.dataSearch, buscaTask].flat(),
-          }));
           searchTask();
         }
       },
@@ -432,6 +436,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           tasks: deletarTasksCategoriaID,
           lixeira: [...state.lixeira, armazenarTasksCategoriaID].flat(),
           dataFiltro: deletarTasksCategoriaID,
+          dataSearch: deletarTasksCategoriaID,
         }));
 
         const {
@@ -445,18 +450,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set({
-            dataSearch: deletarTasksCategoriaID,
-          });
           searchTask();
         }
       },
@@ -474,6 +476,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           data: incompletaDataCategoria,
           tasks: incompletaTasksCategoriaID,
           dataFiltro: incompletaTasksCategoriaID,
+          dataSearch: incompletaTasksCategoriaID,
         });
 
         const {
@@ -487,18 +490,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set({
-            dataSearch: incompletaTasksCategoriaID,
-          });
           searchTask();
         }
       },
@@ -516,6 +516,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           data: concluidaDataCategoria,
           tasks: concluidaTasksCategoriaID,
           dataFiltro: concluidaTasksCategoriaID,
+          dataSearch: concluidaTasksCategoriaID,
         });
 
         const {
@@ -529,18 +530,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set({
-            dataSearch: concluidaTasksCategoriaID,
-          });
           searchTask();
         }
       },
@@ -561,6 +559,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
               lixeira: restaurarLixeira,
               tasks: [...state.tasks, buscarTasks].flat(),
               dataFiltro: [...state.dataFiltro, buscarTasks].flat(),
+              dataSearch: [...state.dataSearch, buscarTasks].flat(),
             }) as Partial<RotinaStoreTypes>,
         );
 
@@ -575,18 +574,15 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           searchTask,
         } = get();
 
-        if (filterId !== null && filterControlCategorias !== null) {
+        if (filterControlCategorias && filterId) {
           filtragemCategorias(filterId);
         }
 
-        if (statusBoolean !== null && filtroControlStatus !== null) {
+        if (filtroControlStatus) {
           filtragemStatus(statusBoolean);
         }
 
         if (filterSearch) {
-          set((state) => ({
-            dataSearch: [...state.dataSearch, buscarTasks].flat(),
-          }));
           searchTask();
         }
       },
@@ -673,7 +669,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
 
       setClearFilterBasico: () => {
         set((state) => ({
-          filterId: "",
+          filterId: "todas",
           filter: "",
           statusBoolean: false,
           status: false,
