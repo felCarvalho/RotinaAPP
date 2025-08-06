@@ -8,7 +8,7 @@ export function DropdownFilterCategorias() {
     <div className="m-2 flex max-w-full flex-col items-start justify-center gap-2 rounded-3xl">
       <Button
         onClick={() => {
-          setFilter({ id: "" });
+          setFilter({ id: "todas" });
           setCategoriaString({ categoria: "Todas" });
         }}
         type="button"
