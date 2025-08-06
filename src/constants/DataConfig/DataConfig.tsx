@@ -22,7 +22,7 @@ export const DataConfig = [
   },
   {
     id: "extras",
-    title: "Funções estras",
+    title: "Funções extras",
     description: "Apague Rotinas, lixeira e dados de login.",
     alert: "",
     link: "",
