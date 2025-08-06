@@ -28,7 +28,7 @@ export function LayoutConfig() {
       {verificarWidth({ largura: 1000 }) && (
         <div className={`flex h-full w-full items-center !justify-start gap-5 p-5 ${layout()}`}>
           <div className="h-full w-full">
-            <Config setLayout={{ setLayout, isLayout }} />
+            <Config />
           </div>
           <div className="min-h-max">
             <Button
@@ -51,7 +51,7 @@ export function LayoutConfig() {
             transition={{ type: "spring", stiffness: 100 }}
             className="h-full w-full"
           >
-            <Config setLayout={{ setLayout, isLayout }} />
+            <Config />
           </motion.div>
           {isLayout?.isMobileLayout && (
             <motion.div
