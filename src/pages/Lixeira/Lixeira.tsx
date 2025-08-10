@@ -51,7 +51,7 @@ export function Lixeira() {
             </div>
           ))
         ) : (
-          <div className="scroll-hid flex h-full w-full items-center justify-center">
+          <div className="scroll-hide flex h-full w-full items-center justify-center">
             <H3 title="Não encontramos nenhuma rotina deletada! " className="text-[18px] text-blue-400" />
           </div>
         )}
