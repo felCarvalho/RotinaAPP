@@ -40,7 +40,7 @@ export default function MainLayout() {
       document.documentElement.style.overflow = "";
     }
 
-    const ClickNavigate = (e) => {
+    const ClickNavigate = (e:KeyboardEvent) => {
       switch (e.key) {
         case "ArrowLeft":
           navigate(-1);
@@ -71,7 +71,7 @@ export default function MainLayout() {
   }, [uuidTelas, OnScroll, verificarOpenModal, navigate]);
 
   return (
-    <div className="min-h-dvh m-0">
+    <div className="m-0 min-h-dvh">
       <ScrollRestoration />
       <Header />
       <main className={pathname === "/inicio/buscar" ? "pt-40 pb-32" : "pt-40 pb-8"}>
