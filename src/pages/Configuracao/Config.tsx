@@ -17,6 +17,7 @@ export function Config() {
   const { statusFunction, setStatusFunction } = RotinaStore();
   //usado para navegação
   const navigate = useNavigate();
+  //pegando rota atual da URL
   const location = useLocation();
 
   //verificando quais config devem ter btn toggle ou não
@@ -36,19 +37,23 @@ export function Config() {
     switch (chave) {
       case "lixeira":
         return (
-          <Button
-            type="button"
-            onClick={() => {
-              setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout });
-              navigate(link);
-            }}
-            className="flex flex-row items-center justify-center gap-2 !py-1"
-          >
-            <i>
-              <FontAwesomeIcon icon={faTrash} />
-            </i>
-            <P title="Lixeira" />
-          </Button>
+          <div>
+            {statusFunction?.lixeira && (
+              <Button
+                type="button"
+                onClick={() => {
+                  setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout });
+                  navigate(link);
+                }}
+                className="flex flex-row items-center justify-center gap-2 !py-1"
+              >
+                <i>
+                  <FontAwesomeIcon icon={faTrash} />
+                </i>
+                <P title="Abrir lixeira" />
+              </Button>
+            )}
+          </div>
         );
 
       default:
@@ -114,7 +119,7 @@ export function Config() {
                 </Button>
               </NavLink>
             ) : (
-              <div className="justify-cente flex w-full flex-col items-center gap-3">
+              <div className="justify-cente flex max-h-min w-full flex-col items-center gap-3">
                 <div className="flex w-full flex-row items-center">
                   <div className="w-full">
                     <H3 title={c?.title} className="cursor-pointer text-base text-blue-400" />
