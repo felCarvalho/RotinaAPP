@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @import "tailwind-scrollbar-hide/v4";
+
+@theme {
+  --breakpoint-xs: 20rem;
+  --breakpoint-2xs: 21rem;
+  --breakpoint-3xs: 22rem;
+  --breakpoint-4xs: 27rem;
+}
