@@ -5,7 +5,7 @@ import { FloatingPortal } from "@floating-ui/react";
 import { useResizeView } from "../../hooks/UseResizeView";
 import { Button } from "../../component/btn";
 import { RotinaStore } from "../../store/UseRotina";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { parseAsBoolean, parseAsString, useQueryStates } from "nuqs";
 import { useState } from "react";
 import { P } from "../../component/paragrafo";
@@ -13,7 +13,7 @@ import { H3 } from "../../component/subTitle";
 
 export function Tasks() {
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, tasks, lixeira, filterId } = RotinaStore();
+  const { updateStatus, deletarTask, dataFiltro, categorias, categoriaTasks } = RotinaStore();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
@@ -37,21 +37,17 @@ export function Tasks() {
     },
   );
 
-  console.log({ tasks, filterId, lixeira });
+  console.log({ dataFiltro, categoriaTasks });
 
   function verificarData() {
-    return dataFiltro.length > 0;
+    return dataFiltro.length > 0 ? true : false;
   }
 
   return (
-    <AnimatePresence>
+    <div>
       {verificarData() ? (
         dataFiltro.map((t) => (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 1, opacity: 0 }}
-            transition={{ type: "spring", delay: 0.3 }}
+          <div
             key={t?.id}
             className="mx-3 mb-4 flex flex-col gap-4 overflow-hidden rounded-full bg-gradient-to-r from-blue-50 p-3 shadow-sm shadow-blue-50 select-none"
           >
@@ -82,8 +78,8 @@ export function Tasks() {
                     title={t?.rotina}
                     className={
                       t?.status
-                        ? `${!verificarWidth({ largura: 375 }) ? "w-40" : "w-60"} truncate text-left text-blue-200 italic line-through`
-                        : `${!verificarWidth({ largura: 375 }) ? "w-40" : "w-60"} truncate text-left text-blue-400`
+                        ? `xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-96 truncate text-left text-blue-200 italic line-through`
+                        : `xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-96 truncate text-left text-blue-400`
                     }
                   />
                 </div>
@@ -215,7 +211,7 @@ export function Tasks() {
                 <H3 title="categoria:" className="text-sm font-medium text-blue-400" />
                 <P
                   title={categorias.find((c) => c?.id === t?.categoriaID)?.categoria ?? ""}
-                  className="text-sm font-medium text-blue-300"
+                  className="xs:max-2xs:w-8 3xs:max-4xs:w-14 truncate text-sm font-medium text-blue-300"
                 />
               </div>
               {verificarWidth({ largura: 700 }) && (
@@ -247,14 +243,14 @@ export function Tasks() {
                 <P title="20/05/1025" className="text-sm font-medium text-blue-300" />
               </div>
             </div>
-          </motion.div>
+          </div>
         ))
       ) : (
         <div className="my-10 p-2 text-center">
           <P title="Nenhuma Rotina encontrada!" className="mx-3 !text-2xl text-blue-400 shadow-blue-100 !text-shadow-md" />
         </div>
       )}
-    </AnimatePresence>
+    </div>
   );
 }
 
