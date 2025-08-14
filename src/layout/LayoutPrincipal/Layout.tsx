@@ -22,6 +22,8 @@ export default function MainLayout() {
     return uuidTelas.some((s) => s?.status === true) || modal === true;
   }, [uuidTelas, modal]);
 
+  //const authRedirect = useCallback(() => {}, []);
+
   useEffect(() => {
     const handleScroll = () => {
       OnScroll({
@@ -40,7 +42,7 @@ export default function MainLayout() {
       document.documentElement.style.overflow = "";
     }
 
-    const ClickNavigate = (e:KeyboardEvent) => {
+    const ClickNavigate = (e: KeyboardEvent) => {
       switch (e.key) {
         case "ArrowLeft":
           navigate(-1);
