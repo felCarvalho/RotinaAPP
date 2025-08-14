@@ -110,7 +110,10 @@ export function Config() {
               >
                 <div className="w-full">
                   <H3 title={c?.title} className="cursor-pointer text-base" />
-                  <P title={c?.description} className="w-40 truncate font-light whitespace-nowrap text-blue-300" />
+                  <P
+                    title={c?.description}
+                    className="xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-full truncate font-light whitespace-nowrap text-blue-300"
+                  />
                 </div>
                 <Button type="button" className="min-h-10 min-w-10 bg-white">
                   <i className="text-blue-400">
@@ -123,7 +126,10 @@ export function Config() {
                 <div className="flex w-full flex-row items-center">
                   <div className="w-full">
                     <H3 title={c?.title} className="cursor-pointer text-base text-blue-400" />
-                    <P title={c?.description} className="w-40 truncate font-light whitespace-nowrap text-blue-300" />
+                    <P
+                      title={c?.description}
+                      className="xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-full truncate font-light whitespace-nowrap text-blue-300"
+                    />
                   </div>
                   <Toggle
                     name={c?.id}
