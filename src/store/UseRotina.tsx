@@ -49,7 +49,7 @@ interface functionTypes {
   setFilter: ({ id }: { id: string }) => void;
   setCategoriaString: ({ categoria }: { categoria: string }) => void;
   setStatus: ({ status }: { status: boolean }) => void;
-  setStatusString: ({ status }: { status: boolean }) => void;
+  setStatusString: ({ status }: { status: string }) => void;
   setSearchTasks: ({ search }: { search: string }) => void;
   setDataTask: ({ task }: { task: tarefa }) => void;
   setCategoriaTask: ({ categoria, id }: { categoria: dataCategoria; id: string }) => void;
@@ -73,7 +73,7 @@ interface RotinaStoreTypes extends functionTypes {
   filter: string;
   filtroControlStatus: boolean;
   statusBoolean: boolean;
-  status: boolean;
+  status: string;
 }
 
 export const RotinaStore = create<RotinaStoreTypes>()(
@@ -126,7 +126,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       //armazena o status atual(logica)
       statusBoolean: false,
       //armazena o status atual(string)
-      status: false,
+      status: "",
 
       //armazenando categoria atual
       setCategoria: (categoriaTask) => {
@@ -643,7 +643,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       setCategoriaString: ({ categoria }) => {
         set({
           filter: categoria,
-          status: false,
+          status: "",
         });
       },
 
@@ -672,7 +672,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           filterId: "todas",
           filter: "",
           statusBoolean: false,
-          status: false,
+          status: "",
           dataFiltro: [...state.tasks].flat(),
           filtroControlStatus: false,
           filtroControlCategorias: false,
