@@ -11,11 +11,9 @@ import { Outlet } from "react-router";
 
 export function LayoutConfig() {
   const { setLayout, isLayout } = LayoutStore();
-
   const layout = useCallback(() => {
     return isLayout?.isDesktopLayout ? "flex-row-reverse" : "flex-row";
   }, [isLayout]);
-
   const { verificarWidth } = useResizeView();
 
   return (
@@ -58,7 +56,7 @@ export function LayoutConfig() {
               initial={{ y: 1100 }}
               animate={{ y: 0 }}
               transition={{ type: "spring", stiffness: 100 }}
-              className="absolute top-0 right-0 bottom-0 left-0 m-5 rounded-[50px] bg-white shadow-md shadow-blue-50"
+              className="absolute top-5 right-5 bottom-5 left-5 rounded-[50px] bg-white shadow-md shadow-blue-50"
             >
               <Outlet context={{ setLayout, isLayout }} />
             </motion.div>
