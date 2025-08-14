@@ -10,11 +10,22 @@ import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
 import { RotinaStore } from "../../store/UseRotina";
 import { useResizeView } from "../../hooks/UseResizeView";
 import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import * as z from "zod";
+
+const createCategoryTypes = z.object({
+  categoria: z.string().trim(),
+  id: z.string().trim(),
+});
 
 export function CreateCategoria() {
   const { closeID, isRenderID } = TelasStore();
-  const { setCategoriaTask, categoriaTasks, uuid } = RotinaStore();
+  const { setCategoriaTask } = RotinaStore();
   const { verificarWidth } = useResizeView();
+  const [createCategory, setCategory] = useState<z.infer<typeof createCategoryTypes>>({
+    categoria: "",
+    id: "",
+  });
 
   const generatorID = useGeneratorUUID();
 
@@ -24,20 +35,32 @@ export function CreateCategoria() {
     const verificar = name === "category";
     const id = generatorID({ prefixo: "@category", sufixo: `@${value}` });
 
-    setCategoriaTask({
-      categoria: verificar ? { categoria: value, id: uuid } : categoriaTasks,
-      id: verificar ? id : uuid,
-    });
+    setCategory((s) => ({
+      ...s,
+      categoria: verificar ? value : "",
+      id: id,
+    }));
   }
 
   function OnSubmit(e: React.ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    closeID({ name: "create-category", id: 200, status: false });
-    setCategoriaTask({
-      categoria: { categoria: "", id: "" },
-      id: "",
-    });
+    const validacao = createCategoryTypes.parse(createCategory);
+
+    if (validacao?.categoria.trim() && validacao?.id.trim()) {
+      closeID({ name: "create-category", id: 200, status: false });
+      setCategoriaTask({
+        categoria: { categoria: validacao?.categoria, id: validacao?.id },
+        id: validacao?.id,
+      });
+      setCategory((s) => ({
+        ...s,
+        categoria: "",
+        id: "",
+      }));
+
+      return;
+    }
   }
 
   return (
