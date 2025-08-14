@@ -7,12 +7,12 @@ import { faAngleLeft, faFilter, faGear, faPlus, faX, faBars } from "@fortawesome
 import { useResizeView } from "../../hooks/UseResizeView";
 import { TelasStore } from "../../store/UseTelasFixos";
 import { RotinaStore } from "../../store/UseRotina";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 export function Header() {
   const { verificarWidth } = useResizeView();
-  const { setClearFilterBasico, tasks } = RotinaStore();
+  const { setClearFilterBasico, tasks, filter, status } = RotinaStore();
   const { openID } = TelasStore();
   const [filterMobile, setFilterMobile] = useState({
     isMobile: false,
@@ -28,8 +28,15 @@ export function Header() {
     return tasks.length !== 0;
   }
 
+  const verificandoFiltersStatus = useCallback(() => {
+    const verificando = !!filter.trim() || !!status.trim();
+    console.log({ verificando });
+
+    return !verificando ? "w-full" : "xs:max-2xs:w-8 3xs:max-4xs:w-12 truncate";
+  }, [filter, status]);
+
   return (
-    <header className="fixed right-2 left-2 z-50 rounded-b-3xl bg-gradient-to-r from-blue-50 px-2 shadow-2xl shadow-white backdrop-blur-3xl">
+    <header className="fixed right-2 left-2 z-50 rounded-b-3xl border border-blue-50 bg-gradient-to-r from-blue-50 px-2 shadow-2xl shadow-white backdrop-blur-3xl">
       <div className="flex flex-col">
         <div className="flex flex-row items-center justify-between pt-5 pb-2.5">
           {!verificarWidth({ largura: 800 }) && (
@@ -66,7 +73,7 @@ export function Header() {
             <i>
               <FontAwesomeIcon icon={faPlus} />
             </i>
-            <p className={!verificarWidth({ largura: 360 }) ? "w-12 truncate" : ""}>Adicionar Rotina</p>
+            <p className={!verificarWidth({ largura: 768 }) ? "w-12 truncate" : ""}>Adicionar Rotina</p>
           </Button>
           <div className="flex flex-row items-center justify-center gap-2">
             {pathname !== "/inicio/buscar" && (
@@ -83,7 +90,7 @@ export function Header() {
                 <i className="text-blue-400">
                   <FontAwesomeIcon icon={faFilter} />
                 </i>
-                <p className="text-blue-400">Filtro</p>
+                <p className={`${verificandoFiltersStatus()} text-blue-400`}>{filter || status || "Filtro"}</p>
               </Button>
             )}
             {verificarLengthTasks() && filterMobile?.isMobile && (
@@ -171,7 +178,7 @@ export function Header() {
               </div>
             )}
             <Button type="button" onClick={() => setClearFilterBasico()} className="bg-white font-medium text-blue-400">
-              <p className="text-blue-400">Limpar</p>
+              <p className="xs:max-2xs:w-16 3xs:max-4xs:w-20 truncate text-blue-400">Limpar Filtro</p>
             </Button>
           </div>
         </div>
