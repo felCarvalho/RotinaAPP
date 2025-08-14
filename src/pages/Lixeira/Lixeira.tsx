@@ -36,11 +36,11 @@ export function Lixeira() {
               <div className="item-center flex flex-col justify-between gap-2">
                 <div className="flex gap-0.5">
                   <H3 title="Rotina:" className="text-blue-400" />
-                  <P title={l?.rotina} className="text-blue-300" />
+                  <P title={l?.rotina} className="xs:max-2xs:w-16 3xs:max-4xs:w-24 md:w-60 truncate text-blue-300" />
                 </div>
                 <div className="flex gap-0.5">
                   <H3 title="categoriaID:" className="text-blue-400" />
-                  <P title={l?.categoriaID} className="w-10 truncate text-blue-300" />
+                  <P title={l?.categoriaID} className="xs:max-2xs:w-10 3xs:max-4xs:w-20 md:w-60 truncate text-blue-300" />
                 </div>
               </div>
               <div className="">
