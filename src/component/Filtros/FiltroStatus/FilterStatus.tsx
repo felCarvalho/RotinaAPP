@@ -6,8 +6,8 @@ export function DropdownFilterStatus() {
   const { setStatus, setStatusString } = RotinaStore();
   const booleanType = useMemo(
     () => ({
-      concluidas: true,
-      incompletas: false,
+      concluidasTypes: { boleano: true, string: "Concluídas" },
+      incompletasTypes: { boleano: false, string: "Incompletas" },
     }),
     [],
   );
@@ -16,8 +16,8 @@ export function DropdownFilterStatus() {
     <div className="flex flex-col items-start justify-center gap-2">
       <Button
         onClick={() => {
-          setStatus({ status: booleanType?.concluidas });
-          setStatusString({ status: booleanType?.concluidas });
+          setStatus({ status: booleanType?.concluidasTypes?.boleano });
+          setStatusString({ status: booleanType?.concluidasTypes?.string });
         }}
         type="button"
         className="flex w-full flex-row gap-1.5 rounded-full bg-white font-medium shadow-sm shadow-blue-50"
@@ -26,8 +26,8 @@ export function DropdownFilterStatus() {
       </Button>
       <Button
         onClick={() => {
-          setStatus({ status: booleanType?.incompletas });
-          setStatusString({ status: booleanType?.concluidas });
+          setStatus({ status: booleanType?.incompletasTypes?.boleano });
+          setStatusString({ status: booleanType?.incompletasTypes?.string });
         }}
         type="button"
         className="flex w-full flex-row gap-1.5 rounded-full bg-white font-medium shadow-sm shadow-blue-50"
