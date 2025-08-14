@@ -9,7 +9,7 @@ interface ButtonType {
   layoutId?: string;
   id?: string;
   ariaLabel?: string;
-};
+}
 
 export function Button({ children, onClick, type, className, status, layoutId, id, ariaLabel }: ButtonType) {
   return (
