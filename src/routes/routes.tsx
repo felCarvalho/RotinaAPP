@@ -8,16 +8,21 @@ import { Temas } from "../pages/Temas/Temas";
 import { LimparDados } from "../pages/LimparDados/LimparDados";
 import { Lixeira } from "../pages/Lixeira/Lixeira";
 import { P } from "../component/paragrafo";
+import { Login } from "../pages/Login/Login";
 import { LayoutConfigError } from "../layout/LayoutConfig/LayoutConfigError/LayoutConfigError";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 const routes = createBrowserRouter([
   {
+    path: "/login",
+    element: <Login />,
+  },
+  {
     path: "/",
     element: <Layout />,
     errorElement: (
       <div className="my-72 w-full text-center text-2xl text-amber-400">
-        <P title="Estamos verificando o erro" />
+        <P title="Estamos verificando o erro" className="text-2xl" />
       </div>
     ),
     children: [
@@ -26,7 +31,7 @@ const routes = createBrowserRouter([
         loader: () => redirect("/inicio"),
       },
       {
-        path: "/inicio",
+        path: "inicio",
         element: <LayoutMain />,
         children: [
           {
