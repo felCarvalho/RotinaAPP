@@ -71,12 +71,12 @@ export function Temas() {
         }}
         btnClosed={undefined}
         classNameBtn="bg-white !text-blue-400"
-        classNameHeaderDiv="!backdrop-blur-[20px] bg-blue-50/80"
-        classNameBtnClosed="!min-w-0 !min-h-0 bg-transparent"
+        classNameHeaderDiv="!backdrop-blur-[20px] !bg-blue-50/80"
+        classNameBtnClosed="!min-w-0 !min-h-0"
       />
-      <div className="scroll-hide max-h-full overflow-auto rounded-t-[50px] px-4 pt-25">
-        <div className="flex h-full w-full flex-col items-start justify-around rounded-3xl bg-white py-5">
-          <div className="flex w-full flex-row items-center justify-around bg-white px-5">
+      <div className="scrollbar-hide max-h-full overflow-auto rounded-3xl mx-5">
+        <div className="flex h-full flex-col items-start justify-around gap-5 pt-25">
+          <div className="flex w-full flex-row items-center justify-around gap-5 bg-white rounded-3xl p-5">
             <motion.button
               onClick={() =>
                 setTema((s) => ({
@@ -125,13 +125,13 @@ export function Temas() {
               </div>
             </motion.button>
           </div>
-          <div className="flex flex-col gap-4 px-3">
+          <div className="flex flex-col gap-4 px-2 bg-white p-5 rounded-3xl">
             <label className="flex flex-col items-start justify-center gap-2 px-2">
               <H3 title="Modo claro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
                 <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
                 <P
-                  title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma mlehor legibilidade."
+                  title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma melhor legibilidade."
                   className={"text-blue-300"}
                 />
               </div>
