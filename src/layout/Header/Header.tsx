@@ -57,7 +57,7 @@ export function Header() {
             type="button"
             className="min-h-10 min-w-10 !p-0"
             ariaLabel="Configurações"
-            onClick={() => navigate("/inicio/configuracoes")}
+            onClick={() => navigate("configuracoes")}
           >
             <i className="text-lg">
               <FontAwesomeIcon icon={faGear} />
