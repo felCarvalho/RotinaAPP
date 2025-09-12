@@ -4,12 +4,10 @@ import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { H3 } from "../../component/subTitle";
 import { P } from "../../component/paragrafo";
-import { LayoutStore } from "../../store/UseLayout";
 import { useNavigate } from "react-router";
 
 export function Perfil() {
   const navigate = useNavigate();
-  const { setLayout, isLayout } = LayoutStore();
 
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
@@ -18,8 +16,7 @@ export function Perfil() {
         iconBack={faAngleLeft}
         iconClosed={null}
         btnBack={() => {
-          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
-          navigate("/inicio/configuracoes");
+          navigate("/configuracoes");
         }}
         btnClosed={undefined}
         classNameBtn="bg-white !text-blue-400"
@@ -31,15 +28,24 @@ export function Perfil() {
           <div className="flex w-full flex-col items-start justify-start gap-5 rounded-2xl bg-white p-4">
             <div className="flex flex-row items-center justify-center gap-2">
               <P title="Nome:" className="text-blue-400" />
-              <H3 title="nome de teste por enquanto" className="xs:max-2xs:w-36 3xs:max-4xs:w-50 md:w-60 truncate text-blue-300" />
+              <H3
+                title="nome de teste por enquanto"
+                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
+              />
             </div>
             <div className="flex flex-row items-center justify-center gap-2">
               <P title="Email:" className="text-blue-400" />
-              <H3 title="email de teste por enquanto" className="xs:max-2xs:w-36 3xs:max-4xs:w-50 md:w-60 truncate text-blue-300" />
+              <H3
+                title="email de teste por enquanto"
+                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
+              />
             </div>
             <div className="flex flex-row items-center justify-center gap-2">
               <P title="Email:" className="text-blue-400" />
-              <H3 title="senha de teste por enquanto" className="xs:max-2xs:w-36 3xs:max-4xs:w-50 md:w-60 truncate text-blue-300" />
+              <H3
+                title="senha de teste por enquanto"
+                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
+              />
             </div>
           </div>
         </div>

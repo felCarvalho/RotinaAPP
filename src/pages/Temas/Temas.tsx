@@ -1,18 +1,14 @@
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import * as z from "zod";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
-import { H3 } from "../../component/subTitle";
 import { Radio } from "../../component/radio";
-import { useNavigate } from "react-router";
-import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect, useCallback } from "react";
+import { H3 } from "../../component/subTitle";
 import { useResizeView } from "../../hooks/UseResizeView";
-import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { LayoutStore } from "../../store/UseLayout";
-import * as z from "zod";
 
 const localStorageTypes = z.object({
   modoClaro: z.boolean(),
@@ -21,7 +17,6 @@ const localStorageTypes = z.object({
 
 export function Temas() {
   const navigate = useNavigate();
-  const { setLayout } = LayoutStore();
   const { verificarWidth } = useResizeView();
   const [onTema, setTema] = useState<z.infer<typeof localStorageTypes>>(() => {
     try {
@@ -63,20 +58,16 @@ export function Temas() {
         iconBack={faAngleLeft}
         iconClosed={null}
         btnBack={() => {
-          setLayout({
-            isMobileLayout: false,
-            isDesktopLayout: false,
-          });
-          navigate("/inicio/configuracoes");
+          navigate("/configuracoes");
         }}
         btnClosed={undefined}
         classNameBtn="bg-white !text-blue-400"
         classNameHeaderDiv="!backdrop-blur-[20px] !bg-blue-50/80"
         classNameBtnClosed="!min-w-0 !min-h-0"
       />
-      <div className="scrollbar-hide max-h-full overflow-auto rounded-3xl mx-5">
+      <div className="scrollbar-hide mx-5 max-h-full overflow-auto rounded-3xl">
         <div className="flex h-full flex-col items-start justify-around gap-5 pt-25">
-          <div className="flex w-full flex-row items-center justify-around gap-5 bg-white rounded-3xl p-5">
+          <div className="flex w-full flex-row items-center justify-around gap-5 rounded-3xl bg-white p-5">
             <motion.button
               onClick={() =>
                 setTema((s) => ({
@@ -125,7 +116,7 @@ export function Temas() {
               </div>
             </motion.button>
           </div>
-          <div className="flex flex-col gap-4 px-2 bg-white p-5 rounded-3xl">
+          <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 px-2">
             <label className="flex flex-col items-start justify-center gap-2 px-2">
               <H3 title="Modo claro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
