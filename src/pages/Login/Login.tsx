@@ -1,106 +1,154 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback, useState } from "react";
+import { NavLink, useNavigate } from "react-router";
+import * as z from "zod";
 import { Button } from "../../component/btn";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
+import { H1 } from "../../component/title";
 import { useResizeView } from "../../hooks/UseResizeView";
-import { useState } from "react";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router";
 
-interface PasswordTypes {
-  senha: boolean;
-  repetirSenha: boolean;
+// Interface para estruturar os erros de validação do formulário
+interface FormloginError {
+  user: string[];
+  password: string[];
 }
+
+// Schema de validação do formulário usando Zod
+const schemlogin = z.strictObject({
+  user: z.string().min(7, { error: "Ops, usuario não existe" }).max(15, { error: "Ops, usuario não existe" }),
+  password: z.string().min(7, { error: "Ops, senha não existe" }).max(20, { error: "Ops, senha não existe" }),
+});
+
+// Tipo para definir os nomes dos campos do formulário
+type InputName = "user" | "password";
 
 export function Login() {
   const { verificarWidth } = useResizeView();
-  const [typeInput, setType] = useState<PasswordTypes>({
-    senha: true,
-    repetirSenha: true,
+  const [typeInput, setType] = useState<boolean>(true);
+  const [formErrorLogin, setFormErrorLogin] = useState<FormloginError>({
+    user: [],
+    password: [],
   });
+  const [formSuccessLogin, setFormsuccessLogin] = useState<z.infer<typeof schemlogin>>({ user: "", password: "" });
+  const navigate = useNavigate();
+
+  // Atualiza os valores dos campos do formulário
+  function handleLoginAccount(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    setFormsuccessLogin((s) => ({ ...s, [name]: value }));
+  }
+
+  // Valida um campo específico quando perde o foco
+  const verificarInputs = useCallback(
+    ({ inputName }: { inputName: InputName }) => {
+      const onValidationBlur = schemlogin.safeParse(formSuccessLogin);
+      const data = onValidationBlur?.success ? [] : (z.flattenError(onValidationBlur?.error)?.fieldErrors?.[inputName] ?? []);
+
+      setFormErrorLogin((s) => ({
+        ...s,
+        [inputName]: data,
+      }));
+    },
+    [formSuccessLogin, setFormErrorLogin],
+  );
+
+  // Processa o envio do formulário e valida todos os campos
+  function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const onValidationSubmit = schemlogin.safeParse(formSuccessLogin);
+
+    if (!onValidationSubmit?.success) {
+      const error = z.flattenError(onValidationSubmit?.error);
+      setFormErrorLogin((s) => ({
+        ...s,
+        ...error?.fieldErrors,
+      }));
+      return;
+    }
+
+    const data = onValidationSubmit?.data;
+
+    setFormsuccessLogin((s) => ({
+      ...s,
+      ...data,
+    }));
+  }
+
+  console.log({ formErrorLogin, formSuccessLogin });
 
   return (
-    <div className="absolute top-0 right-1 bottom-0 left-1 flex items-center justify-center gap-10 md:justify-evenly md:px-10 lg:px-52">
+    <div className="flex min-h-lvh items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
       {verificarWidth({ largura: 750 }) && (
-        <div className="flex skew-x-3 flex-col items-center justify-center gap-5 rounded-2xl md:w-full">
-          <div className="rounded-4xl border border-blue-50/30 shadow-lg shadow-blue-50/30 transition">
-            <img className="h-60 w-60 rounded-4xl" src="../../../assets/login.svg" alt="Login" />
+        <div className="flex flex-col items-center justify-center gap-5 rounded-2xl md:w-full">
+          <div className="rounded-4xl transition">
+            <img className="h-60 w-60 rounded-4xl" src="assets/Login.svg" alt="Login" />
           </div>
-          <div className="rounded-full border border-blue-50/30 p-5 shadow-2xl shadow-blue-50/40">
-            <H3 title="Ainda não tem sua conta?!" className="!text-[17px] tracking-wide text-blue-400" />
-            <H3 title="Crie uma agora mesmo clicando no botão abaixo." className="!text-[17px] tracking-wide text-blue-400" />
+          <div className="p-5">
+            <H3 title="Ainda não tem sua conta?!" className="my-1 !text-[17px] tracking-wide text-blue-400" />
+            <H3
+              title="Crie uma agora mesmo clicando no botão abaixo."
+              className="my-1 !text-[16px] tracking-wide text-blue-300"
+            />
           </div>
-          <div className="">
-            <Button type="button" className="transition hover:scale-105">
-              <p className="font-medium">Abrir conta !</p>
-            </Button>/
+          <div>
+            <Button type="button" onClick={() => navigate("/criar-conta")}>
+              <p className="text-white">Abrir Conta!</p>
+            </Button>
           </div>
         </div>
       )}
-      <div className="flex flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xl shadow-blue-50 md:w-full md:p-4">
+      <div className="flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xl shadow-blue-50 md:w-full min-md:py-4">
         <div className="text-center">
-          <h3 className="text-[25px] font-semibold text-blue-400 sm:text-3xl">Login</h3>
+          <H1 title="Login" className="font-semibold text-blue-400 sm:text-3xl" />
         </div>
-        <div className="w-full rounded-4xl p-4 md:bg-blue-50/30 md:p-5">
-          <form className="flex flex-col gap-5">
+        <div className="w-full rounded-4xl p-4 md:p-2">
+          <form onSubmit={handleSubmitLogin} className="flex flex-col gap-5">
             <label className="flex flex-col items-start gap-1.5">
-              <P title="Usuario:" className="text-blue-400" />
-              <Input type="text" placeholder="Digite seu nome de Usuário" className="bg-white !shadow-none" />
+              <div className="flex w-full flex-col items-start">
+                <P title="Usuario:" className="text-blue-400" />
+                <Input
+                  onChange={handleLoginAccount}
+                  onBlur={() => verificarInputs({ inputName: "user" })}
+                  name="user"
+                  type="text"
+                  placeholder="Digite seu nome de Usuário"
+                  className="bg-white !shadow-none"
+                />
+              </div>
+              <P title={`${formErrorLogin?.user}`} className="text-xs font-medium text-red-400" />
             </label>
             <label className="flex flex-col items-start gap-1.5">
               <P title="Senha:" className="text-blue-400" />
               <div className="flex w-full flex-row items-center justify-center gap-2">
                 <Input
-                  type={typeInput?.senha ? "password" : "text"}
+                  onChange={handleLoginAccount}
+                  onBlur={() => verificarInputs({ inputName: "password" })}
+                  name="password"
+                  type={typeInput ? "password" : "text"}
                   placeholder="Digite seus senha"
                   className="bg-white !shadow-none"
                 />
                 <Button
                   type="button"
                   className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400"
-                  onClick={() =>
-                    setType((s) => ({
-                      ...s,
-                      senha: !s.senha,
-                    }))
-                  }
+                  onClick={() => setType((s) => !s)}
                 >
                   <i>
-                    <FontAwesomeIcon icon={typeInput?.senha ? faEye : faEyeSlash} />
+                    <FontAwesomeIcon icon={typeInput ? faEye : faEyeSlash} />
                   </i>
                 </Button>
               </div>
-            </label>
-            <label className="flex flex-col items-start gap-1.5">
-              <P title="Repetir senha:" className="text-blue-400" />
-              <div className="flex w-full flex-row items-center justify-center gap-2">
-                <Input
-                  type={typeInput?.repetirSenha ? "password" : "text"}
-                  placeholder="Digite seus senha novamente..."
-                  className="bg-white !shadow-none"
-                />
-                <Button
-                  type="button"
-                  className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400"
-                  onClick={() =>
-                    setType((s) => ({
-                      ...s,
-                      repetirSenha: !s.repetirSenha,
-                    }))
-                  }
-                >
-                  <i>
-                    <FontAwesomeIcon icon={typeInput?.repetirSenha ? faEye : faEyeSlash} />
-                  </i>
-                </Button>
-              </div>
+              <P title={`${formErrorLogin?.password}`} className="text-xs font-medium text-red-400" />
             </label>
             <div className="flex w-full flex-row items-center justify-center gap-5">
               <Button type="submit">
                 <p className="font-medium">Confirmar</p>
               </Button>
-              <Button type="button" className="!bg-white !text-blue-400">
+              <Button type="reset" className="!bg-white !text-blue-400">
                 <p className="font-medium">Cancelar</p>
               </Button>
             </div>
@@ -108,12 +156,10 @@ export function Login() {
         </div>
         <div className="w-full text-end">
           <NavLink to="/redefinir-senha">
-            <P title="Esqueceu a senha?" className="text-[12px]" />
+            <P title="Esqueceu a senha?" className="text-[13px] text-blue-300" />
           </NavLink>
         </div>
       </div>
     </div>
   );
 }
-/*
- */

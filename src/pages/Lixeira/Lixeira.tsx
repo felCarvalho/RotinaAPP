@@ -4,12 +4,10 @@ import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { RotinaStore } from "../../store/UseRotina";
-import { LayoutStore } from "../../store/UseLayout";
 import { useNavigate } from "react-router";
 
 export function Lixeira() {
   const navigate = useNavigate();
-  const { setLayout, isLayout } = LayoutStore();
   const { lixeira, restaurarTask } = RotinaStore();
 
   return (
@@ -19,8 +17,7 @@ export function Lixeira() {
         iconBack={faAngleLeft}
         iconClosed={null}
         btnBack={() => {
-          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
-          navigate("/inicio/configuracoes");
+          navigate("/configuracoes");
         }}
         btnClosed={undefined}
         classNameBtn="bg-white !text-blue-400"
@@ -36,14 +33,14 @@ export function Lixeira() {
               <div className="item-center flex flex-col justify-between gap-2">
                 <div className="flex gap-0.5">
                   <H3 title="Rotina:" className="text-blue-400" />
-                  <P title={l?.rotina} className="xs:max-2xs:w-16 3xs:max-4xs:w-24 md:w-60 truncate text-blue-300" />
+                  <P title={l?.rotina} className="xs:max-2xs:w-16 3xs:max-4xs:w-24 truncate text-blue-300 md:w-60" />
                 </div>
                 <div className="flex gap-0.5">
                   <H3 title="categoriaID:" className="text-blue-400" />
-                  <P title={l?.categoriaID} className="xs:max-2xs:w-10 3xs:max-4xs:w-20 md:w-60 truncate text-blue-300" />
+                  <P title={l?.categoriaID} className="xs:max-2xs:w-10 3xs:max-4xs:w-20 truncate text-blue-300 md:w-60" />
                 </div>
               </div>
-              <div className="">
+              <div>
                 <Button type="button" onClick={() => restaurarTask(l?.id, l?.categoriaID)}>
                   <p>Restaurar</p>
                 </Button>

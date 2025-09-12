@@ -7,3 +7,7 @@
   --breakpoint-3xs: 22rem;
   --breakpoint-4xs: 27rem;
 }
+
+body {
+  user-select: none;
+}

@@ -8,11 +8,9 @@ import { DataConfig } from "../../constants/DataConfig/DataConfig";
 import { RotinaStore } from "../../store/UseRotina";
 import { useNavigate, NavLink, useLocation } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { LayoutStore } from "../../store/UseLayout";
 import { useEffect } from "react";
 
 export function Config() {
-  const { setLayout, isLayout } = LayoutStore();
   //estado global e função para atualizar o mesmo
   const { statusFunction, setStatusFunction } = RotinaStore();
   //usado para navegação
@@ -60,29 +58,14 @@ export function Config() {
     }
   }
 
-  useEffect(() => {
-    const route = location.pathname === "/inicio/configuracoes";
-    const linkRoute = DataConfig.find((c) => c?.link === location.pathname);
-
-    if (route) {
-      setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
-    }
-
-    if (!route && linkRoute) {
-      setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout });
-    }
-  }, [location]);
-
   return (
     <div className="h-full rounded-[50px] bg-white pb-5 shadow-sm shadow-blue-50">
       <HeaderContent
         btnBack={() => {
           navigate(-1);
-          setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout });
         }}
         btnClosed={() => {
           navigate("/inicio");
-          setLayout({ isMobileLayout: false, isDesktopLayout: isLayout?.isDesktopLayout });
         }}
         title="Configurações"
         iconBack={faAngleLeft}
@@ -100,7 +83,6 @@ export function Config() {
           >
             {!verificarConfigStatus({ chave: c?.id }) ? (
               <NavLink
-                onClick={() => setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout })}
                 to={c?.link}
                 className={({ isActive }) =>
                   !isActive
@@ -112,7 +94,7 @@ export function Config() {
                   <H3 title={c?.title} className="cursor-pointer text-base" />
                   <P
                     title={c?.description}
-                    className="xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-full truncate font-light whitespace-nowrap text-blue-300"
+                    className="xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate font-light whitespace-nowrap text-blue-300 md:w-full"
                   />
                 </div>
                 <Button type="button" className="min-h-10 min-w-10 bg-white">
@@ -128,7 +110,7 @@ export function Config() {
                     <H3 title={c?.title} className="cursor-pointer text-base text-blue-400" />
                     <P
                       title={c?.description}
-                      className="xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-full truncate font-light whitespace-nowrap text-blue-300"
+                      className="xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate font-light whitespace-nowrap text-blue-300 md:w-full"
                     />
                   </div>
                   <Toggle
