@@ -16,7 +16,7 @@ interface autuhTypes {
     email: string;
   };
 
-  loginStatus: boolean;
+  isAuthLogin: string;
 
   loginUser: ({ login }: { login: { email: string; senha: string; usuario: string } }) => void;
 }
@@ -36,7 +36,7 @@ export const AuthStore = create<autuhTypes>()(
         usuario: "",
         email: "",
       },
-      loginStatus: false,
+      isAuthLogin: "",
 
       setUser: ({ create }: { create: { senha: string; email: string; usuario: string } }) => {
         set((s) => ({
@@ -66,17 +66,8 @@ export const AuthStore = create<autuhTypes>()(
         const loginVerificado = user.some(
           (s) => s?.email === login?.email && s?.usuario === login?.usuario && s?.senha === login?.senha,
         );
-
-        return loginVerificado
-          ? set({
-              loginStatus: true,
-            })
-          : set({
-              loginStatus: false,
-            });
       },
     }),
-
     {
       partialize: (s) => Object.fromEntries(Object.entries(s).filter(([, value]) => typeof value !== "function")),
       name: "Auth",
@@ -99,8 +90,8 @@ export const AuthStore = create<autuhTypes>()(
         });
       },
     }),
-      }, 
-      
+      },
+
       {
       partialize: (s) => Object.fromEntries(Object.entries(s).filter(([, value]) => typeof value !== "function")),
       name: "Auth",
