@@ -69,7 +69,7 @@ export function CreateRotina() {
       data: "",
     }));
     closeID({ name: "create-rotina", id: 100, status: false });
-  }, []);
+  }, [setCategoriaTask, closeID, setTask]);
 
   const onSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -123,7 +123,9 @@ export function CreateRotina() {
                   <label className="flex max-w-min flex-col gap-1">
                     <P title="Categoria:" className="text-blue-400" />
                     <Button type="button" onClick={() => setOpen(true)} className="flex flex-row justify-start gap-2">
-                      <p className="xs:max-2xs:w-20 3xs:max-4xs:w-20 truncate text-base font-medium text-white">{categoriaTasks?.categoria || "Selecionar"}</p>
+                      <p className="xs:max-2xs:w-20 3xs:max-4xs:w-20 truncate text-base font-medium text-white">
+                        {categoriaTasks?.categoria || "Selecionar"}
+                      </p>
                       <i>
                         <FontAwesomeIcon icon={faAngleRight} />
                       </i>
