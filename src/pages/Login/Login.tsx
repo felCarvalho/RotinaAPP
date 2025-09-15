@@ -9,6 +9,7 @@ import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
 import { useResizeView } from "../../hooks/UseResizeView";
+import { AuthStore } from "../../store/UseAuth";
 
 // Interface para estruturar os erros de validação do formulário
 interface FormloginError {
@@ -18,8 +19,8 @@ interface FormloginError {
 
 // Schema de validação do formulário usando Zod
 const schemlogin = z.strictObject({
-  user: z.string().min(7, { error: "Ops, usuario não existe" }).max(15, { error: "Ops, usuario não existe" }),
-  password: z.string().min(7, { error: "Ops, senha não existe" }).max(20, { error: "Ops, senha não existe" }),
+  user: z.string().min(7, { error: "Ops, usuario inválido" }).max(15, { error: "Ops, usurio inválido" }),
+  password: z.string().min(7, { error: "Ops, senha inválida" }).max(20, { error: "Ops, senh inválida" }),
 });
 
 // Tipo para definir os nomes dos campos do formulário
@@ -27,19 +28,20 @@ type InputName = "user" | "password";
 
 export function Login() {
   const { verificarWidth } = useResizeView();
+  const { verificarPasswordLogin, verificarUserLogin, responseUser, loginUser, message } = AuthStore();
   const [typeInput, setType] = useState<boolean>(true);
   const [formErrorLogin, setFormErrorLogin] = useState<FormloginError>({
     user: [],
     password: [],
   });
-  const [formSuccessLogin, setFormsuccessLogin] = useState<z.infer<typeof schemlogin>>({ user: "", password: "" });
+  const [formSuccessLogin, setFormSuccessLogin] = useState<z.infer<typeof schemlogin>>({ user: "", password: "" });
   const navigate = useNavigate();
 
   // Atualiza os valores dos campos do formulário
   function handleLoginAccount(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
-    setFormsuccessLogin((s) => ({ ...s, [name]: value }));
+    setFormSuccessLogin((s) => ({ ...s, [name]: value }));
   }
 
   // Valida um campo específico quando perde o foco
@@ -71,14 +73,37 @@ export function Login() {
     }
 
     const data = onValidationSubmit?.data;
+    const verificandoUser = verificarUserLogin({ user: data?.user });
+    const verificandoPassword = verificarPasswordLogin({ password: data?.password });
 
-    setFormsuccessLogin((s) => ({
-      ...s,
-      ...data,
-    }));
+    if (!verificandoUser || !verificandoPassword) {
+      console.log("erro ao fazer login");
+      return;
+    }
+
+    console.log("login feito com sucesso");
+
+    loginUser({ user: data?.user, password: data?.password });
+    navigate("/inicio");
   }
 
-  console.log({ formErrorLogin, formSuccessLogin });
+  const formClear = useCallback(() => {
+    setFormErrorLogin((s) => ({
+      ...s,
+      user: [],
+      password: [],
+    }));
+
+    setFormSuccessLogin((s) => ({
+      ...s,
+      user: "",
+      password: "",
+    }));
+
+    responseUser({ message: "", user: "", email: "", password: "" });
+  }, [setFormErrorLogin, setFormSuccessLogin]);
+
+  console.log({ formErrorLogin, formSuccessLogin, message });
 
   return (
     <div className="flex min-h-lvh items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
@@ -119,7 +144,10 @@ export function Login() {
                   className="bg-white !shadow-none"
                 />
               </div>
-              <P title={`${formErrorLogin?.user}`} className="text-xs font-medium text-red-400" />
+              <P
+                title={`${formErrorLogin?.user.length > 0 ? formErrorLogin?.user : message?.error?.user}`}
+                className="text-xs font-medium text-red-400"
+              />
             </label>
             <label className="flex flex-col items-start gap-1.5">
               <P title="Senha:" className="text-blue-400" />
@@ -142,13 +170,16 @@ export function Login() {
                   </i>
                 </Button>
               </div>
-              <P title={`${formErrorLogin?.password}`} className="text-xs font-medium text-red-400" />
+              <P
+                title={`${formErrorLogin?.password.length > 0 ? formErrorLogin?.password : message?.error?.password}`}
+                className="text-xs font-medium text-red-400"
+              />
             </label>
             <div className="flex w-full flex-row items-center justify-center gap-5">
               <Button type="submit">
                 <p className="font-medium">Confirmar</p>
               </Button>
-              <Button type="reset" className="!bg-white !text-blue-400">
+              <Button onClick={() => formClear()} type="reset" className="!bg-white !text-blue-400">
                 <p className="font-medium">Cancelar</p>
               </Button>
             </div>
