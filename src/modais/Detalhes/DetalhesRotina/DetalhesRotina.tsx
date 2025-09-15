@@ -31,7 +31,7 @@ export function DetalhesRotina() {
       case "status":
         return value ? "rotina completa" : "rotina incompleta";
       case "deletada":
-        return value ? "rrotina já foi deletada" : "rotina nunca foi deletada";
+        return value ? "rotina já foi deletada" : "rotina nunca foi deletada";
 
       default:
         return value;
