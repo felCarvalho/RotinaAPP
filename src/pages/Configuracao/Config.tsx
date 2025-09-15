@@ -1,22 +1,19 @@
-import { faAngleLeft, faX, faTrash, faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { P } from "../../component/paragrafo";
+import { faAngleLeft, faAngleRight, faTrash, faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink, useNavigate } from "react-router";
+import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
+import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { Toggle } from "../../component/toggle";
-import { Button } from "../../component/btn";
 import { DataConfig } from "../../constants/DataConfig/DataConfig";
 import { RotinaStore } from "../../store/UseRotina";
-import { useNavigate, NavLink, useLocation } from "react-router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect } from "react";
 
 export function Config() {
   //estado global e função para atualizar o mesmo
   const { statusFunction, setStatusFunction } = RotinaStore();
   //usado para navegação
   const navigate = useNavigate();
-  //pegando rota atual da URL
-  const location = useLocation();
 
   //verificando quais config devem ter btn toggle ou não
   function verificarConfigStatus({ chave }: { chave: string }) {
@@ -40,7 +37,6 @@ export function Config() {
               <Button
                 type="button"
                 onClick={() => {
-                  setLayout({ isMobileLayout: true, isDesktopLayout: isLayout?.isDesktopLayout });
                   navigate(link);
                 }}
                 className="flex flex-row items-center justify-center gap-2 !py-1"
