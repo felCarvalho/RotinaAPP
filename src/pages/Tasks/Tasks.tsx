@@ -7,13 +7,15 @@ import { Button } from "../../component/btn";
 import { RotinaStore } from "../../store/UseRotina";
 import { motion } from "framer-motion";
 import { parseAsBoolean, parseAsString, useQueryStates } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
+import { AuthStore } from "../../store/UseAuth";
 
 export function Tasks() {
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, categoriaTasks } = RotinaStore();
+  const { updateStatus, deletarTask, dataFiltro, categorias, setLoginUserID, setFilter, filterId } = RotinaStore();
+  const { idLogin } = AuthStore();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
@@ -37,10 +39,18 @@ export function Tasks() {
     },
   );
 
-  console.log({ dataFiltro, categoriaTasks });
+  useEffect(() => {
+    if (idLogin) {
+      setLoginUserID({ idUser: idLogin });
+    }
+
+    if (filterId) {
+      setFilter({ id: filterId });
+    }
+  }, [idLogin, setLoginUserID, setFilter, filterId]);
 
   function verificarData() {
-    return dataFiltro.length > 0 ? true : false;
+    return dataFiltro.length > 0;
   }
 
   return (
@@ -78,8 +88,8 @@ export function Tasks() {
                     title={t?.rotina}
                     className={
                       t?.status
-                        ? `xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-96 truncate text-left text-blue-200 italic line-through`
-                        : `xs:max-2xs:w-40 3xs:max-4xs:w-50 md:w-96 truncate text-left text-blue-400`
+                        ? `xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate text-left text-blue-200 italic line-through md:w-96`
+                        : `xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate text-left text-blue-400 md:w-96`
                     }
                   />
                 </div>
@@ -267,7 +277,7 @@ export function Tasks() {
     >
 
 (
-        
+
       )}
     </main>
 
@@ -525,5 +535,5 @@ export function Tasks() {
               </div>
             </Container>
           </main>
-                     
+
                        */
