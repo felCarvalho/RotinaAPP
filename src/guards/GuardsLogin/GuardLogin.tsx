@@ -2,9 +2,9 @@ import { AuthStore } from "../../store/UseAuth";
 import { redirect } from "react-router";
 
 export function GuardLogin() {
-  const { isAuthLogin } = AuthStore.getState();
+  const { idLogin } = AuthStore.getState();
 
-  if (!isAuthLogin) {
+  if (!idLogin) {
     return redirect("/login");
   }
 
