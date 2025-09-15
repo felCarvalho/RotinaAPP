@@ -5,6 +5,7 @@ interface tarefa {
   rotina: string;
   descricao: string;
   id: string;
+  idUser: string;
   status: boolean;
   deletada: boolean;
   categoriaID: string;
@@ -20,6 +21,7 @@ interface data {
 interface dataCategoria {
   categoria: string;
   id: string;
+  idUser: string;
 }
 
 type keys = string;
@@ -30,6 +32,7 @@ type statusFunction = Record<keys, value>;
 interface functionTypes {
   setCategoria: (categoria: dataCategoria, id: string) => void;
   setCreateTask: (categoriaTask: dataCategoria) => void;
+  buscarIdUser: () => tarefa[];
   filtragemCategorias: (filterId: string) => void;
   filtragemStatus: (status: boolean) => void;
   searchTask: () => void;
@@ -52,6 +55,7 @@ interface functionTypes {
   setStatusString: ({ status }: { status: string }) => void;
   setSearchTasks: ({ search }: { search: string }) => void;
   setDataTask: ({ task }: { task: tarefa }) => void;
+  setLoginUserID: ({ idUser }: { idUser: string }) => void;
   setCategoriaTask: ({ categoria, id }: { categoria: dataCategoria; id: string }) => void;
   setClearFilterBasico: () => void;
 }
@@ -61,6 +65,7 @@ interface RotinaStoreTypes extends functionTypes {
   tasks: tarefa[];
   categorias: dataCategoria[];
   dataFiltro: tarefa[];
+  idUser: string;
   dataSearch: tarefa[];
   lixeira: tarefa[];
   categoriaTasks: dataCategoria;
@@ -87,6 +92,8 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       categorias: [],
       //tasks rederizadas no momento
       dataFiltro: [],
+      //id do usuario atual
+      idUser: "",
       //tasks do filtro de pesquisa
       dataSearch: [],
       //armazena todas as tasks deletadas
@@ -95,12 +102,14 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       categoriaTasks: {
         categoria: "",
         id: "",
+        idUser: "",
       },
       //task atual
       taskObj: {
         rotina: "",
         descricao: "",
         id: "",
+        idUser: "",
         status: false,
         deletada: false,
         categoriaID: "",
@@ -141,7 +150,10 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         //negamos o true para false, e aplicamos a lógica para adicionar nova categoria sem perder as anteriores
         if (!controlCategoria) {
           return set((state) => ({
-            categorias: [...state.categorias, { categoria: categoriaTask?.categoria, id: categoriaTask?.id }],
+            categorias: [
+              ...state.categorias,
+              { categoria: categoriaTask?.categoria, id: categoriaTask?.id, idUser: categoriaTask?.idUser },
+            ],
           }));
         }
       },
@@ -194,39 +206,51 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         });
       },
 
+      buscarIdUser: () => {
+        const { idUser, tasks } = get();
+
+        return tasks.filter((u) => u?.idUser === idUser);
+      },
+
       //função de filtragem de categorias e suas tasks
       filtragemCategorias: (filterId) => {
         //captura dados utilizados
-        const { tasks } = get();
+        const { buscarIdUser } = get();
+
+        const filterTodas = buscarIdUser();
 
         if (filterId === "todas") {
-          return set({
-            dataFiltro: tasks,
+          set({
+            dataFiltro: filterTodas,
           });
+          return;
         }
 
-        const filter = tasks.filter((t) => t.categoriaID === filterId);
+        const filterUser = buscarIdUser();
+        const filterTaskUser = filterUser.filter((t) => t?.categoriaID === filterId);
 
         set({
-          dataFiltro: filter,
+          dataFiltro: filterTaskUser,
         });
       },
 
       //função de filtro por status
       filtragemStatus: (status) => {
-        const { tasks } = get();
+        const { buscarIdUser } = get();
 
-        const filter = tasks.filter((t) => t.status === status);
+        const filterUser = buscarIdUser();
+        const filterStatus = filterUser.filter((s) => s?.status === status);
 
         set({
-          dataFiltro: filter,
+          dataFiltro: filterStatus,
         });
       },
 
       searchTask: () => {
-        const { tasks, filterSearch } = get();
+        const { buscarIdUser, filterSearch } = get();
 
-        const buscandoTasks = tasks.filter((t) => t?.rotina.toLowerCase().includes(filterSearch));
+        const filterUser = buscarIdUser();
+        const buscandoTasks = filterUser.filter((t) => t?.rotina.toLowerCase().includes(filterSearch));
 
         set({
           dataSearch: filterSearch ? buscandoTasks : [],
@@ -708,6 +732,12 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         setCategoria(categoriaTasks, uuid);
         setCreateTask(categoriaTasks);
       },
+
+      setLoginUserID: ({ idUser }) =>
+        set((s) => ({
+          ...s,
+          idUser: idUser,
+        })),
     }),
 
     {
