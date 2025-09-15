@@ -22,8 +22,6 @@ export default function MainLayout() {
     return uuidTelas.some((s) => s?.status === true) || modal === true;
   }, [uuidTelas, modal]);
 
-  //const authRedirect = useCallback(() => {}, []);
-
   useEffect(() => {
     const handleScroll = () => {
       OnScroll({
@@ -42,31 +40,8 @@ export default function MainLayout() {
       document.documentElement.style.overflow = "";
     }
 
-    const ClickNavigate = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowLeft":
-          navigate(-1);
-          break;
-        case "Home":
-          navigate(-1);
-          break;
-        case "ArrowRight":
-          navigate(1);
-          break;
-        case "End":
-          navigate(1);
-          break;
-
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", ClickNavigate);
-
     return () => {
       document.documentElement.style.overflow = "";
-      window.removeEventListener("keydown", ClickNavigate);
 
       window.removeEventListener("scroll", handleScroll);
     };
