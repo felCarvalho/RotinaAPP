@@ -1,5 +1,5 @@
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { P } from "../component/paragrafo";
 import { GuardLogin } from "../guards/GuardsLogin/GuardLogin";
 import { LayoutConfig } from "../layout/LayoutConfig/LayoutConfig";
@@ -24,32 +24,20 @@ const routes = createBrowserRouter([
     element: <CriarConta />,
   },
   {
-    path: "/",
-    element: <Layout />,
-    errorElement: (
-      <div className="my-72 w-full text-center text-2xl text-amber-400">
-        <P title="Estamos verificando o erro" className="text-2xl" />
-      </div>
-    ),
+    element: <GuardLogin />,
     children: [
       {
-        index: true,
-        loader: GuardLogin,
-      },
-      {
-        path: "inicio",
-        element: <LayoutMain />,
+        path: "/",
+        element: <Layout />,
         children: [
-          {
-            path: "buscar",
-            element: <SearchTasks />,
-          },
+          { index: true, element: <Navigate to="/inicio" replace /> },
+          { path: "inicio", element: <LayoutMain />, children: [{ path: "buscar", element: <SearchTasks /> }] },
         ],
       },
     ],
   },
   {
-    path: "configuracoes",
+    path: "/configuracoes",
     element: <LayoutConfig />,
     children: [
       {
