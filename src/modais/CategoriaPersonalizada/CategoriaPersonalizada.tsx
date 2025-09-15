@@ -1,30 +1,34 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "../../component/btn";
-import { HeaderContent } from "../../component/headerContent";
-import { Overlay } from "../../component/overlay";
-import { Input } from "../../component/input";
-import { P } from "../../component/paragrafo";
-import { TelasStore } from "../../store/UseTelasFixos";
-import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
-import { RotinaStore } from "../../store/UseRotina";
-import { useResizeView } from "../../hooks/UseResizeView";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import * as z from "zod";
+import { Button } from "../../component/btn";
+import { HeaderContent } from "../../component/headerContent";
+import { Input } from "../../component/input";
+import { Overlay } from "../../component/overlay";
+import { P } from "../../component/paragrafo";
+import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
+import { useResizeView } from "../../hooks/UseResizeView";
+import { AuthStore } from "../../store/UseAuth";
+import { RotinaStore } from "../../store/UseRotina";
+import { TelasStore } from "../../store/UseTelasFixos";
 
 const createCategoryTypes = z.object({
   categoria: z.string().trim(),
   id: z.string().trim(),
+  idUser: z.string().trim(),
 });
 
 export function CreateCategoria() {
   const { closeID, isRenderID } = TelasStore();
   const { setCategoriaTask } = RotinaStore();
   const { verificarWidth } = useResizeView();
+  const { idLogin } = AuthStore();
   const [createCategory, setCategory] = useState<z.infer<typeof createCategoryTypes>>({
     categoria: "",
     id: "",
+    idUser: "",
   });
 
   const generatorID = useGeneratorUUID();
@@ -50,13 +54,14 @@ export function CreateCategoria() {
     if (validacao?.categoria.trim() && validacao?.id.trim()) {
       closeID({ name: "create-category", id: 200, status: false });
       setCategoriaTask({
-        categoria: { categoria: validacao?.categoria, id: validacao?.id },
+        categoria: { categoria: validacao?.categoria, id: validacao?.id, idUser: idLogin },
         id: validacao?.id,
       });
       setCategory((s) => ({
         ...s,
         categoria: "",
         id: "",
+        idUser: "",
       }));
 
       return;

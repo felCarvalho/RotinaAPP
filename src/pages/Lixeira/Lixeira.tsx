@@ -1,10 +1,10 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router";
 import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { RotinaStore } from "../../store/UseRotina";
-import { useNavigate } from "react-router";
 
 export function Lixeira() {
   const navigate = useNavigate();

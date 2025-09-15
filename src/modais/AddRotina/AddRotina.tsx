@@ -1,21 +1,23 @@
-import { Button } from "../../component/btn";
-import { Input } from "../../component/input";
-import { Overlay } from "../../component/overlay";
-import { HeaderContent } from "../../component/headerContent";
-import { P } from "../../component/paragrafo";
 import { faAngleLeft, faAngleRight, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TelasStore } from "../../store/UseTelasFixos";
-import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
-import { RotinaStore } from "../../store/UseRotina";
-import { useCallback, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import { useCallback, useState } from "react";
 import * as z from "zod";
+import { Button } from "../../component/btn";
+import { HeaderContent } from "../../component/headerContent";
+import { Input } from "../../component/input";
+import { Overlay } from "../../component/overlay";
+import { P } from "../../component/paragrafo";
+import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
+import { AuthStore } from "../../store/UseAuth";
+import { RotinaStore } from "../../store/UseRotina";
+import { TelasStore } from "../../store/UseTelasFixos";
 
 const schemaTasks = z.object({
   rotina: z.string().trim(),
   descricao: z.string().trim(),
   id: z.string().trim(),
+  idUser: z.string().trim(),
   status: z.boolean(),
   deletada: z.boolean(),
   categoriaID: z.string(),
@@ -25,11 +27,14 @@ const schemaTasks = z.object({
 export function CreateRotina() {
   const { closeID, openID, isRenderID } = TelasStore();
   const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, searchTask } = RotinaStore();
+  const { idLogin } = AuthStore();
+
   const [isOpen, setOpen] = useState(false);
   const [task, setTask] = useState<z.infer<typeof schemaTasks>>({
     rotina: "",
     descricao: "",
     id: "",
+    idUser: "",
     status: false,
     deletada: false,
     categoriaID: "",
@@ -41,7 +46,7 @@ export function CreateRotina() {
     const { value, name } = e.target;
     const id = generatorID({ prefixo: "@minha-rotina", sufixo: "@task" });
 
-    setTask((p) => ({ ...p, [name]: value, id: id }));
+    setTask((p) => ({ ...p, [name]: value, id: id, idUser: idLogin }));
   }
 
   function verificarDados() {
@@ -52,18 +57,19 @@ export function CreateRotina() {
     ({ category }: { category: string }) => {
       const uuid = generatorID({ prefixo: "@category", sufixo: `@${category}` });
 
-      setCategoriaTask({ categoria: { categoria: category, id: uuid }, id: uuid });
+      setCategoriaTask({ categoria: { categoria: category, id: uuid, idUser: idLogin }, id: uuid });
     },
     [generatorID, setCategoriaTask],
   );
 
   const resetState = useCallback(() => {
-    setCategoriaTask({ categoria: { categoria: "", id: "" }, id: "" });
+    setCategoriaTask({ categoria: { categoria: "", id: "", idUser: "" }, id: "" });
     setTask((p) => ({
       ...p,
       rotina: "",
       descricao: "",
       id: "",
+      idUser: "",
       status: false,
       categoriaID: "",
       data: "",
@@ -85,6 +91,8 @@ export function CreateRotina() {
     searchTask();
     resetState();
   };
+
+  console.log({ categoriaTasks });
 
   return (
     <>

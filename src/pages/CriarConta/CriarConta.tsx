@@ -8,7 +8,9 @@ import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
+import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
 import { useResizeView } from "../../hooks/UseResizeView";
+import { AuthStore } from "../../store/UseAuth";
 
 // Controla visibilidade dos campos de senha
 interface PropsTypeInput {
@@ -35,6 +37,7 @@ const schemaFormCreateAccount = z
       .min(7, { error: "Ops, usuário precisa ter pelo menos 7 caracteres" })
       .max(15, { error: "Ops, máximo de 15 caracteres atingido" }),
     email: z.email({ error: "Ops, email inválido" }),
+    id: z.string().optional(),
     password: z
       .string()
       .min(7, { error: "Ops, senha deve ter pelo menos 7 caracteres" })
@@ -42,12 +45,13 @@ const schemaFormCreateAccount = z
     repeatPassword: z.string().min(1, { error: "Ops! senha inválida" }),
   })
   .refine((p) => p?.password === p?.repeatPassword, {
-    error: "Ops, senha não coincidem",
+    error: "Ops, senhas não coincidem",
     path: ["repeatPassword"],
   });
 
 export function CriarConta() {
   const { verificarWidth } = useResizeView();
+  const { users, createUser, verificarEmailCreateAccount, verificarUserCreateAccount, message, responseUser } = AuthStore();
   const [typeInput, setTypeInput] = useState<PropsTypeInput>({ password: true, repeatPassword: true });
   const [formError, setFormError] = useState<FormError>({
     user: [],
@@ -60,8 +64,10 @@ export function CriarConta() {
     email: "",
     password: "",
     repeatPassword: "",
+    id: "",
   });
   const navigate = useNavigate();
+  const generatorID = useGeneratorUUID();
 
   // Atualiza valores dos campos
   function handleCreateAccount(e: React.ChangeEvent<HTMLInputElement>) {
@@ -105,6 +111,20 @@ export function CriarConta() {
       }));
       return;
     }
+
+    const data = verificarForm?.data;
+    const verificandoEmail = verificarEmailCreateAccount({ email: data?.email });
+    const verificandoUser = verificarUserCreateAccount({ user: data?.user });
+
+    if (verificandoEmail || verificandoUser) {
+      console.log("erro ao criar conta");
+      return;
+    }
+
+    const id = generatorID({ prefixo: "@user", sufixo: `@${data?.user}` });
+    console.log("conta criada");
+
+    createUser({ user: data?.user, email: data?.email, password: data.password, id: id });
   }
 
   // Reseta formulário
@@ -124,9 +144,10 @@ export function CriarConta() {
       password: "",
       repeatPassword: "",
     }));
+    responseUser({ message: "", user: "", email: "", password: "" });
   }, [formError, formSuccess, setFormError, setFormSuccess]);
 
-  console.log({ formSuccess, formError });
+  console.log({ formSuccess, formError, users, message });
 
   return (
     <div className="flex min-h-lvh items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
@@ -167,7 +188,10 @@ export function CriarConta() {
                   className="bg-white"
                 />
               </div>
-              <P title={`${formError?.user}`} className="text-xs font-medium text-red-400" />
+              <P
+                title={`${formError?.user.length > 0 ? formError?.user : message?.error?.user}`}
+                className="text-xs font-medium text-red-400"
+              />
             </label>
             <label className="flex flex-col items-start gap-1.5">
               <div className="flex w-full flex-col gap-1">
@@ -183,7 +207,10 @@ export function CriarConta() {
                   />
                 </div>
               </div>
-              <P title={`${formError?.email}`} className="text-xs font-medium text-red-400" />
+              <P
+                title={`${formError?.email.length > 0 ? formError?.email : message?.error?.email}`}
+                className="text-xs font-medium text-red-400"
+              />
             </label>
             <label className="flex flex-col items-start gap-1.5">
               <div className="flex w-full flex-col gap-1">

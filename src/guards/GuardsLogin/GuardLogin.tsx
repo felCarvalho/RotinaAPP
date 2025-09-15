@@ -1,12 +1,10 @@
 import { AuthStore } from "../../store/UseAuth";
-import { redirect } from "react-router";
+import { Navigate, Outlet } from "react-router";
 
 export function GuardLogin() {
-  const { idLogin } = AuthStore.getState();
-
+  const { idLogin } = AuthStore();
+  console.log(idLogin);
   if (!idLogin) {
-    return redirect("/login");
-  }
-
-  return null;
+    return <Navigate to="/login" replace />
+  return <Outlet />;
 }
