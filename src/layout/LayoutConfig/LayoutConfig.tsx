@@ -15,7 +15,7 @@ export function LayoutConfig() {
   const [isLayoutDesktop, setLayoutDesktop] = useState(false);
 
   const verificarLayoutDesktop = useCallback(() => {
-    return isLayoutDesktop ? "flex-row-reverse" : "flex-row";
+    return isLayoutDesktop ? "flex-row-reverse gap-5" : "flex-row gap-5";
   }, [isLayoutDesktop]);
 
   const verificarRoute = useCallback(() => {
@@ -30,7 +30,7 @@ export function LayoutConfig() {
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 1, bounce: 0.3 }}
     >
       {verificarWidth({ largura: 1000 }) && (
-        <div className={`flex h-full w-full items-center !justify-start gap-5 p-5 ${verificarLayoutDesktop()}`}>
+        <div className={`flex h-full w-full items-center !justify-start bg-blue-50/30 p-5 ${verificarLayoutDesktop()}`}>
           <div className="h-full w-full">
             <Config />
           </div>
@@ -48,14 +48,14 @@ export function LayoutConfig() {
         <div className="flex h-full w-full items-center !justify-start gap-10 p-5">
           <motion.div
             animate={verificarRoute() ? { y: -1000 } : { y: 0 }}
-            transition={{ type: "spring", stiffness: 100 }}
+            transition={{ type: "spring", stiffness: 100, damping: 13 }}
             className="h-full w-full"
           >
             <Config />
           </motion.div>
           <motion.div
             animate={!verificarRoute() ? { y: 1000 } : { y: 0 }}
-            transition={{ type: "spring", stiffness: 100 }}
+            transition={{ type: "spring", stiffness: 100, damping: 13 }}
             className="absolute top-5 right-5 bottom-5 left-5 rounded-[50px] !bg-white shadow-md shadow-blue-50"
           >
             <Outlet />
