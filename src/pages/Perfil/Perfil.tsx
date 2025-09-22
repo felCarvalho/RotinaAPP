@@ -1,13 +1,30 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router";
 import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
-import { H3 } from "../../component/subTitle";
 import { P } from "../../component/paragrafo";
-import { useNavigate } from "react-router";
+import { H3 } from "../../component/subTitle";
+import { AuthStore } from "../../store/UseAuth";
+import { RotinaStore } from "../../store/UseRotina";
 
 export function Perfil() {
+  const { users, logOut, deletarUser, buscarUser } = AuthStore();
+  const { deletarTasksUserConta, data, tasks } = RotinaStore();
+  const [user] = useState(() => buscarUser());
   const navigate = useNavigate();
+
+  const verificarLogin = useCallback(() => {
+    if (logOut()) navigate("/login", { replace: true });
+  }, [logOut]);
+
+  const deletarUsuario = useCallback(() => {
+    deletarTasksUserConta();
+    deletarUser();
+  }, [deletarTasksUserConta, deletarUser]);
+
+  console.log({ tasks, data, users });
 
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
@@ -28,24 +45,15 @@ export function Perfil() {
           <div className="flex w-full flex-col items-start justify-start gap-5 rounded-2xl bg-white p-4">
             <div className="flex flex-row items-center justify-center gap-2">
               <P title="Nome:" className="text-blue-400" />
-              <H3
-                title="nome de teste por enquanto"
-                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
-              />
+              <H3 title={user?.user} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
             </div>
             <div className="flex flex-row items-center justify-center gap-2">
               <P title="Email:" className="text-blue-400" />
-              <H3
-                title="email de teste por enquanto"
-                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
-              />
+              <H3 title={user?.email} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
             </div>
             <div className="flex flex-row items-center justify-center gap-2">
-              <P title="Email:" className="text-blue-400" />
-              <H3
-                title="senha de teste por enquanto"
-                className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60"
-              />
+              <P title="Senha:" className="text-blue-400" />
+              <H3 title={user?.password} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
             </div>
           </div>
         </div>
@@ -55,7 +63,11 @@ export function Perfil() {
             <label className="flex flex-row items-center justify-center gap-2">
               <P title="Sair:" className="text-blue-400" />
               <div>
-                <Button type="button" className="flex flex-row items-center justify-center gap-2 !py-1">
+                <Button
+                  type="button"
+                  onClick={() => verificarLogin()}
+                  className="flex flex-row items-center justify-center gap-2 !py-1"
+                >
                   <P title="Sair da conta" />
                   <i>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} />
@@ -66,7 +78,11 @@ export function Perfil() {
             <label className="flex flex-row items-center justify-center gap-2">
               <P title="Redefinir senha:" className="text-blue-400" />
               <div>
-                <Button type="button" className="flex flex-row items-center justify-center gap-2">
+                <Button
+                  type="button"
+                  onClick={() => navigate("/redefinir-senha")}
+                  className="flex flex-row items-center justify-center gap-2"
+                >
                   <P title="Redefinir" />
                 </Button>
               </div>
@@ -76,6 +92,7 @@ export function Perfil() {
               <div>
                 <Button
                   type="button"
+                  onClick={() => deletarUsuario()}
                   className="flex flex-row items-center justify-center gap-2 !bg-red-400 !shadow-red-50 focus:!shadow-red-50 focus:!outline-red-400"
                 >
                   <P title="Deletar" />
