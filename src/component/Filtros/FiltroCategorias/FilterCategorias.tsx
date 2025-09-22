@@ -1,8 +1,10 @@
 import { Button } from "../../btn";
 import { RotinaStore } from "../../../store/UseRotina";
+import { useMemo } from "react";
 
 export function DropdownFilterCategorias() {
-  const { categorias, setFilter, setCategoriaString } = RotinaStore();
+  const { setFilter, setCategoriaString, buscarIdUserCategoria } = RotinaStore();
+  const categorias = useMemo(() => buscarIdUserCategoria(), [buscarIdUserCategoria]);
 
   return (
     <div className="m-2 flex max-w-full flex-col items-start justify-center gap-2 rounded-3xl">
