@@ -32,6 +32,9 @@ interface AuthStateTypes {
   verificarPasswordLogin: ({ password }: { password: string }) => boolean;
   createUser: ({ user, email, password, id }: userAuthTypes) => void;
   loginUser: ({ user, password }: { user: string; password: string }) => void;
+  logOut: () => boolean;
+  buscarUser: () => userAuthTypes;
+  deletarUser: () => void;
   responseUser: ({ message, user, email, password }: { message: string; user: string; email: string; password: string }) => void;
 }
 
@@ -68,6 +71,19 @@ export const AuthStore = create<AuthStateTypes>()(
         const { users } = get();
 
         return users.some((e) => e?.email === email);
+      },
+
+      buscarUser: () => {
+        const { users, idLogin } = get();
+
+        const buscarUser = users.find((u) => u?.id === idLogin) ?? {
+          user: "",
+          email: "",
+          password: "",
+          id: "",
+        };
+
+        return buscarUser;
       },
 
       verificarEmailCreateAccount: ({ email }) => {
@@ -204,6 +220,37 @@ export const AuthStore = create<AuthStateTypes>()(
           ...s,
           idLogin: buscarId,
         }));
+      },
+
+      logOut: () => {
+        const { idLogin, users, responseUser } = get();
+
+        const sairConta = users.some((u) => u?.id === idLogin);
+
+        if (!sairConta) {
+          responseUser({ message: "Ops, impossivel sair conta.", user: "", email: "", password: "" });
+        }
+
+        responseUser({ message: "Até mais, volte sempre", user: "", email: "", password: "" });
+        set((s) => ({
+          ...s,
+          idLogin: "",
+        }));
+
+        return sairConta;
+      },
+
+      deletarUser: () => {
+        const { idLogin, users } = get();
+
+        const deletarUser = users.filter((u) => u?.id !== idLogin);
+
+        if (deletarUser)
+          set((s) => ({
+            ...s,
+            users: deletarUser,
+            idLogin: "",
+          }));
       },
     }),
     {
