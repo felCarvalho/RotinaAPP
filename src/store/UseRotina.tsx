@@ -32,7 +32,9 @@ type statusFunction = Record<keys, value>;
 interface functionTypes {
   setCategoria: (categoria: dataCategoria, id: string) => void;
   setCreateTask: (categoriaTask: dataCategoria) => void;
-  buscarIdUser: () => tarefa[];
+  buscarIdUserTask: () => tarefa[];
+  buscarIdUserCategoria: () => dataCategoria[];
+  deletarTasksUserConta: () => void;
   filtragemCategorias: (filterId: string) => void;
   filtragemStatus: (status: boolean) => void;
   searchTask: () => void;
@@ -44,7 +46,7 @@ interface functionTypes {
   categoriaMenuIncompleta: (categoriaID: string) => void;
   categoriaMenuConcluida: (categoriaID: string) => void;
   categoriaRestaurar: (categoriaID: string) => void;
-  buscarCategoria: (categoriaID: string) => tarefa[];
+  buscarCategoriaID: (categoriaID: string) => tarefa[];
   buscarTasksStatus: (categoriaID: string, status: boolean) => tarefa[];
   porcentagemTasksStatus: (categoriaID: string, status: boolean) => number;
   buscarTasksDeletadas: (categoriaID: string) => tarefa[];
@@ -144,6 +146,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         if (!categoriaTask?.categoria.trim() || !categoriaTask?.id.trim()) {
           return;
         }
+
         //verificamos se já existe uma categoria igual em categorias
         const controlCategoria = categorias.some((categoria) => categoria?.categoria === categoriaTask?.categoria);
 
@@ -206,18 +209,37 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         });
       },
 
-      buscarIdUser: () => {
+      buscarIdUserTask: () => {
         const { idUser, tasks } = get();
 
         return tasks.filter((u) => u?.idUser === idUser);
       },
 
+      buscarIdUserCategoria: () => {
+        const { categorias, idUser } = get();
+
+        return categorias.filter((u) => u?.idUser === idUser);
+      },
+
+      deletarTasksUserConta: () => {
+        const { data, tasks, idUser } = get();
+
+        const deletarTasksUser = tasks.filter((t) => t?.idUser !== idUser);
+        const deletarTasksDataUser = data.map((t) => ({ ...t, tarefas: [...deletarTasksUser] }));
+
+        set((s) => ({
+          ...s,
+          data: deletarTasksDataUser,
+          tasks: deletarTasksUser,
+        }));
+      },
+
       //função de filtragem de categorias e suas tasks
       filtragemCategorias: (filterId) => {
         //captura dados utilizados
-        const { buscarIdUser } = get();
+        const { buscarIdUserTask } = get();
 
-        const filterTodas = buscarIdUser();
+        const filterTodas = buscarIdUserTask();
 
         if (filterId === "todas") {
           set({
@@ -226,7 +248,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           return;
         }
 
-        const filterUser = buscarIdUser();
+        const filterUser = buscarIdUserTask();
         const filterTaskUser = filterUser.filter((t) => t?.categoriaID === filterId);
 
         set({
@@ -236,9 +258,9 @@ export const RotinaStore = create<RotinaStoreTypes>()(
 
       //função de filtro por status
       filtragemStatus: (status) => {
-        const { buscarIdUser } = get();
+        const { buscarIdUserTask } = get();
 
-        const filterUser = buscarIdUser();
+        const filterUser = buscarIdUserTask();
         const filterStatus = filterUser.filter((s) => s?.status === status);
 
         set({
@@ -247,9 +269,9 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       },
 
       searchTask: () => {
-        const { buscarIdUser, filterSearch } = get();
+        const { buscarIdUserTask, filterSearch } = get();
 
-        const filterUser = buscarIdUser();
+        const filterUser = buscarIdUserTask();
         const buscandoTasks = filterUser.filter((t) => t?.rotina.toLowerCase().includes(filterSearch));
 
         set({
@@ -611,24 +633,24 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         }
       },
 
-      buscarCategoria: (categoriaID) => {
+      buscarCategoriaID: (categoriaID) => {
         const { tasks } = get();
 
         return tasks.filter((c) => c.categoriaID === categoriaID);
       },
 
       buscarTasksStatus: (categoriaID, status) => {
-        const { buscarCategoria } = get();
+        const { buscarCategoriaID } = get();
 
-        const tasksStatus = buscarCategoria(categoriaID).filter((s) => s.status === status);
+        const tasksStatus = buscarCategoriaID(categoriaID).filter((s) => s.status === status);
 
         return tasksStatus;
       },
 
       porcentagemTasksStatus: (categoriaID, status) => {
-        const { buscarCategoria, buscarTasksStatus } = get();
+        const { buscarCategoriaID, buscarTasksStatus } = get();
 
-        const categoria = buscarCategoria(categoriaID);
+        const categoria = buscarCategoriaID(categoriaID);
         const statusTask = buscarTasksStatus(categoriaID, status);
 
         const total = categoria.length ? (statusTask.length / categoria.length) * 100 : 0;
@@ -692,12 +714,17 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       },
 
       setClearFilterBasico: () => {
-        set((state) => ({
+        const { buscarIdUserTask } = get();
+
+        const tasksUser = buscarIdUserTask();
+
+        set((s) => ({
+          ...s,
           filterId: "todas",
           filter: "",
           statusBoolean: false,
           status: "",
-          dataFiltro: [...state.tasks].flat(),
+          dataFiltro: tasksUser,
           filtroControlStatus: false,
           filtroControlCategorias: false,
         }));
