@@ -14,7 +14,7 @@ import { AuthStore } from "../../store/UseAuth";
 
 export function Tasks() {
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, setLoginUserID, setFilter, filterId } = RotinaStore();
+  const { updateStatus, deletarTask, dataFiltro, categorias, setLoginUserID, setFilter, filterId, tasks } = RotinaStore();
   const { idLogin } = AuthStore();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
@@ -52,6 +52,8 @@ export function Tasks() {
   function verificarData() {
     return dataFiltro.length > 0;
   }
+
+  console.log({ tasks });
 
   return (
     <div>

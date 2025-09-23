@@ -1,6 +1,5 @@
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { createBrowserRouter, Navigate } from "react-router";
-import { P } from "../component/paragrafo";
 import { GuardLogin } from "../guards/GuardsLogin/GuardLogin";
 import { LayoutConfig } from "../layout/LayoutConfig/LayoutConfig";
 import { LayoutConfigError } from "../layout/LayoutConfig/LayoutConfigError/LayoutConfigError";
@@ -44,7 +43,7 @@ const routes = createBrowserRouter([
         index: true,
         element: (
           <LayoutConfigError
-            desktop="Selecione alguma configuração para ver mais detalhes dela aqui"
+            desktop="Selecione alguma configuração para ver mais detalhes dela aqui!"
             mobile="Aperte no btn abaixo para ir para pagina de configurações"
             icon={faArrowUp}
           />

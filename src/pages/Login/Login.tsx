@@ -10,6 +10,7 @@ import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
 import { useResizeView } from "../../hooks/UseResizeView";
 import { AuthStore } from "../../store/UseAuth";
+import { RotinaStore } from "../../store/UseRotina";
 
 // Interface para estruturar os erros de validação do formulário
 interface FormloginError {
@@ -27,8 +28,9 @@ const schemlogin = z.strictObject({
 type InputName = "user" | "password";
 
 export function Login() {
+  const { tasks } = RotinaStore();
   const { verificarWidth } = useResizeView();
-  const { verificarPasswordLogin, verificarUserLogin, responseUser, loginUser, message } = AuthStore();
+  const { verificarPasswordLogin, verificarUserLogin, responseUser, loginUser, message, users } = AuthStore();
   const [typeInput, setType] = useState<boolean>(true);
   const [formErrorLogin, setFormErrorLogin] = useState<FormloginError>({
     user: [],
@@ -103,14 +105,14 @@ export function Login() {
     responseUser({ message: "", user: "", email: "", password: "" });
   }, [setFormErrorLogin, setFormSuccessLogin]);
 
-  console.log({ formErrorLogin, formSuccessLogin, message });
+  console.log({ formErrorLogin, formSuccessLogin, message, users, tasks });
 
   return (
     <div className="flex min-h-lvh items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
       {verificarWidth({ largura: 750 }) && (
         <div className="flex flex-col items-center justify-center gap-5 rounded-2xl md:w-full">
           <div className="rounded-4xl transition">
-            <img className="h-60 w-60 rounded-4xl" src="assets/Login.svg" alt="Login" />
+            <img className="h-60 w-60 rounded-4xl" loading="lazy" src="assets/Login.svg" alt="Login" />
           </div>
           <div className="p-5">
             <H3 title="Ainda não tem sua conta?!" className="my-1 !text-[17px] tracking-wide text-blue-400" />
