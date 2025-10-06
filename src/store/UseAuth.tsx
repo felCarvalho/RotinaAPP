@@ -34,7 +34,7 @@ interface AuthStateTypes {
   loginUser: ({ user, password }: { user: string; password: string }) => void;
   logOut: () => boolean;
   buscarUser: () => userAuthTypes;
-  deletarUser: () => void;
+  deletarUser: () => boolean;
   responseUser: ({ message, user, email, password }: { message: string; user: string; email: string; password: string }) => void;
 }
 
@@ -251,6 +251,8 @@ export const AuthStore = create<AuthStateTypes>()(
             users: deletarUser,
             idLogin: "",
           }));
+
+        return !!idLogin;
       },
     }),
     {
