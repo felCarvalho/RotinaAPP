@@ -15,6 +15,7 @@ interface tarefa {
 interface data {
   categoria: string;
   id: string;
+  idUser: string;
   tarefas: tarefa[];
 }
 
@@ -45,10 +46,10 @@ interface functionTypes {
   categoriaMenuDeletar: (categoriaID: string) => void;
   categoriaMenuIncompleta: (categoriaID: string) => void;
   categoriaMenuConcluida: (categoriaID: string) => void;
-  categoriaRestaurar: (categoriaID: string) => void;
+  categoriaMenuRestaurar: (categoriaID: string) => void;
   buscarCategoriaID: (categoriaID: string) => tarefa[];
   buscarTasksStatus: (categoriaID: string, status: boolean) => tarefa[];
-  porcentagemTasksStatus: (categoriaID: string, status: boolean) => number;
+  porcentagemTasksStatus: (categoriaID: string, status: boolean) => string;
   buscarTasksDeletadas: (categoriaID: string) => tarefa[];
   setStatusFunction: (boleano: statusFunction) => void;
   setFilter: ({ id }: { id: string }) => void;
@@ -139,9 +140,23 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       //armazena o status atual(string)
       status: "",
 
+      buscarIdUserTask: () => {
+        const { idUser, tasks } = get();
+
+        return tasks.filter((u) => u?.idUser === idUser);
+      },
+
+      buscarIdUserCategoria: () => {
+        const { categorias, idUser } = get();
+
+        return categorias.filter((u) => u?.idUser === idUser);
+      },
+
       //armazenando categoria atual
       setCategoria: (categoriaTask) => {
-        const { categorias } = get();
+        const { buscarIdUserCategoria } = get();
+
+        const categorias = buscarIdUserCategoria();
 
         if (!categoriaTask?.categoria.trim() || !categoriaTask?.id.trim()) {
           return;
@@ -164,32 +179,36 @@ export const RotinaStore = create<RotinaStoreTypes>()(
       //criando as taks novas de acordo com sua respectiva categoria
       setCreateTask: (categoriaTask) => {
         //seleciona todos os dados necessários para a função
-        const { data, taskObj, uuid } = get();
+        const { data, taskObj, uuid, idUser } = get();
+
+        const verificarDataUserCategoria = data.filter((c) => c?.idUser === idUser);
 
         if (!categoriaTask?.categoria?.trim()) {
           return;
         }
 
         //retorna true se for igual
-        const controlCategoria = data.some((categoria) => categoria.categoria === categoriaTask?.categoria);
+        const controlCategoria = verificarDataUserCategoria.some((categoria) => categoria.categoria === categoriaTask?.categoria);
 
         //armazena o ultimo data
-        let createData = [];
+        let createData: data[];
 
         //cria uma nova categoria para task se ela não existir
         if (!controlCategoria) {
           createData = [
-            ...data,
+            ...verificarDataUserCategoria,
             {
               categoria: categoriaTask?.categoria,
-              id: uuid,
+              id: categoriaTask?.id,
+              idUser: categoriaTask?.idUser,
               tarefas: [{ ...taskObj, categoriaID: uuid }],
             },
           ];
         }
+
         //adiciona a task a uma categoria existente
         else {
-          createData = data.map((data) => {
+          createData = verificarDataUserCategoria.map((data) => {
             return data.categoria === categoriaTask?.categoria
               ? {
                   ...data,
@@ -207,18 +226,6 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           data: createData,
           tasks: tasks,
         });
-      },
-
-      buscarIdUserTask: () => {
-        const { idUser, tasks } = get();
-
-        return tasks.filter((u) => u?.idUser === idUser);
-      },
-
-      buscarIdUserCategoria: () => {
-        const { categorias, idUser } = get();
-
-        return categorias.filter((u) => u?.idUser === idUser);
       },
 
       deletarTasksUserConta: () => {
@@ -322,16 +329,18 @@ export const RotinaStore = create<RotinaStoreTypes>()(
 
       //função de deletar teask
       deletarTask: ({ id }) => {
-        const { data, tasks } = get();
+        const { data, buscarIdUserTask } = get();
+
+        const taskUserId = buscarIdUserTask();
 
         const deleteData = data.map((c) => ({
           ...c,
           tarefas: c.tarefas.filter((t) => t.id !== id),
         }));
 
-        const deleteTasks = tasks.filter((t) => t.id !== id);
+        const deleteTasks = taskUserId.filter((t) => t?.id !== id);
 
-        const deleteLixeira = tasks.filter((t) => t.id === id);
+        const deleteLixeira = taskUserId.filter((t) => t.id === id);
 
         set((state) => ({
           data: deleteData,
@@ -429,18 +438,18 @@ export const RotinaStore = create<RotinaStoreTypes>()(
 
         const restaurarLixeira = lixeira.filter((t) => t.id !== taskID);
 
-        const restaurarData = data.map((data) =>
-          data.id === categoriaID ? { ...data, tarefas: [...data.tarefas, buscaTask] } : data,
-        );
+        const restaurarDataLixeira = data.map((d) => {
+          return d?.id === categoriaID ? { ...d, tarefas: [...d.tarefas, ...buscaTask] } : d;
+        });
 
         set(
           (state) =>
             ({
-              data: restaurarData,
+              data: restaurarDataLixeira,
               lixeira: restaurarLixeira,
-              tasks: [...state.tasks, buscaTask].flat(),
-              dataFiltro: [...state.dataFiltro, buscaTask].flat(),
-              dataSearch: [...state.dataSearch, buscaTask].flat(),
+              tasks: [...state.tasks, ...buscaTask].flat(),
+              dataFiltro: [...state.dataFiltro, ...buscaTask].flat(),
+              dataSearch: [...state.dataSearch, ...buscaTask].flat(),
             }) as Partial<RotinaStoreTypes>,
         );
 
@@ -589,7 +598,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         }
       },
 
-      categoriaRestaurar: (categoriaID) => {
+      categoriaMenuRestaurar: (categoriaID) => {
         const { data, lixeira } = get();
 
         const buscarTasks = lixeira.filter((t) => t.categoriaID === categoriaID);
@@ -655,7 +664,7 @@ export const RotinaStore = create<RotinaStoreTypes>()(
 
         const total = categoria.length ? (statusTask.length / categoria.length) * 100 : 0;
 
-        return total;
+        return `${total}%`;
       },
 
       buscarTasksDeletadas: (categoriaID) => {
