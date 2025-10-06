@@ -12,6 +12,7 @@ import { Login } from "../pages/Login/Login";
 import { Perfil } from "../pages/Perfil/Perfil";
 import { SearchTasks } from "../pages/SearchTasks/SearchTasks";
 import { Temas } from "../pages/Temas/Temas";
+import { InfoCategorias } from "../pages/infoCategorias/InfoCategorias";
 
 const routes = createBrowserRouter([
   {
@@ -30,7 +31,14 @@ const routes = createBrowserRouter([
         element: <Layout />,
         children: [
           { index: true, element: <Navigate to="/inicio" replace /> },
-          { path: "inicio", element: <LayoutMain />, children: [{ path: "buscar", element: <SearchTasks /> }] },
+          {
+            path: "inicio",
+            element: <LayoutMain />,
+            children: [
+              { path: "buscar", element: <SearchTasks /> },
+              { path: "informacoes-categorias", element: <InfoCategorias /> },
+            ],
+          },
         ],
       },
     ],
