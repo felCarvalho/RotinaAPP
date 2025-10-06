@@ -21,8 +21,8 @@ export function Perfil() {
 
   const deletarUsuario = useCallback(() => {
     deletarTasksUserConta();
-    deletarUser();
-  }, [deletarTasksUserConta, deletarUser]);
+    if (deletarUser()) navigate("/login");
+  }, [deletarTasksUserConta, deletarUser, navigate]);
 
   console.log({ tasks, data, users });
 
