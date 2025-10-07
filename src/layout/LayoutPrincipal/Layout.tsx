@@ -6,6 +6,11 @@ import { ScrollStore } from "../../store/UseScroll";
 import { useCallback, useEffect } from "react";
 import { parseAsBoolean, useQueryStates } from "nuqs";
 import { useLocation, ScrollRestoration, useNavigate, Outlet } from "react-router";
+import { IconInfoMenu } from "../../component/IconMenu";
+import { Button } from "../../component/btn";
+import { P } from "../../component/paragrafo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function MainLayout() {
   const { uuidTelas } = TelasStore();
@@ -21,6 +26,10 @@ export default function MainLayout() {
   const verificarOpenModal = useCallback(() => {
     return uuidTelas.some((s) => s?.status === true) || modal === true;
   }, [uuidTelas, modal]);
+
+  const verificarRouteInfoCategorias = useCallback(() => {
+    return pathname === "/inicio/informacoes-categorias";
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,6 +62,24 @@ export default function MainLayout() {
       <Header />
       <main className={pathname === "/inicio/buscar" ? "pt-40 pb-32" : "pt-40 pb-8"}>
         <Outlet />
+        <Button
+          type="button"
+          onClick={() => {
+            return !verificarRouteInfoCategorias() ? navigate("/inicio/informacoes-categorias") : navigate("/inicio");
+          }}
+          className="absolute right-20 bottom-20 bg-white"
+        >
+          <div className="flex animate-pulse flex-row items-center justify-center gap-2 p-2">
+            {!verificarRouteInfoCategorias() ? (
+              <IconInfoMenu />
+            ) : (
+              <i className="text-2xl text-blue-400">
+                <FontAwesomeIcon icon={faAngleLeft} beatFade />
+              </i>
+            )}
+            <P title={!verificarRouteInfoCategorias() ? "Ver categorias" : "Voltar"} className="text-base text-blue-400" />
+          </div>
+        </Button>
       </main>
       <Modais />
       <Popups />
