@@ -10,21 +10,21 @@ export const NavLinks = [
   {
     text: "Ver dados por categoria",
     icon: <FontAwesomeIcon icon={faTable} />,
-    link: "configuracoes/infomações-categorias",
+    link: "/inicio/informacoes-categorias",
   },
   {
     text: "Lixeira",
     icon: <FontAwesomeIcon icon={faTrash} />,
-    link: "configuracoes/lixeira",
+    link: "/configuracoes/lixeira",
   },
   {
     text: "Perfil",
     icon: <FontAwesomeIcon icon={faUser} />,
-    link: "configuracoes/perfil",
+    link: "/configuracoes/perfil",
   },
   {
     text: "Sair",
     icon: <FontAwesomeIcon icon={faRightFromBracket} />,
-    link: "configuracoes/perfil",
+    link: "/configuracoes/perfil",
   },
 ];
