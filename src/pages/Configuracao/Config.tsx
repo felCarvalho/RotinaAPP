@@ -55,7 +55,7 @@ export function Config() {
   }
 
   return (
-    <div className="h-full rounded-[50px] bg-white pb-5 shadow-sm shadow-blue-50">
+    <div className="h-full rounded-[50px] bg-white pb-5 shadow-md shadow-blue-50">
       <HeaderContent
         btnBack={() => {
           navigate(-1);
@@ -68,11 +68,11 @@ export function Config() {
         iconClosed={faX}
         classNameHeader=""
       />
-      <div className="scroll-hide h-full overflow-auto rounded-[50px] px-3.5 pt-22">
+      <div className="scroll-hide h-full overflow-auto rounded-[50px] pt-22">
         {DataConfig.map((c) => (
           <div
             key={c?.id}
-            className="mx-1.5 my-3 flex flex-row items-center justify-between rounded-2xl bg-blue-100/5 px-3 py-4 shadow-sm shadow-blue-50"
+            className="mx-5 my-3.5 flex flex-row items-center justify-between rounded-2xl bg-blue-100/5 p-2.5 px-3 py-4 shadow-sm shadow-blue-50"
             onDoubleClick={() =>
               verificarConfigStatus({ chave: c?.id }) && setStatusFunction({ [c?.id]: statusFunction?.[c?.id] })
             }
