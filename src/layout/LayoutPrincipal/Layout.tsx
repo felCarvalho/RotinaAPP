@@ -1,16 +1,16 @@
-import { Header } from "../Header/Header";
-import { Modais } from "../ModaisManager/Modais";
-import { Popups } from "../popupsManager/Popups";
-import { TelasStore } from "../../store/UseTelasFixos";
-import { ScrollStore } from "../../store/UseScroll";
-import { useCallback, useEffect } from "react";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { parseAsBoolean, useQueryStates } from "nuqs";
-import { useLocation, ScrollRestoration, useNavigate, Outlet } from "react-router";
+import { useCallback, useEffect } from "react";
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { IconInfoMenu } from "../../component/IconMenu";
 import { Button } from "../../component/btn";
 import { P } from "../../component/paragrafo";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { ScrollStore } from "../../store/UseScroll";
+import { TelasStore } from "../../store/UseTelasFixos";
+import { Header } from "../Header/Header";
+import { Modais } from "../ModaisManager/Modais";
+import { Popups } from "../popupsManager/Popups";
 
 export default function MainLayout() {
   const { uuidTelas } = TelasStore();
@@ -67,7 +67,7 @@ export default function MainLayout() {
           onClick={() => {
             return !verificarRouteInfoCategorias() ? navigate("/inicio/informacoes-categorias") : navigate("/inicio");
           }}
-          className="absolute right-20 bottom-20 bg-white"
+          className="fixed right-20 bottom-20 bg-white"
         >
           <div className="flex animate-pulse flex-row items-center justify-center gap-2 p-2">
             {!verificarRouteInfoCategorias() ? (
@@ -77,7 +77,7 @@ export default function MainLayout() {
                 <FontAwesomeIcon icon={faAngleLeft} beatFade />
               </i>
             )}
-            <P title={!verificarRouteInfoCategorias() ? "Ver categorias" : "Voltar"} className="text-base text-blue-400" />
+            <P title={!verificarRouteInfoCategorias() ? "Ver categorias" : "Voltar"} className="!text-[16px] text-blue-400" />
           </div>
         </Button>
       </main>
