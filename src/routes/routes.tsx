@@ -6,7 +6,6 @@ import { LayoutConfigError } from "../layout/LayoutConfig/LayoutConfigError/Layo
 import { LayoutMain } from "../layout/LayoutMain/LayoutMain";
 import Layout from "../layout/LayoutPrincipal/Layout";
 import { CriarConta } from "../pages/CriarConta/CriarConta";
-import { LimparDados } from "../pages/LimparDados/LimparDados";
 import { Lixeira } from "../pages/Lixeira/Lixeira";
 import { Login } from "../pages/Login/Login";
 import { Perfil } from "../pages/Perfil/Perfil";
@@ -35,7 +34,10 @@ const routes = createBrowserRouter([
             path: "inicio",
             element: <LayoutMain />,
             children: [
-              { path: "buscar", element: <SearchTasks /> },
+              {
+                path: "buscar",
+                element: <SearchTasks />,
+              },
               { path: "informacoes-categorias", element: <InfoCategorias /> },
             ],
           },
@@ -68,10 +70,6 @@ const routes = createBrowserRouter([
       {
         path: "lixeira",
         element: <Lixeira />,
-      },
-      {
-        path: "limpar-dados",
-        element: <LimparDados />,
       },
     ],
   },
