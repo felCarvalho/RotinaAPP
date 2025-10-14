@@ -8,12 +8,46 @@ import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { AuthStore } from "../../store/UseAuth";
 import { RotinaStore } from "../../store/UseRotina";
+import { Input } from "../../component/input";
+
+interface typeUserAuth {
+  user: string;
+  email: string;
+  password: string;
+  id: string;
+}
+
+interface typeUserLocal {
+  user: string;
+  email: string;
+  password: string;
+}
+
+enum typeNameForm {
+  user = "user",
+  email = "email",
+  password = "password",
+}
 
 export function Perfil() {
-  const { users, logOut, deletarUser, buscarUser } = AuthStore();
-  const { deletarTasksUserConta, data, tasks } = RotinaStore();
-  const [user] = useState(() => buscarUser());
+  const { logOut, deletarUser, buscarUser, alterarUser, alterarEmail, alterarPassword } = AuthStore();
+  const { deletarTasksUserConta } = RotinaStore();
+  const [user] = useState<typeUserAuth>(() => buscarUser());
+  const [userPerfil, setPerfil] = useState<typeUserLocal>({
+    user: user?.user,
+    email: user?.email,
+    password: user?.password,
+  });
   const navigate = useNavigate();
+
+  function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    setPerfil((s) => ({
+      ...s,
+      [name]: value,
+    }));
+  }
 
   const verificarLogin = useCallback(() => {
     if (logOut()) navigate("/login", { replace: true });
@@ -24,7 +58,19 @@ export function Perfil() {
     if (deletarUser()) navigate("/login");
   }, [deletarTasksUserConta, deletarUser, navigate]);
 
-  console.log({ tasks, data, users });
+  function perfilOnSubmit(e: React.ChangeEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (e.target.name === typeNameForm?.user) {
+      alterarUser({ newUser: userPerfil?.user });
+    }
+    if (e.target.name === typeNameForm?.email) {
+      alterarEmail({ newEmail: userPerfil?.email });
+    }
+    if (e.target.name === typeNameForm?.password) {
+      alterarPassword({ newPassword: userPerfil?.password });
+    }
+  }
 
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
@@ -43,18 +89,42 @@ export function Perfil() {
         <div className="mb-5 flex w-full flex-col items-start justify-start gap-2 rounded-3xl">
           <H3 title="Dados Pessoais" className="text-blue-400" />
           <div className="flex w-full flex-col items-start justify-start gap-5 rounded-2xl bg-white p-4">
-            <div className="flex flex-row items-center justify-center gap-2">
-              <P title="Nome:" className="text-blue-400" />
-              <H3 title={user?.user} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
-            </div>
-            <div className="flex flex-row items-center justify-center gap-2">
-              <P title="Email:" className="text-blue-400" />
-              <H3 title={user?.email} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
-            </div>
-            <div className="flex flex-row items-center justify-center gap-2">
-              <P title="Senha:" className="text-blue-400" />
-              <H3 title={user?.password} className="xs:max-2xs:w-36 3xs:max-4xs:w-50 truncate text-blue-300 md:w-60" />
-            </div>
+            <form name="user" onSubmit={perfilOnSubmit}>
+              <label className="flex flex-row items-center justify-center gap-2">
+                <P title="Nome:" className="text-blue-400" />
+                <Input
+                  name="user"
+                  type="text"
+                  value={userPerfil?.user}
+                  onChange={handleInput}
+                  className="!rounded-2xl !text-blue-800"
+                />
+              </label>
+            </form>
+            <form name="email" onSubmit={perfilOnSubmit}>
+              <label className="flex flex-row items-center justify-center gap-2">
+                <P title="Email:" className="text-blue-400" />
+                <Input
+                  name="email"
+                  type="email"
+                  value={userPerfil?.email}
+                  onChange={handleInput}
+                  className="!rounded-2xl !text-blue-800"
+                />
+              </label>
+            </form>
+            <form name="password" onSubmit={perfilOnSubmit}>
+              <label className="flex flex-row items-center justify-center gap-2">
+                <P title="Senha:" className="text-blue-400" />
+                <Input
+                  name="password"
+                  type="text"
+                  value={userPerfil?.password}
+                  onChange={handleInput}
+                  className="!rounded-2xl !text-blue-800"
+                />
+              </label>
+            </form>
           </div>
         </div>
         <div className="my-2 flex flex-col items-start justify-start gap-2">
@@ -96,14 +166,6 @@ export function Perfil() {
                   className="flex flex-row items-center justify-center gap-2 !bg-red-400 !shadow-red-50 focus:!shadow-red-50 focus:!outline-red-400"
                 >
                   <P title="Deletar" />
-                </Button>
-              </div>
-            </label>
-            <label className="flex flex-row items-center justify-center gap-2">
-              <P title="Alterar dados:" className="text-blue-400" />
-              <div>
-                <Button type="button" className="flex flex-row items-center justify-center gap-2">
-                  <P title="Alterar dados pessoais" className="w-20 truncate sm:w-full" />
                 </Button>
               </div>
             </label>
