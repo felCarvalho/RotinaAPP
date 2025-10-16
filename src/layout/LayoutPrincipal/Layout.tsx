@@ -12,6 +12,17 @@ import { Header } from "../Header/Header";
 import { Modais } from "../ModaisManager/Modais";
 import { Popups } from "../popupsManager/Popups";
 
+enum routes {
+  routeBuscar = "/inicio/buscar",
+  routeInfoCaegorias = "/inicio/informacoes-categorias",
+  routeInicio = "/inicio",
+}
+
+enum typeString {
+  voltar = "Voltar",
+  verCategorias = "Ver categorias",
+}
+
 export default function MainLayout() {
   const { uuidTelas } = TelasStore();
   const { OnScroll } = ScrollStore();
@@ -27,10 +38,14 @@ export default function MainLayout() {
     return uuidTelas.some((s) => s?.status === true) || modal === true;
   }, [uuidTelas, modal]);
 
-  const verificarRouteInfoCategorias = useCallback(() => {
-    return pathname === "/inicio/informacoes-categorias";
+  const verificarRouteForTypesStringBtn = useCallback(() => {
+    return pathname === routes?.routeInfoCaegorias;
   }, [pathname]);
 
+  const isVisibleBtnInforCategorias = useCallback(
+    () => pathname === routes?.routeInfoCaegorias || pathname === routes?.routeInicio,
+    [pathname],
+  );
   useEffect(() => {
     const handleScroll = () => {
       OnScroll({
@@ -60,26 +75,31 @@ export default function MainLayout() {
     <div className="m-0 min-h-dvh">
       <ScrollRestoration />
       <Header />
-      <main className={pathname === "/inicio/buscar" ? "pt-40 pb-32" : "pt-40 pb-8"}>
+      <main className={pathname === routes?.routeBuscar ? "pt-40 pb-32" : "pt-40 pb-8"}>
         <Outlet />
-        <Button
-          type="button"
-          onClick={() => {
-            return !verificarRouteInfoCategorias() ? navigate("/inicio/informacoes-categorias") : navigate("/inicio");
-          }}
-          className="fixed right-20 bottom-20 bg-white"
-        >
-          <div className="flex animate-pulse flex-row items-center justify-center gap-2 p-2">
-            {!verificarRouteInfoCategorias() ? (
-              <IconInfoMenu />
-            ) : (
-              <i className="text-2xl text-blue-400">
-                <FontAwesomeIcon icon={faAngleLeft} beatFade />
-              </i>
-            )}
-            <P title={!verificarRouteInfoCategorias() ? "Ver categorias" : "Voltar"} className="!text-[16px] text-blue-400" />
-          </div>
-        </Button>
+        {isVisibleBtnInforCategorias() && (
+          <Button
+            type="button"
+            onClick={() => {
+              return !verificarRouteForTypesStringBtn() ? navigate("/inicio/informacoes-categorias") : navigate("/inicio");
+            }}
+            className="fixed right-20 bottom-20 bg-white"
+          >
+            <div className="flex animate-pulse flex-row items-center justify-center gap-2 p-2">
+              {!verificarRouteForTypesStringBtn() ? (
+                <IconInfoMenu />
+              ) : (
+                <i className="text-2xl text-blue-400">
+                  <FontAwesomeIcon icon={faAngleLeft} beatFade />
+                </i>
+              )}
+              <P
+                title={!verificarRouteForTypesStringBtn() ? typeString?.verCategorias : typeString?.voltar}
+                className="!text-[16px] text-blue-400"
+              />
+            </div>
+          </Button>
+        )}
       </main>
       <Modais />
       <Popups />

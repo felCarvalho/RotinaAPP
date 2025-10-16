@@ -5,6 +5,10 @@ import { ScrollStore } from "../../store/UseScroll";
 import { useNavigate, useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 
+enum routes {
+  routeBuscar = "/inicio/buscar",
+}
+
 export function BtnSearchPopup() {
   const { scrollOn } = ScrollStore();
 
@@ -14,7 +18,7 @@ export function BtnSearchPopup() {
   return (
     <>
       <AnimatePresence>
-        {pathname !== "/inicio/buscar" && scrollOn?.isScroll && (
+        {pathname === routes?.routeBuscar && scrollOn?.isScroll && (
           <motion.div
             initial={{ y: 100, scaleX: 0, opacity: 0 }}
             animate={{ y: 0, scaleX: 1, opacity: 1 }}
