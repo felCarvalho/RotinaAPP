@@ -119,7 +119,7 @@ export function InfoCategorias() {
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faCheck} />
                         </i>
-                        <P title="Concluidas" className="text-2xs text-blue-400" />
+                        <P title="Concluidas" className="text-2xs text-blue-400/80" />
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -132,7 +132,7 @@ export function InfoCategorias() {
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faX} />
                         </i>
-                        <P title="Incompletas" className="text-2xs text-blue-400" />
+                        <P title="Incompletas" className="text-2xs text-blue-400/80" />
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -145,7 +145,7 @@ export function InfoCategorias() {
                         <i className="text-2xs text-blue-300">
                           <FontAwesomeIcon icon={faTrash} />
                         </i>
-                        <P title="Apagar" className="text-2xs text-blue-400" />
+                        <P title="Apagar" className="text-2xs text-blue-400/80" />
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -158,7 +158,7 @@ export function InfoCategorias() {
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faTrashCanArrowUp} />
                         </i>
-                        <P title="Restaurar" className="text-2xs text-blue-400" />
+                        <P title="Restaurar" className="text-2xs text-blue-400/80" />
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -179,7 +179,7 @@ export function InfoCategorias() {
                         <i className="text-2xs text-blue-300">
                           <FontAwesomeIcon icon={faPen} />
                         </i>
-                        <P title="renomear" className="text-2xs text-blue-400" />
+                        <P title="renomear" className="text-2xs text-blue-400/80" />
                       </Button>
                     </label>
                   </div>
