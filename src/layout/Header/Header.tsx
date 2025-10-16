@@ -53,6 +53,14 @@ export function Header() {
     return pathname === routes?.routeInfoCategorias;
   }, [pathname]);
 
+  const styleBtnFilterActive = useCallback(() => {
+    const verificarFilterActive = !!queryFilter?.categoria || !!queryFilter?.status;
+
+    return verificarFilterActive;
+  }, [queryFilter]);
+
+  console.log(styleBtnFilterActive());
+
   useEffect(() => {
     filtragemCategorias({ categoria: queryFilter?.categoria ?? typeFilter?.todas });
     filtragemTasksCategorias(queryFilter?.categoria ?? typeFilter?.todas);
@@ -117,12 +125,14 @@ export function Header() {
                   }))
                 }
                 type="button"
-                className="flex flex-row items-center gap-2 bg-white font-medium"
+                className={`flex flex-row items-center gap-2 font-medium ${styleBtnFilterActive() ? "bg-blue-400" : "bg-white"}`}
               >
-                <i className="text-blue-400">
+                <i className={styleBtnFilterActive() ? "text-white" : "text-blue-400"}>
                   <FontAwesomeIcon icon={faFilter} />
                 </i>
-                <p className="text-blue-400">{queryFilter?.categoria || queryFilter?.status || "Filtro"}</p>
+                <p className={styleBtnFilterActive() ? "text-white" : "text-blue-400"}>
+                  {queryFilter?.categoria || queryFilter?.status || "Filtro"}
+                </p>
               </Button>
             )}
             {verificarLengthTasks() && filterMobile?.isMobile && (
