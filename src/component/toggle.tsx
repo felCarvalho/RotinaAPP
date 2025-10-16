@@ -11,25 +11,22 @@ interface ToggleProps {
   setBoleano: (event: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   bgTrack?: string;
+  bgTrackActive?: string;
   bgThumb?: string;
   ariaLabel?: string;
 }
 
-export function Toggle({ boleano, setBoleano, name, bgTrack, bgThumb, ariaLabel }: ToggleProps) {
+export function Toggle({ boleano, setBoleano, name, bgTrack, bgTrackActive, bgThumb, ariaLabel }: ToggleProps) {
+  function isChecked({ checked }: { checked: boolean }) {
+    return checked ? bgTrackActive || "bg-blue-400" : bgTrack || "bg-blue-100";
+  }
   return (
     <label className="cursor-pointer">
-      <input
-        type="checkbox"
-        checked={boleano}
-        className="peer sr-only"
-        name={name}
-        aria-label={ariaLabel}
-        onChange={setBoleano}
-      />
+      <input type="checkbox" checked={boleano} className="sr-only" name={name} aria-label={ariaLabel} onChange={setBoleano} />
       <motion.div
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 100 }}
-        className={`${bgTrack} flex h-7 w-12.5 items-center rounded-full bg-blue-100 shadow-md shadow-blue-50 outline-blue-100 peer-checked:bg-blue-400`}
+        className={` ${isChecked({ checked: boleano })} flex h-7 w-12.5 items-center rounded-full shadow-md shadow-blue-50`}
       >
         <motion.div
           whileTap={{ scale: 0.9 }}
