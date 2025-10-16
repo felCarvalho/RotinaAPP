@@ -7,13 +7,12 @@ import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { Toggle } from "../../component/toggle";
 import { DataConfig } from "../../constants/DataConfig/DataConfig";
-import { RotinaStore } from "../../store/UseRotina";
 
 export function Config() {
-  //estado global e função para atualizar o mesmo
-  const { statusFunction, setStatusFunction } = RotinaStore();
   //usado para navegação
   const navigate = useNavigate();
+
+  const statusFunction = true;
 
   //verificando quais config devem ter btn toggle ou não
   function verificarConfigStatus({ chave }: { chave: string }) {
@@ -33,7 +32,7 @@ export function Config() {
       case "lixeira":
         return (
           <div>
-            {statusFunction?.lixeira && (
+            {statusFunction && (
               <Button
                 type="button"
                 onClick={() => {
@@ -73,9 +72,6 @@ export function Config() {
           <div
             key={c?.id}
             className="mx-5 my-3.5 flex flex-row items-center justify-between rounded-2xl bg-blue-100/5 p-2.5 px-3 py-4 shadow-sm shadow-blue-50"
-            onDoubleClick={() =>
-              verificarConfigStatus({ chave: c?.id }) && setStatusFunction({ [c?.id]: statusFunction?.[c?.id] })
-            }
           >
             {!verificarConfigStatus({ chave: c?.id }) ? (
               <NavLink
@@ -111,8 +107,9 @@ export function Config() {
                   </div>
                   <Toggle
                     name={c?.id}
-                    boleano={statusFunction?.[c?.id]}
-                    setBoleano={(e) => setStatusFunction({ [c?.id]: e.target.checked })}
+                    //boleano={statusFunction?.[c?.id]}
+                    //setBoleano={(e) => setStatusFunction({ [c?.id]: e.target.checked })}
+                    //
                   />
                 </div>
                 <div className="">{typeConfigToggle({ chave: c?.id, link: c?.link })}</div>

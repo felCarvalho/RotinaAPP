@@ -31,11 +31,6 @@ enum typeStrings {
   string = "string",
 }
 
-type keys = string;
-type value = boolean;
-
-type statusFunction = Record<keys, value>;
-
 interface functionTypes {
   setCategoria: (categoria: dataCategoria, id: string) => void;
   setCreateTask: (categoriaTask: dataCategoria) => void;
@@ -60,7 +55,6 @@ interface functionTypes {
   porcentagemTasksStatus: (categoriaID: string, status: boolean) => string;
   buscarTasksDeletadas: (categoriaID: string) => tarefa[];
   //setFilterSearch: ({ search }: { search: string }) => void;
-  setStatusFunction: (boleano: statusFunction) => void;
   setDataTask: ({ task }: { task: tarefa }) => void;
   setUserID: ({ idUser }: { idUser: string }) => void;
   setCategoriaTask: ({ categoria, id }: { categoria: dataCategoria; id: string }) => void;
@@ -77,7 +71,6 @@ interface RotinaStoreTypes extends functionTypes {
   lixeira: tarefa[];
   categoriaTasks: dataCategoria;
   taskObj: tarefa;
-  statusFunction: statusFunction;
   uuid: string;
 }
 
@@ -116,11 +109,6 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         deletada: false,
         categoriaID: "",
         data: "",
-      },
-      //ativa/desativa funções extras
-      statusFunction: {
-        lixeira: false,
-        extras: false,
       },
       //armazena id atual de categoria
       uuid: "",
@@ -557,10 +545,6 @@ export const RotinaStore = create<RotinaStoreTypes>()(
         });
       },
 
-      //atualiza as permissões de ativação de funções
-      setStatusFunction: (boleano) => set((s) => ({ ...s, statusFunction: { ...s.statusFunction, ...boleano } })),
-      //caputra e envia o filter atual
-
       //caputura dados de task e sua categoria e executa funções(setCategoria(), setTask(), setCreateTask()) vinculadas a criação da task
       setDataTask: ({ task }) => {
         const { setCategoria, setCreateTask, categoriaTasks, uuid } = get();
@@ -580,7 +564,6 @@ export const RotinaStore = create<RotinaStoreTypes>()(
           idUser: idUser,
         })),
     }),
-
     {
       partialize: (state) => Object.fromEntries(Object.entries(state).filter(([, value]) => typeof value !== "function")),
       name: "Rotina-store",
