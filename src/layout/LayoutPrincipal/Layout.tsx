@@ -72,7 +72,7 @@ export default function MainLayout() {
   }, [uuidTelas, OnScroll, verificarOpenModal, navigate]);
 
   return (
-    <div className="m-0 min-h-dvh">
+    <div className="dark m-0 min-h-dvh">
       <ScrollRestoration />
       <Header />
       <main className={pathname === routes?.routeBuscar ? "pt-40 pb-32" : "pt-40 pb-8"}>
@@ -95,7 +95,7 @@ export default function MainLayout() {
               )}
               <P
                 title={!verificarRouteForTypesStringBtn() ? typeString?.verCategorias : typeString?.voltar}
-                className="!text-[16px] text-blue-400"
+                className="text-[16px] text-blue-400"
               />
             </div>
           </Button>

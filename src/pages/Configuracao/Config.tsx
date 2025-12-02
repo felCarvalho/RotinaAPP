@@ -38,7 +38,7 @@ export function Config() {
                 onClick={() => {
                   navigate(link);
                 }}
-                className="flex flex-row items-center justify-center gap-2 !py-1"
+                className="flex flex-row items-center justify-center gap-2 py-1"
               >
                 <i>
                   <FontAwesomeIcon icon={faTrash} />
