@@ -66,9 +66,9 @@ export function Temas() {
     const prefersTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)");
 
     function selectTheme() {
-      if (tema === typeString?.temaAutomatico) {
-        localStorage.setItem("tema", typeString?.temaAutomatico);
-        selectTema({ tema: typeString?.temaAutomatico });
+      if (tema === typeString?.temaAutomatico && prefersTheme.matches) {
+        localStorage.setItem("tema", typeString?.temaEscuro);
+        selectTema({ tema: typeString?.temaEscuro });
       }
     }
 
