@@ -1,7 +1,7 @@
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { useCallback, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
@@ -62,13 +62,16 @@ export function Temas() {
     [typeString, setTema],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const prefersTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)");
 
     function selectTheme() {
       if (tema === typeString?.temaAutomatico && prefersTheme.matches) {
         localStorage.setItem("tema", typeString?.temaEscuro);
         selectTema({ tema: typeString?.temaEscuro });
+      } else if (tema === typeString?.temaAutomatico && !prefersTheme.matches) {
+        localStorage.setItem("tema", typeString?.temaClaro);
+        selectTema({ tema: typeString?.temaClaro });
       }
     }
 
