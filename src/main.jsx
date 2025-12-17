@@ -4,6 +4,9 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router";
 import routes from "./routes/routes";
 import "./taillwind.css";
+import { authenticateInterceptor } from "./services/auth/refreshToken/refreshToken";
+
+authenticateInterceptor();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -4,19 +4,36 @@ import { usePosition } from "../../hooks/UseFloatingUI";
 import { FloatingPortal } from "@floating-ui/react";
 import { useResizeView } from "../../hooks/UseResizeView";
 import { Button } from "../../component/btn";
-import { RotinaStore } from "../../store/UseRotina";
 import { motion } from "framer-motion";
 import { parseAsBoolean, parseAsString, useQueryStates } from "nuqs";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { PopupOptionsTasks } from "../../component/FunctionTasks/PopupOptionTasks/PopupOptionsTasks";
-import { AuthStore } from "../../store/UseAuth";
+import axios from "axios";
+import { useNavigate } from "react-router";
+
+interface Task {
+  id: number;
+  publicId: string;
+  title: string;
+  description: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
+}
+
+enum Status {
+  Concluída = "Concluída",
+  Pendente = "Pendente",
+}
 
 export function Tasks() {
+  const [dataFiltro, setDataFiltro] = useState<Task[]>([]);
+  const [error, setError] = useState("");
   const { verificarWidth } = useResizeView();
-  const { updateStatus, deletarTask, dataFiltro, categorias, setUserID, filtragemTasksCategorias } = RotinaStore();
-  const { idLogin } = AuthStore();
+  const navigate = useNavigate();
   const { refs, floatingStyles } = usePosition({
     offPlacement: "top-start",
     offSet: 2,
@@ -41,21 +58,60 @@ export function Tasks() {
     },
   );
 
-  useEffect(() => {
-    if (idLogin) {
-      setUserID({ idUser: idLogin });
+  async function buscarTarefas() {
+    try {
+      const response = await axios.get("/home", {
+        baseURL: import.meta.env.VITE_LOCAL_URL,
+        withCredentials: true,
+      });
+
+      const { data, status } = response;
+
+      return {
+        data: data,
+        status: status,
+        success: status === 200,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return { data: error?.response?.data, status: error?.response?.status, success: false };
+      }
+
+      return { data: "Erro desconhecido", status: 500, success: false };
     }
-    filtragemTasksCategorias(query?.categoria ?? "todas");
-  }, [idLogin, setUserID]);
+  }
+
+  useEffect(() => {
+    async function getTarefas() {
+      const responseGetTarefas = await buscarTarefas();
+
+      if (responseGetTarefas.success) {
+        setDataFiltro(responseGetTarefas.data);
+        return;
+      }
+
+      if (!responseGetTarefas.success) {
+        setError("Erro ao buscar tarefas");
+        navigate("/auth/login");
+        console.log("Erro ao buscar tarefas");
+      }
+    }
+
+    getTarefas();
+  }, []);
 
   function verificarData() {
     return dataFiltro.length > 0;
   }
 
+  const array: Task[] = [];
+
+  console.log(dataFiltro);
+
   return (
     <div>
       {verificarData() ? (
-        dataFiltro.map((t) => (
+        array.map((t) => (
           <div
             key={t?.id}
             className="mx-3 mb-4 flex flex-col gap-4 overflow-hidden rounded-full bg-gradient-to-r from-blue-50/60 p-3 shadow-sm shadow-blue-50 select-none"
@@ -65,15 +121,12 @@ export function Tasks() {
                 <div className="flex flex-row items-center">
                   <input
                     type="checkbox"
-                    id={t?.id}
-                    checked={t?.status}
+                    id={t?.publicId}
+                    checked={t?.status === Status.Concluída || t?.status === Status.Pendente}
                     className="peer sr-only"
-                    onChange={() => {
-                      updateStatus({ id: t?.id });
-                    }}
                   />
                   <motion.label
-                    htmlFor={t?.id}
+                    htmlFor={t?.publicId}
                     className="min-h-5 min-w-6 cursor-pointer rounded-full bg-white text-center peer-checked:bg-blue-400"
                     whileTap={{ scale: 0.9 }}
                     transition={{ type: "spring", stiffness: 300 }}
@@ -86,9 +139,9 @@ export function Tasks() {
                 </div>
                 <div>
                   <P
-                    title={t?.rotina}
+                    title={t?.title}
                     className={
-                      t?.status
+                      t?.status === Status.Concluída
                         ? `xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate text-left text-blue-200 italic line-through md:w-96`
                         : `xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate text-left text-blue-400 md:w-96`
                     }
@@ -99,12 +152,12 @@ export function Tasks() {
                 {!verificarWidth({ largura: 500 }) && (
                   <button
                     aria-label="opções"
-                    ref={isPopup?.status && isPopup?.id === t?.id ? refs.setReference : null}
+                    ref={isPopup?.status && isPopup?.id === t?.publicId ? refs.setReference : null}
                     onClick={() => {
                       setPopup((s) => ({
                         ...s,
                         status: !s?.status,
-                        id: t?.id,
+                        id: t?.publicId,
                       }));
                     }}
                     className="flex min-h-10 min-w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50"
@@ -122,7 +175,7 @@ export function Tasks() {
                         setTimeout(() => {
                           setQuery((s) => ({
                             ...s,
-                            renomear: t?.id,
+                            renomear: t?.publicId,
                             modal: true,
                           }));
                         }, 300)
@@ -133,7 +186,7 @@ export function Tasks() {
                         <FontAwesomeIcon icon={faPencil} />
                       </i>
                     </Button>
-                    <Button type="button" onClick={() => deletarTask({ id: t?.id })} className="min-h-9 min-w-9 !p-0">
+                    <Button type="button" className="min-h-9 min-w-9 !p-0">
                       <i>
                         <FontAwesomeIcon icon={faTrash} />
                       </i>
@@ -166,10 +219,7 @@ export function Tasks() {
             <div className="mx-3 flex flex-row items-center justify-between">
               <div className="flex flex-row items-center justify-center gap-0.5 text-[10px]">
                 <H3 title="categoria:" className="text-sm font-medium text-blue-400" />
-                <P
-                  title={categorias.find((c) => c?.id === t?.categoriaID)?.categoria ?? ""}
-                  className="xs:max-2xs:w-8 3xs:max-4xs:w-14 truncate text-sm font-medium text-blue-300"
-                />
+                <P title={"categoria"} className="xs:max-2xs:w-8 3xs:max-4xs:w-14 truncate text-sm font-medium text-blue-300" />
               </div>
               {verificarWidth({ largura: 700 }) && (
                 <div>
@@ -179,7 +229,7 @@ export function Tasks() {
                       setTimeout(() => {
                         setQuery((s) => ({
                           ...s,
-                          detalhes: t?.id,
+                          detalhes: t?.publicId,
                           modal: true,
                         }));
                         setPopup((s) => ({

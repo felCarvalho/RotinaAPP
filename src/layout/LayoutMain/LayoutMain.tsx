@@ -2,7 +2,7 @@ import { Tasks } from "../../pages/Tasks/Tasks";
 import { useLocation, Outlet } from "react-router";
 
 enum routes {
-  routeInicio = "/inicio",
+  routeHome = "/home",
 }
 
 export function LayoutMain() {
@@ -10,7 +10,7 @@ export function LayoutMain() {
 
   return (
     <div>
-      {pathname === routes?.routeInicio && <Tasks />}
+      {pathname === routes?.routeHome && <Tasks />}
       <Outlet />
     </div>
   );

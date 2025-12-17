@@ -1,6 +1,5 @@
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { createBrowserRouter, Navigate } from "react-router";
-import { GuardLogin } from "../guards/GuardsLogin/GuardLogin";
 import { LayoutConfig } from "../layout/LayoutConfig/LayoutConfig";
 import { LayoutConfigError } from "../layout/LayoutConfig/LayoutConfigError/LayoutConfigError";
 import { LayoutMain } from "../layout/LayoutMain/LayoutMain";
@@ -15,32 +14,27 @@ import { InfoCategorias } from "../pages/infoCategorias/InfoCategorias";
 
 const routes = createBrowserRouter([
   {
-    path: "/login",
+    path: "/auth/login",
     element: <Login />,
   },
   {
-    path: "/criar-conta",
+    path: "/criar-usuario",
     element: <CriarConta />,
   },
   {
-    element: <GuardLogin />,
+    path: "/",
+    element: <Layout />,
     children: [
+      { index: true, element: <Navigate to="/home" replace /> },
       {
-        path: "/",
-        element: <Layout />,
+        path: "home",
+        element: <LayoutMain />,
         children: [
-          { index: true, element: <Navigate to="/inicio" replace /> },
           {
-            path: "inicio",
-            element: <LayoutMain />,
-            children: [
-              {
-                path: "buscar",
-                element: <SearchTasks />,
-              },
-              { path: "informacoes-categorias", element: <InfoCategorias /> },
-            ],
+            path: "search",
+            element: <SearchTasks />,
           },
+          { path: "informacoes-categorias", element: <InfoCategorias /> },
         ],
       },
     ],

@@ -1,6 +1,6 @@
 import { faAngleRight, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import * as z from "zod";
 import { Button } from "../../component/btn";
@@ -8,144 +8,164 @@ import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
-import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
 import { useResizeView } from "../../hooks/UseResizeView";
-import { AuthStore } from "../../store/UseAuth";
+import axios from "axios";
 
-// Controla visibilidade dos campos de senha
-interface PropsTypeInput {
-  password: boolean;
-  repeatPassword: boolean;
-}
-
-// Estrutura dos erros de validação
-interface FormError {
-  user: string[];
-  email: string[];
-  password: string[];
-  repeatPassword: string[];
-}
-
-// Nomes válidos dos campos do formulário
-type InputName = "user" | "email" | "password" | "repeatPassword";
-
-// Schema de validação Zod com regras de negócio
-const schemaFormCreateAccount = z
-  .strictObject({
-    user: z
-      .string()
-      .min(7, { error: "Ops, usuário precisa ter pelo menos 7 caracteres" })
-      .max(15, { error: "Ops, máximo de 15 caracteres atingido" }),
-    email: z.email({ error: "Ops, email inválido" }),
-    id: z.string().optional(),
-    password: z
-      .string()
-      .min(7, { error: "Ops, senha deve ter pelo menos 7 caracteres" })
-      .max(20, { error: "Ops, maximo de 20 caracteres atingido" }),
-    repeatPassword: z.string().min(1, { error: "Ops! senha inválida" }),
-  })
-  .refine((p) => p?.password === p?.repeatPassword, {
-    error: "Ops, senhas não coincidem",
-    path: ["repeatPassword"],
-  });
+const schemaEmail = z.email().min(1).max(150);
+const schemaPassword = z.string().min(7).max(15);
+const schemaName = z.string().min(2).max(150);
 
 export function CriarConta() {
-  const { verificarWidth } = useResizeView();
-  const { createUser, verificarEmailCreateAccount, verificarUserCreateAccount, message, responseUser } = AuthStore();
-  const [typeInput, setTypeInput] = useState<PropsTypeInput>({ password: true, repeatPassword: true });
-  const [formError, setFormError] = useState<FormError>({
-    user: [],
-    email: [],
-    password: [],
-    repeatPassword: [],
+  const [email, setEmail] = useState<z.infer<typeof schemaEmail>>("");
+  const [password, setPassword] = useState<z.infer<typeof schemaPassword>>("");
+  const [name, setName] = useState<z.infer<typeof schemaName>>("");
+  const [confirmPassword, setConfirmPassword] = useState<z.infer<typeof schemaPassword>>("");
+  //erros de senha e erros geral na criação do usuario
+  const [error, setError] = useState<string>("");
+  //state controlar visibilidade de senha
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [errorName, setErrorName] = useState({
+    nameError: "",
+    emailError: "",
+    passwordError: "",
+    confirmPassError: "",
   });
-  const [formSuccess, setFormSuccess] = useState<z.infer<typeof schemaFormCreateAccount>>({
-    user: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-    id: "",
-  });
+
   const navigate = useNavigate();
-  const generatorID = useGeneratorUUID();
 
-  // Atualiza valores dos campos
-  function handleCreateAccount(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
+  async function createUser() {
+    try {
+      const response = await axios.post(
+        "/criar-usuario",
+        {
+          email: email,
+          password: password,
+          name: name,
+        },
+        {
+          baseURL: import.meta.env.VITE_LOCAL_URL,
+        },
+      );
 
-    setFormSuccess((s) => ({
-      ...s,
-      [name]: value,
-    }));
+      const { data, status } = response;
+
+      return {
+        data,
+        status,
+        success: status === 201,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          data: error.response?.data.message,
+          status: error.response?.status,
+          success: false,
+        };
+      }
+
+      return {
+        data: "Erro desconhecido",
+        status: 500,
+        success: false,
+      };
+    }
   }
 
-  /**
-   * Valida campo específico e atualiza seus erros
-   * Usa safeParse síncrono para evitar problema de timing
-   * Preserva erros de outros campos, atualiza apenas o campo atual
-   */
-  const verificarInputs = useCallback(
-    ({ inputName }: { inputName: InputName }) => {
-      const onValidationBlur = schemaFormCreateAccount.safeParse(formSuccess);
-      const data = onValidationBlur?.success ? [] : (z.flattenError(onValidationBlur?.error)?.fieldErrors?.[inputName] ?? []);
+  function handleSetValue(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    switch (name) {
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "confirmPass":
+        setConfirmPassword(value);
+        break;
+      case "user":
+        setName(value);
+        break;
+      default:
+        break;
+    }
+  }
 
-      setFormError((s) => ({
-        ...s,
-        [inputName]: data,
-      }));
-    },
-    [formSuccess, setFormError],
-  );
-
-  // Valida formulário no submit
-  function handleSubmitCreateAccount(e: React.FormEvent<HTMLFormElement>) {
+  async function onCreateUser(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const verificarForm = schemaFormCreateAccount.safeParse(formSuccess);
+    const emailValidation = schemaEmail.safeParse(email);
+    const passwordValidation = schemaPassword.safeParse(password);
+    const nameValidation = schemaName.safeParse(name);
+    let error = false;
 
-    if (!verificarForm?.success) {
-      const error = z.flattenError(verificarForm?.error);
-      setFormError((s) => ({
+    if (!nameValidation.success) {
+      setErrorName((s) => ({
         ...s,
-        ...error?.fieldErrors,
+        nameError: "Ops, insira um nome válido",
+      }));
+      error = true;
+    }
+
+    if (!emailValidation.success) {
+      setErrorName((s) => ({
+        ...s,
+        emailError: "Ops, insira um email válido",
+      }));
+      error = true;
+    }
+
+    if (!passwordValidation.success) {
+      setErrorName((s) => ({
+        ...s,
+        passwordError: "Ops, senha inválida",
+      }));
+      error = true;
+    }
+
+    const confirmPassValidation = password && confirmPassword && password.trim() === confirmPassword.trim();
+
+    if (confirmPassValidation) {
+      setErrorName((s) => ({
+        ...s,
+        confirmPassError: "",
+      }));
+    } else {
+      setErrorName((s) => ({
+        ...s,
+        confirmPassError: "Senhas não correspondem",
+      }));
+      error = true;
+    }
+
+    if (error) {
+      return;
+    }
+
+    const response = await createUser();
+
+    if (response.success) {
+      navigate("/auth/login");
+      console.log("Usuário criado com sucesso!");
+      setErrorName((s) => ({
+        ...s,
+        nameError: "",
+        confirmPassError: "",
+        passwordError: "",
+        emailError: "",
       }));
       return;
     }
 
-    const data = verificarForm?.data;
-    const verificandoEmail = verificarEmailCreateAccount({ email: data?.email });
-    const verificandoUser = verificarUserCreateAccount({ user: data?.user });
-
-    if (verificandoEmail || verificandoUser) {
-      console.log("erro ao criar conta");
-      return;
+    if (!response.success) {
+      setError("Erro ao criar usuário");
     }
-
-    const id = generatorID({ prefixo: "@user", sufixo: "@minha-rotinaApp" });
-
-    createUser({ user: data?.user, email: data?.email, password: data.password, id: id });
   }
 
-  // Reseta formulário
-  const clearForm = useCallback(() => {
-    setFormError((s) => ({
-      ...s,
-      user: [],
-      email: [],
-      password: [],
-      repeatPassword: [],
-    }));
+  console.log(errorName, error);
 
-    setFormSuccess((s) => ({
-      ...s,
-      user: "",
-      email: "",
-      password: "",
-      repeatPassword: "",
-    }));
-    responseUser({ message: "", user: "", email: "", password: "" });
-  }, [formError, formSuccess, setFormError, setFormSuccess]);
-
+  const { verificarWidth } = useResizeView();
   return (
     <div className="flex min-h-lvh flex-col items-center justify-center gap-10">
       <div className="flex items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
@@ -162,7 +182,7 @@ export function CriarConta() {
               />
             </div>
             <div>
-              <Button type="button" onClick={() => navigate("/login")}>
+              <Button type="button" onClick={() => navigate("/auth/login")}>
                 <p className="text-white">Login!</p>
               </Button>
             </div>
@@ -173,31 +193,26 @@ export function CriarConta() {
             <H1 title="Criar Conta" className="font-semibold text-blue-400 sm:text-3xl" />
           </div>
           <div className="w-full rounded-4xl p-4 md:p-2">
-            <form onSubmit={handleSubmitCreateAccount} className="flex flex-col gap-5">
+            <form onSubmit={onCreateUser} className="flex flex-col gap-5">
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Usuario:" className="text-blue-400" />
                   <Input
-                    onChange={handleCreateAccount}
-                    onBlur={() => verificarInputs({ inputName: "user" })}
+                    onChange={handleSetValue}
                     name="user"
                     type="text"
                     placeholder="Digite seu nome de Usuário"
                     className="bg-white"
                   />
                 </div>
-                <P
-                  title={`${formError?.user.length > 0 ? formError?.user : message?.error?.user}`}
-                  className="text-xs font-medium text-red-400"
-                />
+                <P title={errorName.nameError} className="text-xs font-medium text-red-400" />
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Email:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onChange={handleCreateAccount}
-                      onBlur={() => verificarInputs({ inputName: "email" })}
+                      onChange={handleSetValue}
                       name="email"
                       type="email"
                       placeholder="Digite novamente seu email"
@@ -205,39 +220,30 @@ export function CriarConta() {
                     />
                   </div>
                 </div>
-                <P
-                  title={`${formError?.email.length > 0 ? formError?.email : message?.error?.email}`}
-                  className="text-xs font-medium text-red-400"
-                />
+                <P title={errorName.emailError} className="text-xs font-medium text-red-400" />
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onChange={handleCreateAccount}
-                      onBlur={() => verificarInputs({ inputName: "password" })}
+                      onChange={handleSetValue}
                       name="password"
-                      type={typeInput?.password ? "password" : "text"}
+                      type={showPassword ? "text" : "password"}
                       placeholder="Digite seus senha"
                       className="bg-white"
                     />
                     <Button
+                      onClick={() => setShowPassword(!showPassword)}
                       type="button"
                       className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400"
-                      onClick={() =>
-                        setTypeInput((s) => ({
-                          ...s,
-                          password: !s.password,
-                        }))
-                      }
                     >
                       <i>
-                        <FontAwesomeIcon icon={typeInput?.password ? faEye : faEyeSlash} />
+                        <FontAwesomeIcon icon={faEyeSlash} />
                       </i>
                     </Button>
                   </div>
-                  <P title={`${formError?.password}`} className="text-xs font-medium text-red-400" />
+                  <P title={errorName.passwordError} className="text-xs font-medium text-red-400" />
                 </div>
               </label>
               <label className="flex flex-col items-start gap-1.5">
@@ -245,36 +251,30 @@ export function CriarConta() {
                   <P title="Repetir senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onChange={handleCreateAccount}
-                      onBlur={() => verificarInputs({ inputName: "repeatPassword" })}
-                      type={typeInput?.repeatPassword ? "password" : "text"}
-                      name="repeatPassword"
+                      onChange={handleSetValue}
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPass"
                       placeholder="Digite novamente sua senha"
                       className="bg-white"
                     />
                     <Button
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       type="button"
                       className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400"
-                      onClick={() =>
-                        setTypeInput((s) => ({
-                          ...s,
-                          repeatPassword: !s.repeatPassword,
-                        }))
-                      }
                     >
                       <i>
-                        <FontAwesomeIcon icon={typeInput?.repeatPassword ? faEye : faEyeSlash} />
+                        <FontAwesomeIcon icon={faEyeSlash} />
                       </i>
                     </Button>
                   </div>
-                  <P title={`${formError?.repeatPassword.at(-1) ?? ""}`} className="text-xs font-medium text-red-400" />
+                  <P title={errorName.confirmPassError} className="text-xs font-medium text-red-400" />
                 </div>
               </label>
               <div className="flex w-full flex-row items-center justify-center gap-5">
                 <Button type="submit">
                   <p className="font-medium">Confirmar</p>
                 </Button>
-                <Button onClick={() => clearForm()} type="reset" className="!bg-white !text-blue-400">
+                <Button type="reset" className="!bg-white !text-blue-400">
                   <p className="font-medium">Cancelar</p>
                 </Button>
               </div>

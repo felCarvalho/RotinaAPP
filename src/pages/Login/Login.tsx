@@ -1,6 +1,6 @@
 import { faAngleRight, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import * as z from "zod";
 import { Button } from "../../component/btn";
@@ -9,111 +9,110 @@ import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
 import { useResizeView } from "../../hooks/UseResizeView";
-import { AuthStore } from "../../store/UseAuth";
-import { RotinaStore } from "../../store/UseRotina";
+import axios from "axios";
 
-// Interface para estruturar os erros de validação do formulário
-interface FormloginError {
-  user: string[];
-  password: string[];
-}
-
-// Schema de validação do formulário usando Zod
-const schemlogin = z.strictObject({
-  user: z.string().min(7, { error: "Ops, usuario inválido" }).max(15, { error: "Ops, usurio inválido" }),
-  password: z.string().min(7, { error: "Ops, senha inválida" }).max(20, { error: "Ops, senh inválida" }),
-});
-
-// Tipo para definir os nomes dos campos do formulário
-type InputName = "user" | "password";
+const emailSchema = z.email().trim();
+const passwordSchema = z.string().trim();
 
 export function Login() {
-  const { tasks } = RotinaStore();
-  const { verificarWidth } = useResizeView();
-  const { verificarPasswordLogin, verificarUserLogin, responseUser, loginUser, message, users } = AuthStore();
-  const [typeInput, setType] = useState<boolean>(true);
-  const [formErrorLogin, setFormErrorLogin] = useState<FormloginError>({
-    user: [],
-    password: [],
-  });
-  const [formSuccessLogin, setFormSuccessLogin] = useState<z.infer<typeof schemlogin>>({ user: "", password: "" });
+  const [email, setUser] = useState<z.infer<typeof emailSchema>>("");
+  const [password, setPassword] = useState<z.infer<typeof passwordSchema>>("");
+  const [errorName, setErrorName] = useState<string>("");
   const navigate = useNavigate();
 
-  // Atualiza os valores dos campos do formulário
-  function handleLoginAccount(e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-
-    setFormSuccessLogin((s) => ({ ...s, [name]: value }));
+  function handleUserChange(event: React.ChangeEvent<HTMLInputElement>) {
+    switch (event.target.name) {
+      case "email":
+        setUser(event.target.value);
+        break;
+      case "password":
+        setPassword(event.target.value);
+        break;
+      default:
+        break;
+    }
   }
 
-  // Valida um campo específico quando perde o foco
-  const verificarInputs = useCallback(
-    ({ inputName }: { inputName: InputName }) => {
-      const onValidationBlur = schemlogin.safeParse(formSuccessLogin);
-      const data = onValidationBlur?.success ? [] : (z.flattenError(onValidationBlur?.error)?.fieldErrors?.[inputName] ?? []);
+  async function loginUser() {
+    try {
+      const response = await axios.post(
+        "/auth/login",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          baseURL: import.meta.env.VITE_LOCAL_URL,
+          withCredentials: true,
+        },
+      );
 
-      setFormErrorLogin((s) => ({
-        ...s,
-        [inputName]: data,
-      }));
-    },
-    [formSuccessLogin, setFormErrorLogin],
-  );
+      const { data, status } = response;
 
-  // Processa o envio do formulário e valida todos os campos
-  function handleSubmitLogin(e: React.FormEvent<HTMLFormElement>) {
+      return {
+        data: data,
+        status: status === 201,
+        success: true,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          data: error.response?.data,
+          status: error.response?.status,
+          success: false,
+        };
+      }
+
+      return {
+        data: "error desconhecido",
+        status: 500,
+        success: false,
+      };
+    }
+  }
+
+  async function onLogoutUser(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const onValidationSubmit = schemlogin.safeParse(formSuccessLogin);
 
-    if (!onValidationSubmit?.success) {
-      const error = z.flattenError(onValidationSubmit?.error);
-      setFormErrorLogin((s) => ({
-        ...s,
-        ...error?.fieldErrors,
-      }));
+    const emailValidation = emailSchema.safeParse(email);
+    const passwordValidation = passwordSchema.safeParse(password);
+
+    if (!emailValidation.success || !passwordValidation.success) {
+      setErrorName("Ops, email ou senha inválida");
+      console.log("error ao login");
       return;
     }
 
-    const data = onValidationSubmit?.data;
-    const verificandoUser = verificarUserLogin({ user: data?.user });
-    const verificandoPassword = verificarPasswordLogin({ password: data?.password });
+    console.log("log de teste");
 
-    if (!verificandoUser || !verificandoPassword) {
-      console.log("erro ao fazer login");
+    const loginUserResponse = await loginUser();
+
+    if (loginUserResponse.success) {
+      console.log("usuario logado");
+      navigate("/home");
+      setErrorName("");
       return;
     }
 
-    console.log("login feito com sucesso");
-
-    loginUser({ user: data?.user, password: data?.password });
-    navigate("/inicio");
+    if (!loginUserResponse.success) {
+      setErrorName("Ops, email ou senha inválida");
+    }
   }
 
-  const formClear = useCallback(() => {
-    setFormErrorLogin((s) => ({
-      ...s,
-      user: [],
-      password: [],
-    }));
-
-    setFormSuccessLogin((s) => ({
-      ...s,
-      user: "",
-      password: "",
-    }));
-
-    responseUser({ message: "", user: "", email: "", password: "" });
-  }, [setFormErrorLogin, setFormSuccessLogin]);
-
-  console.log({ formErrorLogin, formSuccessLogin, message, users, tasks });
-
+  const { verificarWidth } = useResizeView();
   return (
     <div className="flex min-h-lvh flex-col items-center justify-center gap-10">
       <div className="flex items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
         {verificarWidth({ largura: 750 }) && (
           <div className="flex flex-col items-center justify-center gap-5 rounded-2xl md:w-full">
             <div className="rounded-4xl transition">
-              <img className="h-60 w-60 rounded-4xl" loading="lazy" src="assets/Login.svg" alt="Login" />
+              <img
+                className="h-60 w-60 rounded-4xl"
+                loading="lazy"
+                src="
+              assets/Login.svg"
+                alt="Login"
+              />
             </div>
             <div className="p-5">
               <H3 title="Ainda não tem sua conta?!" className="my-1 !text-[17px] tracking-wide text-blue-400" />
@@ -123,7 +122,7 @@ export function Login() {
               />
             </div>
             <div>
-              <Button type="button" onClick={() => navigate("/criar-conta")}>
+              <Button type="button" onClick={() => navigate("/criar-usuario")}>
                 <p className="text-white">Abrir Conta!</p>
               </Button>
             </div>
@@ -134,61 +133,48 @@ export function Login() {
             <H1 title="Login" className="font-semibold text-blue-400 sm:text-3xl" />
           </div>
           <div className="w-full rounded-4xl p-4 md:p-2">
-            <form onSubmit={handleSubmitLogin} className="flex flex-col gap-5">
+            <form onSubmit={onLogoutUser} className="flex flex-col gap-5">
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col items-start">
-                  <P title="Usuario:" className="text-blue-400" />
+                  <P title="Email:" className="text-blue-400" />
                   <Input
-                    onChange={handleLoginAccount}
-                    onBlur={() => verificarInputs({ inputName: "user" })}
-                    name="user"
-                    type="text"
+                    onChange={handleUserChange}
+                    name="email"
+                    type="email"
                     placeholder="Digite seu nome de Usuário"
                     className="bg-white !shadow-none"
                   />
                 </div>
-                <P
-                  title={`${formErrorLogin?.user.length > 0 ? formErrorLogin?.user : message?.error?.user}`}
-                  className="text-xs font-medium text-red-400"
-                />
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <P title="Senha:" className="text-blue-400" />
                 <div className="flex w-full flex-row items-center justify-center gap-2">
                   <Input
-                    onChange={handleLoginAccount}
-                    onBlur={() => verificarInputs({ inputName: "password" })}
+                    onChange={handleUserChange}
                     name="password"
-                    type={typeInput ? "password" : "text"}
+                    type={password ? "password" : "text"}
                     placeholder="Digite seus senha"
                     className="bg-white !shadow-none"
                   />
-                  <Button
-                    type="button"
-                    className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400"
-                    onClick={() => setType((s) => !s)}
-                  >
+                  <Button type="button" className="!min-h-11 !min-w-11 !bg-white !p-0 !text-blue-400">
                     <i>
-                      <FontAwesomeIcon icon={typeInput ? faEye : faEyeSlash} />
+                      <FontAwesomeIcon icon={password ? faEye : faEyeSlash} />
                     </i>
                   </Button>
                 </div>
-                <P
-                  title={`${formErrorLogin?.password.length > 0 ? formErrorLogin?.password : message?.error?.password}`}
-                  className="text-xs font-medium text-red-400"
-                />
               </label>
               <div className="flex w-full flex-row items-center justify-center gap-5">
                 <Button type="submit">
                   <p className="font-medium">Confirmar</p>
                 </Button>
-                <Button onClick={() => formClear()} type="reset" className="!bg-white !text-blue-400">
+                <Button onClick={() => setErrorName("")} type="reset" className="!bg-white !text-blue-400">
                   <p className="font-medium">Cancelar</p>
                 </Button>
               </div>
             </form>
           </div>
-          <div className="w-full text-end">
+          <div className="mt-5 flex w-full flex-row items-center justify-between">
+            <P title={errorName} className="text-xs font-medium text-red-400" />
             <NavLink to="/redefinir-senha">
               <P title="Esqueceu a senha?" className="text-[13px] text-blue-300" />
             </NavLink>
