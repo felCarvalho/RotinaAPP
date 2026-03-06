@@ -1,76 +1,87 @@
-# 📋 RotinaAPP
+# Welcome to React Router!
 
-Uma aplicação web moderna para gerenciamento de tarefas e rotinas pessoais, desenvolvida para aprendizado contínuo e experimentação com tecnologias React.
+A modern, production-ready template for building full-stack React applications using React Router.
 
-![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?style=flat&logo=typescript)
-![TailwindCSS](https://img.shields.io/badge/Tailwind-4.1.11-38B2AC?style=flat&logo=tailwind-css)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
 
-## 🚀 Funcionalidades
+## Features
 
-- ✅ Gerenciamento de tarefas por categorias
-- 🔍 Busca e filtros avançados
-- 👤 Sistema de autenticação
-- 🗑️ Lixeira com restauração
-- 🎨 Temas personalizáveis
-- 📱 Interface responsiva
+- 🚀 Server-side rendering
+- ⚡️ Hot Module Replacement (HMR)
+- 📦 Asset bundling and optimization
+- 🔄 Data loading and mutations
+- 🔒 TypeScript by default
+- 🎉 TailwindCSS for styling
+- 📖 [React Router docs](https://reactrouter.com/)
 
-## 🛠️ Tecnologias
+## Getting Started
 
-- **React 18** + TypeScript
-- **Zustand** para estado global
-- **TailwindCSS** para estilização
-- **Framer Motion** para animações
-- **React Router v7** para roteamento
-- **Vite** como build tool
+### Installation
 
-## 🔧 Como executar
+Install the dependencies:
 
-1. **Instalar dependências**
 ```bash
 npm install
-# ou
-pnpm install
 ```
 
-2. **Executar em desenvolvimento**
+### Development
+
+Start the development server with HMR:
+
 ```bash
 npm run dev
-# ou
-pnpm run dev
 ```
 
-3. **Acessar**: `http://localhost:5173`
+Your application will be available at `http://localhost:5173`.
 
-## 🐳 Docker
+## Building for Production
+
+Create a production build:
 
 ```bash
-docker build -t rotinaapp .
-docker run -p 5173:5173 rotinaapp
+npm run build
 ```
 
-## 📁 Estrutura
+## Deployment
+
+### Docker Deployment
+
+To build and run using Docker:
+
+```bash
+docker build -t my-app .
+
+# Run the container
+docker run -p 3000:3000 my-app
+```
+
+The containerized application can be deployed to any platform that supports Docker, including:
+
+- AWS ECS
+- Google Cloud Run
+- Azure Container Apps
+- Digital Ocean App Platform
+- Fly.io
+- Railway
+
+### DIY Deployment
+
+If you're familiar with deploying Node applications, the built-in app server is production-ready.
+
+Make sure to deploy the output of `npm run build`
 
 ```
-src/
-├── pages/           # Páginas da aplicação
-├── components/      # Componentes reutilizáveis
-├── store/          # Estados globais (Zustand)
-├── routes/         # Configuração de rotas
-└── hooks/          # Custom hooks
+├── package.json
+├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
+├── build/
+│   ├── client/    # Static assets
+│   └── server/    # Server-side code
 ```
 
-## 🎯 Status
+## Styling
 
-🚧 **Em desenvolvimento ativo** - Projeto focado em aprendizado contínuo e experimentação com novas tecnologias.
+This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
 
-### 📚 Propósito Educacional
-Este projeto serve como laboratório para:
-- Explorar funcionalidades do React 18.
-- Experimentar com diferentes padrões de gerenciamento de estado.
-- Praticar desenvolvimento com TypeScript.
-- Testar novas bibliotecas e ferramentas do ecossistema React.
-- Aprimorar habilidades em CSS com TailwindCSS.
-- Implementar animações fluidas com Framer Motion.
+---
 
-⭐ Projeto em constante evolução!
+Built with ❤️ using React Router.
