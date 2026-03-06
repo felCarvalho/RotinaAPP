@@ -4,43 +4,46 @@ import { RotinaStore } from "../../store/UseRotina";
 import { useEffect } from "react";
 import { parseAsString, useQueryStates } from "nuqs";
 
+enum routes {
+  routeBuscar = "/inicio/buscar",
+}
+
 export function SearchBarTasks() {
-  const { searchTask, setSearchTasks } = RotinaStore();
+  const { searchTask } = RotinaStore();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useQueryStates(
     {
-      search_rotina: parseAsString.withDefault(""),
+      search: parseAsString,
     },
-    {
-      history: "push",
-      throttleMs: 1000,
-    },
+    { history: "push", throttleMs: 1000 },
   );
-  const { search_rotina } = search;
-
-  function Handle(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearch((p) => ({
-      ...p,
-      search_rotina: e.target.value,
-    }));
-  }
 
   useEffect(() => {
-    const time = setTimeout(() => {
-      setSearchTasks({ search: search_rotina });
-      searchTask();
-    }, 1000);
+    const timeDebounce = setTimeout(() => {
+      if (search?.search) {
+        searchTask({ search: search?.search });
+      }
+    }, 500);
 
     return () => {
-      clearTimeout(time);
+      clearTimeout(timeDebounce);
     };
-  }, [searchTask, setSearchTasks, search_rotina]);
+  }, [search, searchTask]);
 
   return (
     <>
-      {pathname === "/inicio/buscar" && (
-        <SearchFloatBar value={search_rotina} onBack={() => navigate("/inicio")} onChange={Handle} />
+      {pathname === routes?.routeBuscar && (
+        <SearchFloatBar
+          value={search?.search ?? ""}
+          onBack={() => navigate("/inicio")}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearch((s) => ({
+              ...s,
+              search: e.target.value,
+            }))
+          }
+        />
       )}
     </>
   );

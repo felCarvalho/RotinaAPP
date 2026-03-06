@@ -5,10 +5,19 @@ import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { RotinaStore } from "../../store/UseRotina";
+import { useCallback } from "react";
 
 export function Lixeira() {
   const navigate = useNavigate();
-  const { lixeira, restaurarTask } = RotinaStore();
+  const { lixeira, restaurarTask, idUser } = RotinaStore();
+
+  const verificarUser = useCallback(() => {
+    return lixeira.filter((l) => l?.idUser === idUser);
+  }, [lixeira, idUser]);
+
+  const verificandoLengthUserLixeira = useCallback(() => {
+    return verificarUser().length > 0;
+  }, [lixeira, verificarUser]);
 
   return (
     <div className="scrollbar-hide z-50 h-full w-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
@@ -24,8 +33,8 @@ export function Lixeira() {
         classNameBtnClosed="!min-w-0 !min-h-0 bg-transparent"
       />
       <div className="scrollbar-hide h-full overflow-auto rounded-t-[50px] pt-22">
-        {lixeira.length > 0 ? (
-          lixeira.map((l) => (
+        {verificandoLengthUserLixeira() ? (
+          verificarUser().map((l) => (
             <div
               key={l?.id}
               className="text-shadow-2xl mx-5 my-3 flex flex-row justify-between rounded-2xl bg-white py-5 shadow-blue-100"
@@ -48,8 +57,8 @@ export function Lixeira() {
             </div>
           ))
         ) : (
-          <div className="scroll-hide flex h-full w-full items-center justify-center">
-            <H3 title="Não encontramos nenhuma rotina deletada! " className="text-[18px] text-blue-400" />
+          <div className="flex h-full items-center justify-center">
+            <P title="Ops, não existe Rotinas deletas aqui" className="!text-lg text-blue-400" />
           </div>
         )}
       </div>

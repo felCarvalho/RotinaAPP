@@ -1,55 +1,91 @@
-import { faAngleLeft, faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import * as z from "zod";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
 import { Radio } from "../../component/radio";
 import { H3 } from "../../component/subTitle";
 import { useResizeView } from "../../hooks/UseResizeView";
+import { faOctopusDeploy, faOdysee } from "@fortawesome/free-brands-svg-icons";
 
-const localStorageTypes = z.object({
-  modoClaro: z.boolean(),
-  modoEscuro: z.boolean(),
-});
+enum typeString {
+  temaClaro = "ligth",
+  temaEscuro = "dark",
+  temaAutomatico = "automatico",
+  styleTemaClaro = "bg-blue-50 outline-2 outline-offset-4 outline-blue-50",
+  styleTemaEscuro = "bg-blue-950 outline-2 outline-offset-4 outline-blue-800 text-white",
+}
 
 export function Temas() {
   const navigate = useNavigate();
   const { verificarWidth } = useResizeView();
-  const [onTema, setTema] = useState<z.infer<typeof localStorageTypes>>(() => {
+  const [tema, setTema] = useState<string>(() => {
     try {
-      const storageTema = localStorage.getItem("tema");
-      const getTemas = storageTema ? JSON.parse(storageTema) : null;
-      const verificarTemas = getTemas ? localStorageTypes.safeParse(getTemas) : null;
+      const getTema = localStorage.getItem("tema") ?? "";
 
-      if (verificarTemas?.success) {
-        return verificarTemas.data;
-      }
+      return getTema;
     } catch (e) {
-      return {
-        modoClaro: true,
-        modoEscuro: false,
-      };
+      return "";
     }
-    return {
-      modoClaro: true,
-      modoEscuro: false,
-    };
   });
 
-  const focusThemeLight = useCallback(() => {
-    return onTema?.modoClaro ? "bg-blue-50 outline-2 outline-offset-4 outline-blue-50" : "outline-0";
-  }, [onTema]);
+  function focusThemeLight({ tema }: { tema: string }) {
+    return tema === typeString?.temaClaro ? typeString?.styleTemaClaro : "outline-0 bg-white";
+  }
 
-  const focusThemeDark = useCallback(() => {
-    return onTema?.modoEscuro ? "bg-blue-950 outline-2 outline-offset-4 outline-blue-800 " : "outline-0";
-  }, [onTema]);
+  function focusThemeDark({ tema }: { tema: string }) {
+    return tema === typeString?.temaEscuro ? typeString?.styleTemaEscuro : "outline-0 bg-white";
+  }
+
+  const selectTema = useCallback(
+    ({ tema }: { tema: string }) => {
+      switch (tema) {
+        case typeString?.temaClaro:
+          localStorage.setItem("tema", typeString?.temaClaro);
+          setTema(typeString?.temaClaro);
+          break;
+        case typeString?.temaEscuro:
+          localStorage.setItem("tema", typeString?.temaEscuro);
+          setTema(typeString?.temaEscuro);
+          break;
+        case typeString?.temaAutomatico:
+          localStorage.setItem("tema", typeString?.temaAutomatico);
+          setTema(typeString?.temaAutomatico);
+          break;
+
+        default:
+          return "";
+      }
+    },
+    [typeString, setTema],
+  );
 
   useEffect(() => {
-    localStorage.setItem("tema", JSON.stringify(onTema));
-  }, [onTema]);
+    const prefersTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)");
+
+    function selectTheme() {
+      if (tema === typeString?.temaAutomatico && prefersTheme.matches) {
+        localStorage.setItem("tema", typeString?.temaEscuro);
+        selectTema({ tema: typeString?.temaEscuro });
+      } else if (tema === typeString?.temaAutomatico && !prefersTheme.matches) {
+        localStorage.setItem("tema", typeString?.temaClaro);
+        selectTema({ tema: typeString?.temaClaro });
+      }
+    }
+
+    if (tema === typeString?.temaAutomatico) {
+      prefersTheme.addEventListener("change", selectTheme);
+      selectTheme();
+    }
+
+    return () => {
+      prefersTheme.removeEventListener("change", selectTheme);
+    };
+  }, [tema, selectTema]);
+
+  console.log({ tema });
 
   return (
     <div className="z-50 h-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
@@ -69,16 +105,9 @@ export function Temas() {
         <div className="flex h-full flex-col items-start justify-around gap-5 pt-25">
           <div className="flex w-full flex-row items-center justify-around gap-5 rounded-3xl bg-white p-5">
             <motion.button
-              onClick={() =>
-                setTema((s) => ({
-                  ...s,
-                  modoClaro: true,
-                  modoEscuro: false,
-                }))
-              }
               whileTap={{ scale: 0.9, opacity: 0.5 }}
               transition={{ type: "spring" }}
-              className={`${focusThemeLight()} flex flex-col items-center justify-center rounded-2xl p-2`}
+              className={`${focusThemeLight({ tema: tema })} flex flex-col items-center justify-center rounded-2xl p-2`}
             >
               <div className="rounded-full bg-white shadow-md shadow-blue-50">
                 <img src="../../../assets/Innovation-bro.svg" alt="" sizes="" className="w-36" />
@@ -86,41 +115,51 @@ export function Temas() {
               <div className="flex flex-row items-center justify-center gap-2 pt-2">
                 <H3 title={!verificarWidth({ largura: 1000 }) ? "Claro" : "Modo claro"} className="text-blue-400" />
                 <i className="text-lg text-blue-400">
-                  <FontAwesomeIcon icon={onTema?.modoClaro ? faCircleCheck : faCircleXmark} />
+                  <FontAwesomeIcon icon={faOctopusDeploy} />
                 </i>
               </div>
             </motion.button>
             <motion.button
-              onClick={() =>
-                setTema((s) => ({
-                  ...s,
-                  modoClaro: false,
-                  modoEscuro: true,
-                }))
-              }
               whileTap={{ scale: 0.9, opacity: 0.5 }}
               transition={{ type: "spring" }}
-              className={`${focusThemeDark()}flex flex-col items-center justify-center rounded-2xl p-2`}
+              className={`${focusThemeDark({ tema: tema })} flex flex-col items-center justify-center rounded-2xl p-2`}
             >
               <div className="rounded-full bg-blue-950">
                 <img src="../../../assets/Innovation-amico.svg" alt="" sizes="" className="w-36" />
               </div>
               <div className="flex flex-row items-center justify-center gap-2 pt-2">
-                <H3
-                  title={!verificarWidth({ largura: 1000 }) ? "Escuro" : "Modo escuro"}
-                  className={onTema?.modoEscuro ? "text-blue-50" : "text-blue-950"}
-                />
-                <i className={`text-lg ${onTema?.modoEscuro ? "text-blue-50" : "text-blue-950"} `}>
-                  <FontAwesomeIcon icon={onTema?.modoEscuro ? faCircleCheck : faCircleXmark} />
+                <H3 title={!verificarWidth({ largura: 1000 }) ? "Escuro" : "Modo escuro"} className="" />
+                <i className={`text-lg`}>
+                  <FontAwesomeIcon icon={faOdysee} />
                 </i>
               </div>
             </motion.button>
           </div>
           <div className="flex flex-col gap-4 rounded-3xl bg-white p-5 px-2">
             <label className="flex flex-col items-start justify-center gap-2 px-2">
+              <H3 title="Modo automático" className="text-blue-400" />
+              <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
+                <Radio
+                  checked={tema === typeString?.temaAutomatico}
+                  onChange={() => selectTema({ tema: typeString?.temaAutomatico })}
+                  name="automatico"
+                  classNameLabel="flex flex-row items-center justify-center gap-5"
+                />
+                <P
+                  title="Aplicando o modo automatico voçê ficará como a interface no mesmo modo que o seu dispositivo está... ideal para quem quer seguir sua preferencial pessoal."
+                  className={"text-blue-300"}
+                />
+              </div>
+            </label>
+            <label className="flex flex-col items-start justify-center gap-2 px-2">
               <H3 title="Modo claro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
+                <Radio
+                  checked={tema === typeString?.temaClaro}
+                  onChange={() => selectTema({ tema: typeString?.temaClaro })}
+                  name="claro"
+                  classNameLabel="flex flex-row items-center justify-center gap-5"
+                />
                 <P
                   title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma melhor legibilidade."
                   className={"text-blue-300"}
@@ -130,19 +169,14 @@ export function Temas() {
             <label className="flex flex-col items-start justify-center gap-2 px-2">
               <H3 title="Modo escuro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
+                <Radio
+                  checked={tema === typeString?.temaEscuro}
+                  onChange={() => selectTema({ tema: typeString?.temaEscuro })}
+                  name="escuro"
+                  classNameLabel="flex flex-row items-center justify-center gap-5"
+                />
                 <P
                   title="Aplica o modo escuro para toda a interface, deixano a visão dos elementos de tela menos brilhantes e deixando o foco apenas nos textos..."
-                  className={"text-blue-300"}
-                />
-              </div>
-            </label>
-            <label className="flex flex-col items-start justify-center gap-2 px-2">
-              <H3 title="Modo automático" className="text-blue-400" />
-              <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
-                <Radio classNameLabel="flex flex-row items-center justify-center gap-5" />
-                <P
-                  title="Aplicando o modo automatico voçê ficará como a interface no mesmo modo que o seu dispositivo está... ideal para quem quer seguir sua preferencial pessoal."
                   className={"text-blue-300"}
                 />
               </div>

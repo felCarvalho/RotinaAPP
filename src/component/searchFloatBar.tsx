@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 interface SearchFloat {
   onBack: () => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
 }
 

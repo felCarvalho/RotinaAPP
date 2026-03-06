@@ -1,36 +1,40 @@
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { createBrowserRouter, Navigate } from "react-router";
-import { GuardLogin } from "../guards/GuardsLogin/GuardLogin";
 import { LayoutConfig } from "../layout/LayoutConfig/LayoutConfig";
 import { LayoutConfigError } from "../layout/LayoutConfig/LayoutConfigError/LayoutConfigError";
 import { LayoutMain } from "../layout/LayoutMain/LayoutMain";
 import Layout from "../layout/LayoutPrincipal/Layout";
 import { CriarConta } from "../pages/CriarConta/CriarConta";
-import { LimparDados } from "../pages/LimparDados/LimparDados";
 import { Lixeira } from "../pages/Lixeira/Lixeira";
 import { Login } from "../pages/Login/Login";
 import { Perfil } from "../pages/Perfil/Perfil";
 import { SearchTasks } from "../pages/SearchTasks/SearchTasks";
 import { Temas } from "../pages/Temas/Temas";
+import { InfoCategorias } from "../pages/infoCategorias/InfoCategorias";
 
 const routes = createBrowserRouter([
   {
-    path: "/login",
+    path: "/auth/login",
     element: <Login />,
   },
   {
-    path: "/criar-conta",
+    path: "/criar-usuario",
     element: <CriarConta />,
   },
   {
-    element: <GuardLogin />,
+    path: "/",
+    element: <Layout />,
     children: [
+      { index: true, element: <Navigate to="/home" replace /> },
       {
-        path: "/",
-        element: <Layout />,
+        path: "home",
+        element: <LayoutMain />,
         children: [
-          { index: true, element: <Navigate to="/inicio" replace /> },
-          { path: "inicio", element: <LayoutMain />, children: [{ path: "buscar", element: <SearchTasks /> }] },
+          {
+            path: "search",
+            element: <SearchTasks />,
+          },
+          { path: "informacoes-categorias", element: <InfoCategorias /> },
         ],
       },
     ],
@@ -60,10 +64,6 @@ const routes = createBrowserRouter([
       {
         path: "lixeira",
         element: <Lixeira />,
-      },
-      {
-        path: "limpar-dados",
-        element: <LimparDados />,
       },
     ],
   },

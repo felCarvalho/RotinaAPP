@@ -12,6 +12,12 @@ import { useGeneratorUUID } from "../../hooks/UseGeneratorID";
 import { AuthStore } from "../../store/UseAuth";
 import { RotinaStore } from "../../store/UseRotina";
 import { TelasStore } from "../../store/UseTelasFixos";
+import { statusStringForBoolean } from "../../utils/FunctionUtils/FunctionUtils";
+import { parseAsString, useQueryStates } from "nuqs";
+
+enum typeFilter {
+  todas = "todas",
+}
 
 const schemaTasks = z.object({
   rotina: z.string().trim(),
@@ -26,9 +32,18 @@ const schemaTasks = z.object({
 
 export function CreateRotina() {
   const { closeID, openID, isRenderID } = TelasStore();
-  const { setCategoriaTask, setDataTask, setFilter, filterId, uuid, categoriaTasks, searchTask } = RotinaStore();
+  const {
+    setCategoriaTask,
+    setDataTask,
+    uuid,
+    categoriaTasks,
+    searchTask,
+    filtragemTasksCategorias,
+    filtragemCategorias,
+    filtragemTasksStatus,
+    tasks,
+  } = RotinaStore();
   const { idLogin } = AuthStore();
-
   const [isOpen, setOpen] = useState(false);
   const [task, setTask] = useState<z.infer<typeof schemaTasks>>({
     rotina: "",
@@ -40,7 +55,13 @@ export function CreateRotina() {
     categoriaID: "",
     data: "",
   });
+  const [queryFilter] = useQueryStates({
+    categoria: parseAsString,
+    pesquisar: parseAsString,
+    status: parseAsString,
+  });
   const generatorID = useGeneratorUUID();
+  const filterStatus = statusStringForBoolean();
 
   function HandleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = e.target;
@@ -83,16 +104,19 @@ export function CreateRotina() {
     const validar = schemaTasks.parse(task);
 
     if (!validar?.rotina.trim() || verificarDados()) {
+      console.log("erro");
       return;
     }
 
     setDataTask({ task: task });
-    setFilter({ id: filterId });
-    searchTask();
+    filtragemTasksCategorias(queryFilter?.categoria ?? typeFilter?.todas);
+    filtragemCategorias({ categoria: queryFilter?.categoria ?? typeFilter?.todas });
+    filtragemTasksStatus(filterStatus);
+    searchTask({ search: queryFilter?.pesquisar ?? typeFilter?.todas });
     resetState();
   };
 
-  console.log({ categoriaTasks });
+  console.log(verificarDados(), tasks);
 
   return (
     <>

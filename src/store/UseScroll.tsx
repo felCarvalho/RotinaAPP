@@ -12,7 +12,7 @@ interface scrollTypes {
     clientH: number;
     pixels: number;
   }) => void;
-};
+}
 
 interface scrollStoreTypes extends scrollTypes {
   scrollOn: {

@@ -32,9 +32,12 @@ interface AuthStateTypes {
   verificarPasswordLogin: ({ password }: { password: string }) => boolean;
   createUser: ({ user, email, password, id }: userAuthTypes) => void;
   loginUser: ({ user, password }: { user: string; password: string }) => void;
+  alterarUser: ({ newUser }: { newUser: string }) => void;
+  alterarEmail: ({ newEmail }: { newEmail: string }) => void;
+  alterarPassword: ({ newPassword }: { newPassword: string }) => void;
   logOut: () => boolean;
   buscarUser: () => userAuthTypes;
-  deletarUser: () => void;
+  deletarUser: () => boolean;
   responseUser: ({ message, user, email, password }: { message: string; user: string; email: string; password: string }) => void;
 }
 
@@ -251,6 +254,62 @@ export const AuthStore = create<AuthStateTypes>()(
             users: deletarUser,
             idLogin: "",
           }));
+
+        return !!idLogin;
+      },
+
+      alterarUser: ({ newUser }) => {
+        const { buscarUser, users, idLogin } = get();
+
+        if (!newUser.trim() || !idLogin.trim()) {
+          return;
+        }
+
+        const buscandoUser = buscarUser();
+
+        if (buscandoUser?.id === idLogin) {
+          const atualizarNameUser = users.map((u) => (u?.id === idLogin ? { ...u, user: newUser } : u));
+          set((s) => ({
+            ...s,
+            users: atualizarNameUser,
+          }));
+        }
+      },
+
+      alterarEmail: ({ newEmail }) => {
+        const { buscarUser, users, idLogin } = get();
+
+        if (!newEmail.trim() || !idLogin.trim()) {
+          return;
+        }
+
+        const buscandoUser = buscarUser();
+
+        if (buscandoUser?.id === idLogin) {
+          const atualizarEmailUser = users.map((e) => (e?.id === idLogin ? { ...e, email: newEmail } : e));
+          set((s) => ({
+            ...s,
+            users: atualizarEmailUser,
+          }));
+        }
+      },
+
+      alterarPassword: ({ newPassword }) => {
+        const { buscarUser, users, idLogin } = get();
+
+        if (!newPassword.trim() || !idLogin.trim()) {
+          return;
+        }
+
+        const buscandoUser = buscarUser();
+
+        if (buscandoUser?.id === idLogin) {
+          const atualizarPasswordUser = users.map((p) => (p?.id === idLogin ? { ...p, password: newPassword } : p));
+          set((s) => ({
+            ...s,
+            users: atualizarPasswordUser,
+          }));
+        }
       },
     }),
     {

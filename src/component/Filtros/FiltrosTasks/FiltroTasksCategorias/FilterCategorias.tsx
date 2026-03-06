@@ -1,18 +1,25 @@
-import { Button } from "../../btn";
-import { RotinaStore } from "../../../store/UseRotina";
+import { Button } from "../../../btn";
 import { useMemo } from "react";
+import { parseAsString, useQueryStates } from "nuqs";
+import { RotinaStore } from "../../../../store/UseRotina";
 
 export function DropdownFilterCategorias() {
-  const { setFilter, setCategoriaString, buscarIdUserCategoria } = RotinaStore();
+  const { buscarIdUserCategoria } = RotinaStore();
   const categorias = useMemo(() => buscarIdUserCategoria(), [buscarIdUserCategoria]);
+  const [, setQueryFilter] = useQueryStates(
+    {
+      categoria: parseAsString,
+      status: parseAsString,
+    },
+    {
+      history: "push",
+    },
+  );
 
   return (
     <div className="m-2 flex max-w-full flex-col items-start justify-center gap-2 rounded-3xl">
       <Button
-        onClick={() => {
-          setFilter({ id: "todas" });
-          setCategoriaString({ categoria: "Todas" });
-        }}
+        onClick={() => setQueryFilter((s) => ({ ...s, categoria: "todas" }))}
         type="button"
         className="flex w-full flex-row gap-2 rounded-full bg-white font-medium shadow-sm shadow-blue-50 active:bg-blue-50"
       >
@@ -20,15 +27,18 @@ export function DropdownFilterCategorias() {
       </Button>
       {categorias.map((c) => (
         <Button
-          onClick={() => {
-            setFilter({ id: c?.id });
-            setCategoriaString({ categoria: c?.categoria });
-          }}
+          onClick={() =>
+            setQueryFilter((s) => ({
+              ...s,
+              status: null,
+              categoria: c?.categoria,
+            }))
+          }
           type="button"
           key={c?.id}
           className="flex w-full flex-row gap-1.5 rounded-full bg-white font-medium shadow-sm shadow-blue-50 active:bg-blue-50"
         >
-          <p className="text-lefttruncate text-blue-400">{c?.categoria}</p>
+          <p className="truncate text-left text-blue-400">{c?.categoria}</p>
         </Button>
       ))}
     </div>

@@ -27,11 +27,4 @@ export const DataConfig = [
     alert: "",
     link: "/configuracoes/extras",
   },
-  {
-    id: "limpar",
-    title: "Limpar dados",
-    description: "Apague suas Rotinas ativas e deletadas.",
-    alert: "",
-    link: "/configuracoes/limpar-dados",
-  },
 ];

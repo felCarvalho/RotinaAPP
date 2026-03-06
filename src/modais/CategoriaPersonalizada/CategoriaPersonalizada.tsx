@@ -63,8 +63,6 @@ export function CreateCategoria() {
         id: "",
         idUser: "",
       }));
-
-      return;
     }
   }
 
