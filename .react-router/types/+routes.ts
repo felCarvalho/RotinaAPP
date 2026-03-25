@@ -26,12 +26,21 @@ type Pages = {
   "/home/criar-rotina": {
     params: {};
   };
+  "/home/configuracoes": {
+    params: {};
+  };
+  "/home/buscar": {
+    params: {};
+  };
+  "/home/adicionar-tarefa": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/criar-conta" | "/login" | "/home" | "/home/criar-rotina";
+    page: "/" | "/criar-conta" | "/login" | "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
   };
   "./layout/LayoutRegister/layout.tsx": {
     id: "layout/LayoutRegister/layout";
@@ -47,15 +56,27 @@ type RouteFiles = {
   };
   "./layout/LayoutHome/layout.tsx": {
     id: "layout/LayoutHome/layout";
-    page: "/home" | "/home/criar-rotina";
+    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
   };
   "./pages/Tasks/component.tsx": {
     id: "pages/Tasks/component";
-    page: "/home" | "/home/criar-rotina";
+    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
   };
   "./pages/CreateRotina/component.tsx": {
     id: "pages/CreateRotina/component";
     page: "/home/criar-rotina";
+  };
+  "./pages/Configuracao/component.tsx": {
+    id: "pages/Configuracao/component";
+    page: "/home/configuracoes";
+  };
+  "./pages/SearchTasks/component.tsx": {
+    id: "pages/SearchTasks/component";
+    page: "/home/buscar";
+  };
+  "./pages/AdicionarTarefa/component.tsx": {
+    id: "pages/AdicionarTarefa/component";
+    page: "/home/adicionar-tarefa";
   };
 };
 
@@ -67,4 +88,7 @@ type RouteModules = {
   "layout/LayoutHome/layout": typeof import("./app/./layout/LayoutHome/layout.tsx");
   "pages/Tasks/component": typeof import("./app/./pages/Tasks/component.tsx");
   "pages/CreateRotina/component": typeof import("./app/./pages/CreateRotina/component.tsx");
+  "pages/Configuracao/component": typeof import("./app/./pages/Configuracao/component.tsx");
+  "pages/SearchTasks/component": typeof import("./app/./pages/SearchTasks/component.tsx");
+  "pages/AdicionarTarefa/component": typeof import("./app/./pages/AdicionarTarefa/component.tsx");
 };

@@ -6,7 +6,7 @@ import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 
 const schemaDelete = z.object({
-  publicId: z.string().min(1, { error: "ID inválido" }),
+  idTask: z.string().min(1, { error: "ID inválido" }),
 });
 
 export async function deleteTasks({
@@ -26,7 +26,6 @@ export async function deleteTasks({
 
     return data(
       {
-        type: ActionTypesRequests.ERROR_VALIDATION as const,
         errors: validateErrors.fieldErrors,
       },
       {
@@ -37,7 +36,7 @@ export async function deleteTasks({
 
   try {
     const response = await axios.delete(
-      `/home/${publicIdValidate.data.publicId}`,
+      `/home/${publicIdValidate.data.idTask}`,
       {
         baseURL: LOCAL_URL,
         headers: {

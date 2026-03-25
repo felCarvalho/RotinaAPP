@@ -7,31 +7,33 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { useFetcher, useNavigate } from "react-router";
+import { NavLink, useFetcher, useNavigate } from "react-router";
 import { error, success, warning } from "~/utils/FunctionUtils/FunctionUtils";
 import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
-import type { createRotina } from "./data/createTasks.server";
+import type { createRotina } from "./services/createTasks.server";
+import { H1 } from "~/component/title";
+import { Overlay } from "../../component/overlay";
 
 export function CreateRotina() {
-  // const [isPopupOption, setIsPopupOption] = useState(false);
+  const [isPopupOption, setIsPopupOption] = useState(false);
   const [category, setCategory] = useState("");
-  //const [isInputCategory, setIsInputCategory] = useState(false);
+  const [isInputCategory, setIsInputCategory] = useState(false);
   const fetcher = useFetcher<typeof createRotina>();
   const navigate = useNavigate();
 
   function setIsCategory({ category }: { category: string }) {
     if (!category) return;
-    // setIsPopupOption((s) => !s);
+    setIsPopupOption((s) => !s);
     setCategory((s) => (s !== category ? category : s));
   }
 
   function setInputCategory() {
-    // setIsInputCategory((s) => !s);
+    setIsInputCategory((s) => !s);
     setCategory("");
-    // setIsPopupOption(false);
+    setIsPopupOption(false);
   }
 
   const validation =
@@ -60,47 +62,51 @@ export function CreateRotina() {
   }, [errorServer, errorInternal, successMessage]);
 
   return (
-    <div
-      // onDoubleClick={() => setIsPopupOption(false)}
-      className="rounded-[50px] max-md:m-5 max-lg:m-15 landscape:max-lg:m-10 xl:mx-60 shadow-2xl shadow-blue-100 w-full bg-white "
-    >
-      <HeaderContent
-        iconBack={faAngleLeft}
-        title="Adicionar Rotina"
-        iconClosed={faX}
-        btnBack={() => navigate("/home")}
-        btnClosed={() => navigate("/home", { replace: true })}
-        classNameHeaderDiv="!backdrop-blur-none"
-      />
-      <div className="relative pt-20 w-full px-5">
+    <div className="h-full w-full">
+      <div className="flex w-full flex-col gap-3">
+        <div className="">
+          <NavLink
+            to="/home"
+            className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+          >
+            <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
+            <H1
+              title="Crie sua rotina"
+              className="w-max text-lg! text-blue-400"
+            />
+          </NavLink>
+        </div>
         <fetcher.Form
-          id="form-create-task"
           method="POST"
           className="flex flex-col gap-3"
+          action="/home/criar-rotina"
         >
-          <div className="bg-blue-50/10 flex flex-col gap-2.5 rounded-2xl p-3 border border-solid border-blue-50/85">
-            <input type="hidden" name="intent" value="create" />
+          <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
             <label className="flex flex-col gap-1">
               <P title="Rotina:" className="text-blue-400" />
+              <input
+                type="hidden"
+                placeholder="Exemplo: 'Criar uma lading page...'"
+                name="intent"
+                value="criar"
+              />
               <Input
                 type="text"
                 placeholder="Exemplo: 'Criar uma lading page...'"
                 name="titleTask"
-                form="form-create-task"
               />
             </label>
-            <label className=" flex flex-col gap-1">
+            <label className="flex flex-col gap-1">
               <P title="Descrição para rotina:" className="text-blue-400" />
               <Input
                 type="text"
                 className=""
                 placeholder="Exemplo: 'landing page deve ter...'"
                 name="descriptionTask"
-                form="form-create-task"
               />
             </label>
           </div>
-          <div className="bg-blue-50/10 flex flex-col gap-2.5 rounded-2xl p-3 border border-solid border-blue-50/85">
+          <div className="flex flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
             <div className="">
               <label className="flex flex-col gap-1">
                 <P title="Categoria:" className="text-blue-400" />
@@ -111,18 +117,17 @@ export function CreateRotina() {
                 />
               </label>
             </div>
-            <label className=" flex flex-col gap-1">
+            <label className="flex flex-col gap-1">
               <P title="Descrição para Categoria:" className="text-blue-400" />
               <Input
                 type="text"
                 className=""
                 placeholder="Exemplo: 'Essa categoria fica´rá responsável...'"
                 name="descriptionCategory"
-                form="form-create-task"
               />
             </label>
           </div>
-          <div className="mb-5 flex flex-row items-center justify-center gap-5">
+          <div className="flex flex-row items-center justify-center gap-5">
             <Button type="submit" className="flex flex-row justify-start gap-2">
               <p className="text-base font-medium text-white">confirmar</p>
               <i>
@@ -141,6 +146,7 @@ export function CreateRotina() {
           </div>
         </fetcher.Form>
       </div>
+      <div></div>
     </div>
   );
 }

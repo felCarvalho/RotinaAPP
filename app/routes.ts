@@ -9,6 +9,9 @@ export default [
   layout("./layout/LayoutHome/layout.tsx", [
     route("/home", "./pages/Tasks/component.tsx", [
       route("criar-rotina", "./pages/CreateRotina/component.tsx"),
+      route("configuracoes", "./pages/Configuracao/component.tsx"),
+      route("buscar", "./pages/SearchTasks/component.tsx"),
+      route("adicionar-tarefa", "./pages/AdicionarTarefa/component.tsx"),
     ]),
   ]),
 ] satisfies RouteConfig;

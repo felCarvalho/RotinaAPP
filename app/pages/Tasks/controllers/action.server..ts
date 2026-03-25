@@ -1,7 +1,6 @@
 import type { ActionFunctionArgs } from "react-router";
 import { updateTasks } from "../service/update.server";
 import { deleteTasks } from "../service/delete.server";
-import { renomearTasks } from "~/modais/Renomear/renomear.server";
 
 async function action({ request }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -13,8 +12,6 @@ async function action({ request }: ActionFunctionArgs) {
       return await updateTasks({ formData, cookieSession });
     case "delete":
       return await deleteTasks({ formData, cookieSession });
-    case "rename":
-      return await renomearTasks({ formData, cookieSession });
     default:
       throw new Error("Nenhuma action foi executada");
   }

@@ -7,11 +7,15 @@ export function Nav({
   classNameLI,
   onClick,
   children,
+  to,
+  title,
 }: {
-  classNameUL: string;
-  classNameLI: string;
-  onClick: () => void;
-  children: React.ReactNode;
+  classNameUL?: string;
+  classNameLI?: string;
+  onClick?: () => void;
+  children?: React.ReactNode;
+  to: string;
+  title?: string;
 }) {
   return (
     <nav className="w-full">
@@ -19,11 +23,11 @@ export function Nav({
         <motion.li
           className={`${classNameLI}`}
           whileTap={{ scale: 0.9, stitchTiles: 300 }}
-          key={""}
+          key={to}
         >
           <NavLink
             onClick={onClick}
-            to={""}
+            to={to}
             className={({ isActive }) =>
               !isActive
                 ? "flex flex-row items-center justify-between gap-2 text-base font-medium text-blue-400"
@@ -32,7 +36,7 @@ export function Nav({
           >
             <span className="flex flex-row items-center justify-between gap-3">
               <i>{""}</i>
-              <P className={``} title={""} />
+              <P className={``} title={title ?? ""} />
             </span>
             {children}
           </NavLink>

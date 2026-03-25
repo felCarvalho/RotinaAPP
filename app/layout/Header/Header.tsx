@@ -1,133 +1,93 @@
+import { useNavigate } from "react-router";
+import { useLocation } from "react-router";
+import { Nav } from "../../component/Nav/Nav";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faAngleLeft,
-  faBars,
+  faCheck,
+  faClipboardCheck,
   faFilter,
   faGear,
+  faHome,
+  faPenToSquare,
   faPlus,
-  faX,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { parseAsString, useQueryStates } from "nuqs";
-import { Button } from "../../component/btn";
-import { DropdownFilterCategorias } from "../../component/Filtros/FiltrosTasks/FiltroTasksCategorias/FilterCategorias";
-import { DropdownFilterStatus } from "../../component/Filtros/FiltrosTasks/FiltroTasksStatus/FilterStatus";
-import { H1 } from "../../component/title";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export function Header() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [openBar, setOpenBar] = useState<string>("");
+  const navLinks = [
+    {
+      title: "Inicio",
+      link: "home",
+      icon: faHome,
+    },
+    {
+      title: "Buscar",
+      link: "home/buscar",
+      icon: faSearch,
+    },
+    {
+      title: "Configurações",
+      link: "home/configuracoes",
+      icon: faGear,
+    },
+    {
+      title: "Filtro",
+      link: "home/filtros",
+      icon: faFilter,
+    },
+    {
+      title: "Adicionar Tarefa",
+      link: "home/adicionar-tarefa",
+      icon: faCheck,
+    },
+    {
+      title: "Adicionar Categoria",
+      link: "home/adicionar-categoria",
+      icon: faPlus,
+    },
+    {
+      title: "Rascunhos",
+      link: "home/rascunhos",
+      icon: faClipboardCheck,
+    },
+    {
+      title: "Criar Rotina",
+      link: "home/criar-rotina",
+      icon: faPenToSquare,
+    },
+  ];
 
   return (
-    <header className="fixed right-2 left-2 z-50 rounded-b-3xl border border-blue-50 bg-linear-to-r from-blue-50 px-2 shadow-2xl shadow-white backdrop-blur-3xl">
-      <div className="flex flex-col">
-        <div className="flex flex-row items-center justify-between pt-5 pb-2.5">
-          <Button
-            className="min-h-10 min-w-10 p-0!"
-            ariaLabel="Menu-rápido"
-            type="button"
+    <div
+      className={`flex transition-all ${openBar ? "flex flex-col items-end justify-start" : "flex flex-col items-center justify-start"} gap-5 bg-blue-50/30 px-4 py-5`}
+    >
+      <div
+        className="flex h-5 w-7 flex-row-reverse rounded-[5px] border border-blue-400 bg-white shadow-2xl shadow-blue-400"
+        onClick={() =>
+          setOpenBar((s) => (s.trim() ? "" : "mr-2.5 animate-pulse "))
+        }
+      >
+        <div
+          className={`${openBar} h-4.5 w-4.5 rounded-[5px] bg-blue-400`}
+        ></div>
+      </div>
+      {navLinks.map((s) => (
+        <div className={openBar.trim() ? "w-60" : "w-full"}>
+          <div
+            className="flex flex-row items-center rounded-2xl border-b border-b-blue-100 p-2 hover:bg-white"
+            onClick={() => navigate(s.link)}
           >
-            <i className="text-lg">
-              <FontAwesomeIcon icon={faBars} />
+            <i className="text-blue-400">
+              <FontAwesomeIcon icon={s.icon} />
             </i>
-          </Button>
-          <H1 title="Minha Rotina" className="text-blue-400" />
-          <Button
-            type="button"
-            className="min-h-10 min-w-10 p-0!"
-            ariaLabel="Configurações"
-            onClick={() => {}}
-          >
-            <i className="text-lg">
-              <FontAwesomeIcon icon={faGear} />
-            </i>
-          </Button>
-        </div>
-        <div className="flex flex-row justify-between py-2.5">
-          <Button
-            type="button"
-            onClick={() => navigate("/home/criar-rotina")}
-            className="flex flex-row items-center gap-2 font-medium"
-          >
-            <i>
-              <FontAwesomeIcon icon={faPlus} />
-            </i>
-            <p className="truncate text-base text-ellipsis max-sm:w-10">
-              Adicionar Rotina
-            </p>
-          </Button>
-          <div className="flex flex-row items-center justify-center gap-2">
-            <Button
-              onClick={() => {}}
-              type="button"
-              className={`flex flex-row items-center gap-2 font-medium`}
-            >
-              <i className={"text-blue-400"}>
-                <FontAwesomeIcon icon={faFilter} />
-              </i>
-              <p className={""}>Filtro</p>
-            </Button>
-
-            {false && (
-              <div className="absolute top-24 right-20 left-20 z-50 flex h-40 flex-col justify-start rounded-3xl bg-white shadow-2xl shadow-blue-50">
-                <div className="p-2">
-                  <div className="flex flex-col items-center gap-2">
-                    <Button
-                      type="button"
-                      className="w-full bg-white font-medium shadow-sm shadow-blue-50 active:bg-blue-50"
-                    >
-                      <p className="w-full text-left text-blue-400">
-                        Categorias
-                      </p>
-                    </Button>
-                    <Button
-                      type="button"
-                      className="w-full bg-white px-3 font-medium shadow-sm shadow-blue-50 active:bg-blue-50"
-                    >
-                      <p className="text-left text-blue-400">Status</p>
-                    </Button>
-                  </div>
-                  <div className="scrollbar-hide absolute top-0 right-0 bottom-14 left-0 overflow-auto rounded-3xl">
-                    <DropdownFilterCategorias />
-                  </div>
-                  <div>
-                    <DropdownFilterStatus />
-                  </div>
-
-                  <div className="absolute right-0 bottom-0 left-0 flex flex-row items-center justify-between rounded-b-3xl p-2 backdrop-blur-xl">
-                    <Button
-                      type="button"
-                      className="flex min-h-9 min-w-9 items-center justify-center p-0!"
-                      ariaLabel="Voltar"
-                    >
-                      <i>
-                        <FontAwesomeIcon icon={faAngleLeft} />
-                      </i>
-                    </Button>
-                    <Button
-                      type="button"
-                      className="flex min-h-9 min-w-9 items-center justify-center p-0!"
-                      ariaLabel="Fechar"
-                    >
-                      <i>
-                        <FontAwesomeIcon icon={faX} />
-                      </i>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            )}
-            <Button
-              type="button"
-              onClick={() => {}}
-              className="bg-white font-medium text-blue-400"
-            >
-              <p className="xs:max-2xs:w-16 3xs:max-4xs:w-20 truncate text-blue-400">
-                Limpar Filtro
-              </p>
-            </Button>
+            {openBar.trim() && <Nav to={s.link} title={s.title} />}
           </div>
         </div>
-      </div>
-    </header>
+      ))}
+    </div>
   );
 }

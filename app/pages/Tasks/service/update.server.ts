@@ -1,13 +1,14 @@
 import { z } from "zod";
-import { getSession } from "~/utils/cookies/cookies.server";
+import { getSession } from "../../../utils/cookies/cookies.server";
 import { data } from "react-router";
-import { ActionTypesRequests } from "~/utils/typesGlobals/type.server";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 
 const schemaUpdateTasks = z.object({
-  publicId: z.string().min(1),
-  status: z.string().min(1),
+  completed: z.optional(z.string()),
+  titleTask: z.optional(z.string()),
+  descriptionTask: z.optional(z.string()),
+  idTask: z.optional(z.string()),
 });
 
 export async function updateTasks({
@@ -26,7 +27,6 @@ export async function updateTasks({
     const validateUpdate = z.flattenError(parsedTaskUpdate.error);
     return data(
       {
-        type: ActionTypesRequests.ERROR_VALIDATION as const,
         errors: validateUpdate.fieldErrors,
       },
       {
@@ -35,14 +35,13 @@ export async function updateTasks({
     );
   }
 
-  const status =
-    parsedTaskUpdate.data.status === "true" ? "Concluída" : "Pendente";
-
   try {
     const response = await axios.patch(
-      `/home/${parsedTaskUpdate.data.publicId}`,
+      `home/${parsedTaskUpdate.data.idTask}`,
       {
-        status: status,
+        completed: parsedTaskUpdate.data.completed,
+        titleTask: parsedTaskUpdate.data.titleTask,
+        descriptionTask: parsedTaskUpdate.data.descriptionTask,
       },
       {
         baseURL: LOCAL_URL,
@@ -52,11 +51,8 @@ export async function updateTasks({
       },
     );
 
-    // console.log(response.data);
-
     return data(
       {
-        type: ActionTypesRequests.SUCCESS as const,
         data: response.data,
       },
       {
@@ -68,7 +64,6 @@ export async function updateTasks({
     if (axios.isAxiosError(error)) {
       return data(
         {
-          type: ActionTypesRequests.ERROR_SERVER as const,
           data: error.response?.data,
         },
         {
@@ -79,7 +74,6 @@ export async function updateTasks({
 
     return data(
       {
-        type: ActionTypesRequests.ERROR_INTERNAL as const,
         data: {
           message: "Ops! erro interno ao atualizar a rotina",
           error: error,

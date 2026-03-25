@@ -1,6 +1,10 @@
-import { faAngleRight, faEye } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleRight,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useState } from "react";
 import { Form, NavLink, useLoaderData } from "react-router";
 import { toast } from "sonner";
 import { Button } from "../../component/btn";
@@ -11,6 +15,7 @@ import { H1 } from "../../component/title";
 import type { loader } from "./controllers/loader.server";
 
 export function LoginJSX() {
+  const [isOpenPassword, setOpenPassword] = useState(false);
   const loaderData = useLoaderData<typeof loader>();
 
   useEffect(() => {
@@ -22,7 +27,7 @@ export function LoginJSX() {
   return (
     <div className="flex min-h-lvh flex-col items-center justify-center gap-10">
       <div className="flex items-center justify-center gap-10 px-5 md:justify-evenly md:px-10 lg:px-52">
-        <div className="flex max-lg:hidden flex-col items-center justify-center gap-5 rounded-2xl md:w-full">
+        <div className="flex flex-col items-center justify-center gap-5 rounded-2xl max-lg:hidden md:w-full">
           <div className="rounded-4xl transition">
             <img
               className="h-60 w-60 rounded-4xl"
@@ -43,7 +48,7 @@ export function LoginJSX() {
             />
           </div>
           <div>
-            <Button type="button" onClick={() => {}}>
+            <Button type="button" onClick={() => ""}>
               <p className="text-white">Abrir Conta!</p>
             </Button>
           </div>
@@ -78,7 +83,7 @@ export function LoginJSX() {
                 <P title="Senha:" className="text-blue-400" />
                 <div className="flex w-full flex-row items-center justify-center gap-2">
                   <Input
-                    type="password"
+                    type={isOpenPassword ? "text" : "password"}
                     name="password"
                     placeholder="Digite seus senha"
                     className="bg-white shadow-none!"
@@ -86,9 +91,12 @@ export function LoginJSX() {
                   <Button
                     type="button"
                     className="min-h-11! min-w-11! bg-white! p-0! text-blue-400!"
+                    onClick={() => setOpenPassword((s) => !s)}
                   >
                     <i>
-                      <FontAwesomeIcon icon={faEye} />
+                      <FontAwesomeIcon
+                        icon={isOpenPassword ? faEyeSlash : faEye}
+                      />
                     </i>
                   </Button>
                 </div>
@@ -97,11 +105,7 @@ export function LoginJSX() {
                 <Button type="submit">
                   <p className="font-medium">Confirmar</p>
                 </Button>
-                <Button
-                  onClick={() => {}}
-                  type="reset"
-                  className="bg-white! text-blue-400!"
-                >
+                <Button type="reset" className="bg-white! text-blue-400!">
                   <p className="font-medium">Cancelar</p>
                 </Button>
               </div>

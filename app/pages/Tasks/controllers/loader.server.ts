@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { getTasksUser } from "../service/get.server";
+import { getTasksUser } from "../service/getAll.server";
 import { tokenContext } from "../../../utils/context/context.server";
 
 async function loader({ request, context }: LoaderFunctionArgs) {

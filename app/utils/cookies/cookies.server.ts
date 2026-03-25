@@ -1,4 +1,5 @@
 import { createCookieSessionStorage } from "react-router";
+import type { Token } from "../context/type.server";
 
 const cookies = createCookieSessionStorage({
   cookie: {
@@ -37,7 +38,7 @@ export async function getCookieTokens({
   const expAccessToken = session.get("expAccessToken");
 
   if (!accessToken || !refreshToken || !expAccessToken) {
-    return false;
+    return null;
   }
 
   return {

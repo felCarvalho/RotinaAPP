@@ -48,6 +48,8 @@ export async function loginAccount({
       },
     );
 
+      console.log(response)
+
     const { accessToken, refreshToken, expAccessToken } = response.data;
     const expAccessTokenDate = new Date(expAccessToken * 1000);
     //aplicando uma mensagem rapida e de visualização unica na tela inicial

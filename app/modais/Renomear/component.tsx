@@ -1,5 +1,9 @@
-import { Renomear } from "./Renomear";
+import { RenomearTSX } from "./renomeat";
 
-export default function RenomearComponent() {
-  return <Renomear />;
+export function RenomearComponent() {
+  return (
+    <div className="">
+      <RenomearTSX />
+    </div>
+  );
 }
