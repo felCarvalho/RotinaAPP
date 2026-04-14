@@ -1,87 +1,89 @@
-# Welcome to React Router!
+# Documentação: RotinaAPP-Framework
 
-A modern, production-ready template for building full-stack React applications using React Router.
+O **RotinaAPP-Framework** é uma aplicação web moderna voltada para o gerenciamento de tarefas e rotinas diárias. O sistema permite que os usuários organizem seu dia a dia através da criação de tarefas, categorização, busca avançada e gestão de rascunhos, tudo isso em uma interface fluida e responsiva.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+---
 
-## Features
+## 🚀 Tecnologias Utilizadas
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+### Frontend & Framework
+- **React 19**: Biblioteca principal para construção da interface.
+- **React Router 7**: Utilizado tanto para roteamento quanto para a lógica de servidor (Loaders, Actions e Middlewares), adotando o modelo full-stack.
+- **TypeScript**: Garantia de tipagem estática e segurança no desenvolvimento.
 
-## Getting Started
+### Estilização & UI
+- **Tailwind CSS v4**: Framework de utilitários para estilização rápida e moderna.
+- **Framer Motion**: Biblioteca para animações fluidas e transições de layout.
+- **Floating UI**: Gerenciamento de elementos flutuantes (popups, menus de contexto).
+- **FontAwesome**: Conjunto de ícones vetoriais.
+- **Sonner**: Sistema de notificações (toasts) elegante.
 
-### Installation
+### Comunicação & Estado
+- **Axios**: Cliente HTTP para consumo da API backend.
+- **Zod**: Validação de esquemas e dados.
+- **Nuqs**: Gerenciamento de parâmetros de busca (URL search params) com tipagem segura.
 
-Install the dependencies:
+---
 
+## 🏗️ Arquitetura do Projeto
+
+O projeto segue uma estrutura modular organizada por funcionalidades dentro da pasta `app/`:
+
+- **`/component`**: Componentes reutilizáveis de UI (botões, inputs, modais, etc.).
+- **`/layout`**: Definições de estruturas globais (ex: Layout de Autenticação, Layout da Home).
+- **`/pages`**: Cada pasta representa uma funcionalidade/página, contendo:
+    - `component.tsx`: Componente React principal da rota.
+    - `controllers/`: Lógica de `loader` (busca de dados) e `action` (mutação de dados).
+    - `services/`: Chamadas diretas à API.
+- **`/middleware`**: Lógica de proteção de rotas e renovação de tokens (AuthMiddleware).
+- **`/modais`**: Componentes de diálogo que são disparados via rotas.
+- **`/utils`**: Funções utilitárias, contextos globais e constantes.
+
+---
+
+## ✨ Funcionalidades Principais
+
+### 🔐 Autenticação e Segurança
+- **Login e Registro**: Fluxos completos com validação de sessão.
+- **Gestão de Sessão**: Utiliza cookies para armazenar tokens de acesso.
+- **Refresh Token Automático**: Middleware que renova o `accessToken` silenciosamente, garantindo a permanência do login.
+
+### 📝 Gestão de Tarefas (Tasks)
+- **CRUD Completo**: Criar, visualizar, editar e excluir tarefas.
+- **Status em Tempo Real**: Marcar tarefas como "Concluída" ou "Incompleta" diretamente na listagem.
+- **Detalhes**: Visualização aprofundada de cada rotina cadastrada.
+
+### 🏷️ Categorização
+- **Organização**: Vínculo de tarefas a categorias específicas.
+- **Gestão de Categorias**: Interface para adição e visualização de categorias.
+
+### 📂 Rascunhos (Drafts)
+- Espaço dedicado para tarefas ou categorias que ainda não foram finalizadas ou que estão guardadas separadamente.
+
+### 🔍 Busca e Filtros
+- Sistema de busca que utiliza parâmetros de URL (`nuqs`), permitindo filtrar por título, categoria ou status de forma persistente.
+
+---
+
+## 🛠️ Configuração e Instalação
+
+### Instalação
+Clone o repositório e instale as dependências:
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
+### Variáveis de Ambiente
+Crie um arquivo `.env` na raiz do projeto:
+```env
+LOCAL_URL=http://seu-backend-api.com
+LOCAL_STRAPI_API=http://seu-strapi-url.com
 ```
 
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+### Comandos Disponíveis
+- `npm run dev`: Inicia o servidor de desenvolvimento.
+- `npm run build`: Cria a versão de produção.
+- `npm start`: Inicia o servidor de produção após o build.
 
 ---
-
-Built with ❤️ using React Router.
+*Documentação oficial do projeto RotinaAPP-Framework.*
