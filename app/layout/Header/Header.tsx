@@ -8,6 +8,7 @@ import {
   faFilter,
   faGear,
   faHome,
+  faLayerGroup,
   faPenToSquare,
   faPlus,
   faSearch,
@@ -23,6 +24,11 @@ export function Header() {
       title: "Inicio",
       link: "home",
       icon: faHome,
+    },
+    {
+      title: "Categorias",
+      link: "home/categorias",
+      icon: faLayerGroup,
     },
     {
       title: "Buscar",

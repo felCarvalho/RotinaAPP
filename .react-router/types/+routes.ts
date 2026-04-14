@@ -35,12 +35,43 @@ type Pages = {
   "/home/adicionar-tarefa": {
     params: {};
   };
+  "/home/adicionar-categoria": {
+    params: {};
+  };
+  "/home/renomear/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/home/detalhes/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/home/rascunhos": {
+    params: {};
+  };
+  "/home/rascunhos/renomear/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/home/rascunhos/detalhes-tarefa/:id": {
+    params: {
+      "id": string;
+    };
+  };
+  "/home/rascunhos/detalhes-categoria/:id": {
+    params: {
+      "id": string;
+    };
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/criar-conta" | "/login" | "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
+    page: "/" | "/criar-conta" | "/login" | "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa" | "/home/adicionar-categoria" | "/home/renomear/:id" | "/home/detalhes/:id" | "/home/rascunhos" | "/home/rascunhos/renomear/:id" | "/home/rascunhos/detalhes-tarefa/:id" | "/home/rascunhos/detalhes-categoria/:id";
   };
   "./layout/LayoutRegister/layout.tsx": {
     id: "layout/LayoutRegister/layout";
@@ -56,11 +87,11 @@ type RouteFiles = {
   };
   "./layout/LayoutHome/layout.tsx": {
     id: "layout/LayoutHome/layout";
-    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
+    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa" | "/home/adicionar-categoria" | "/home/renomear/:id" | "/home/detalhes/:id" | "/home/rascunhos" | "/home/rascunhos/renomear/:id" | "/home/rascunhos/detalhes-tarefa/:id" | "/home/rascunhos/detalhes-categoria/:id";
   };
   "./pages/Tasks/component.tsx": {
     id: "pages/Tasks/component";
-    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa";
+    page: "/home" | "/home/criar-rotina" | "/home/configuracoes" | "/home/buscar" | "/home/adicionar-tarefa" | "/home/adicionar-categoria" | "/home/renomear/:id" | "/home/detalhes/:id" | "/home/rascunhos" | "/home/rascunhos/renomear/:id" | "/home/rascunhos/detalhes-tarefa/:id" | "/home/rascunhos/detalhes-categoria/:id";
   };
   "./pages/CreateRotina/component.tsx": {
     id: "pages/CreateRotina/component";
@@ -78,6 +109,33 @@ type RouteFiles = {
     id: "pages/AdicionarTarefa/component";
     page: "/home/adicionar-tarefa";
   };
+  "./pages/AdicionarCategoria/component.tsx": {
+    id: "pages/AdicionarCategoria/component";
+    page: "/home/adicionar-categoria";
+  };
+  "./modais/Renomear-tarefa/component.tsx": {
+    id: "renomear-home";
+    page: "/home/renomear/:id";
+  };
+  "./modais/Detalhes-tarefa/component.tsx": {
+    id: "detalhes-rotina";
+    page: "/home/detalhes/:id";
+  } | {
+    id: "detalhes-rascunhos";
+    page: "/home/rascunhos/detalhes-tarefa/:id";
+  };
+  "./pages/rascunhos/component.tsx": {
+    id: "pages/rascunhos/component";
+    page: "/home/rascunhos" | "/home/rascunhos/renomear/:id" | "/home/rascunhos/detalhes-tarefa/:id" | "/home/rascunhos/detalhes-categoria/:id";
+  };
+  "./modais/Renomear-categoria-task-rascunho/component.tsx": {
+    id: "renomear-rascunhos";
+    page: "/home/rascunhos/renomear/:id";
+  };
+  "./modais/Detalhes-categoria/component.tsx": {
+    id: "detalhes-categoria";
+    page: "/home/rascunhos/detalhes-categoria/:id";
+  };
 };
 
 type RouteModules = {
@@ -91,4 +149,11 @@ type RouteModules = {
   "pages/Configuracao/component": typeof import("./app/./pages/Configuracao/component.tsx");
   "pages/SearchTasks/component": typeof import("./app/./pages/SearchTasks/component.tsx");
   "pages/AdicionarTarefa/component": typeof import("./app/./pages/AdicionarTarefa/component.tsx");
+  "pages/AdicionarCategoria/component": typeof import("./app/./pages/AdicionarCategoria/component.tsx");
+  "renomear-home": typeof import("./app/./modais/Renomear-tarefa/component.tsx");
+  "detalhes-rotina": typeof import("./app/./modais/Detalhes-tarefa/component.tsx");
+  "pages/rascunhos/component": typeof import("./app/./pages/rascunhos/component.tsx");
+  "renomear-rascunhos": typeof import("./app/./modais/Renomear-categoria-task-rascunho/component.tsx");
+  "detalhes-rascunhos": typeof import("./app/./modais/Detalhes-tarefa/component.tsx");
+  "detalhes-categoria": typeof import("./app/./modais/Detalhes-categoria/component.tsx");
 };
