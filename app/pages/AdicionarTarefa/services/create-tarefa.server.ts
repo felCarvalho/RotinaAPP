@@ -30,12 +30,9 @@ export async function createTarefa({
 
   if (!schemaSafeParse.success) {
     const error = z.flattenError(schemaSafeParse.error).fieldErrors;
-    return data(
-      { data: error },
-      {
-        status: 400,
-      },
-    );
+    return data(error, {
+      status: 400,
+    });
   }
 
   try {
@@ -43,7 +40,7 @@ export async function createTarefa({
       "home/criar-tarefa",
       {
         titleTask: form.titleTask,
-        descriptionTask: form.descriptionTask ?? "",
+        descriptionTask: form.descriptionTask,
       },
       {
         baseURL: LOCAL_URL,
@@ -53,24 +50,14 @@ export async function createTarefa({
       },
     );
 
-    return data(
-      {
-        data: response.data,
-      },
-      {
-        status: response.status,
-      },
-    );
+    return data(response.data, {
+      status: response.status,
+    });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return data(
-        {
-          data: error.response?.data,
-        },
-        {
-          status: error.response?.status || 500,
-        },
-      );
+      return data(error.response?.data, {
+        status: error.response?.status || 500,
+      });
     }
   }
 

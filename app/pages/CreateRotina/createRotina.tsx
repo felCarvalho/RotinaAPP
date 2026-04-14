@@ -13,7 +13,7 @@ import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
-import type { createRotina } from "./services/createTasks.server";
+import type { createRotina } from "./services/create-rotina.server";
 import { H1 } from "~/component/title";
 import { Overlay } from "../../component/overlay";
 
@@ -88,7 +88,7 @@ export function CreateRotina() {
                 type="hidden"
                 placeholder="Exemplo: 'Criar uma lading page...'"
                 name="intent"
-                value="criar"
+                value="create"
               />
               <Input
                 type="text"
