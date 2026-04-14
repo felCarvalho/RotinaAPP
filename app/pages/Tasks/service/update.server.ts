@@ -5,7 +5,9 @@ import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 
 const schemaUpdateTasks = z.object({
-  completed: z.optional(z.string()),
+  completed: z.optional(
+    z.enum(["Concluída", "Incompleta"], { error: "Ops, status inválido" }),
+  ),
   titleTask: z.optional(z.string()),
   descriptionTask: z.optional(z.string()),
   idTask: z.optional(z.string()),
@@ -25,14 +27,9 @@ export async function updateTasks({
 
   if (!parsedTaskUpdate.success) {
     const validateUpdate = z.flattenError(parsedTaskUpdate.error);
-    return data(
-      {
-        errors: validateUpdate.fieldErrors,
-      },
-      {
-        status: 400,
-      },
-    );
+    return data(validateUpdate.fieldErrors, {
+      status: 400,
+    });
   }
 
   try {
@@ -51,34 +48,22 @@ export async function updateTasks({
       },
     );
 
-    return data(
-      {
-        data: response.data,
-      },
-      {
-        status: 200,
-      },
-    );
+    return data(response.data, {
+      status: 200,
+    });
   } catch (error) {
     console.log(error);
     if (axios.isAxiosError(error)) {
-      return data(
-        {
-          data: error.response?.data,
-        },
-        {
-          status: error.response?.status,
-        },
-      );
+      return data(error.response?.data, {
+        status: error.response?.status,
+      });
     }
 
     return data(
       {
-        data: {
-          message: "Ops! erro interno ao atualizar a rotina",
-          error: error,
-          status: 500,
-        },
+        message: "Ops! erro interno ao atualizar a rotina",
+        error: error,
+        status: 500,
       },
       {
         status: 500,

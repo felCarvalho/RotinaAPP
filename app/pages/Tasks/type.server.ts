@@ -3,18 +3,27 @@ export interface Task {
   title: string;
   description: string;
   completed: string;
-  category: string | { title: string; id: string };
+  category: string | Category;
   user: string;
   updateAt: string;
   createAt: string;
   deleteAt: string;
 }
 
+export interface Category {
+  id: string;
+  title: string;
+  description: string | null;
+  user: string;
+  status: string | null;
+  updateAt: string;
+  createAt: string;
+  deleteAt: string;
+}
+
 export interface dataTasks {
-  data: {
-    data: Task[];
-    success: boolean;
-    notification: [];
-    code: string;
-  };
+  data: Task[];
+  success: boolean;
+  notification: [];
+  code: string;
 }

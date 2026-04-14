@@ -8,9 +8,9 @@ async function action({ request }: ActionFunctionArgs) {
   const intent = formData.get("intent");
 
   switch (intent) {
-    case "update":
+    case "update-task":
       return await updateTasks({ formData, cookieSession });
-    case "delete":
+    case "delete-task":
       return await deleteTasks({ formData, cookieSession });
     default:
       throw new Error("Nenhuma action foi executada");

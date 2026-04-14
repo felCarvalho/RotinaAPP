@@ -13,7 +13,6 @@ export async function searchTasks({
   const urlObj = new URL(url);
   const search = urlObj.searchParams.get("search");
   const session = await getSession(cookieSession);
-  console.log(search, "search  aqui", urlObj);
 
   if (!search) {
     return;
@@ -30,8 +29,6 @@ export async function searchTasks({
         },
       },
     );
-
-    console.log(response.data, "testando o data de search");
 
     return data(response.data, { status: response.status });
   } catch (error) {

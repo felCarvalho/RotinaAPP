@@ -1,5 +1,5 @@
 export const handle = {
   id: "buscar-tasks",
-};
+} as const;
 
-export type Handle = typeof handle;
+export type HandleSearch = typeof handle;

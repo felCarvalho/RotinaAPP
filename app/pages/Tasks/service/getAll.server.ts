@@ -33,35 +33,28 @@ export async function getTasksUser({
       baseURL: LOCAL_URL,
     });
 
-    return data(
-      {
-        data: response.data,
+    return data(response.data, {
+      headers: {
+        "Set-Cookie": await commitSession(setCookie),
       },
-      {
-        headers: {
-          "Set-Cookie": await commitSession(setCookie),
-        },
-        status: 200,
-      },
-    );
+      status: 200,
+    });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return data(
-        {
-          data: error.response?.data,
-        },
-        {
-          status: error.response?.status,
-        },
-      );
+      return data(error.response?.data, {
+        status: error.response?.status,
+      });
     }
 
-    return data({
-      data: {
+    return data(
+      {
         message: "Ops! erro interno ao buscar rotinas",
         error: error,
+        code: 500,
+      },
+      {
         status: 500,
       },
-    });
+    );
   }
 }

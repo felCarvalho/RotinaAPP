@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { getSession } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
-import { ActionTypesRequests } from "~/utils/typesGlobals/type.server";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 
@@ -45,36 +44,21 @@ export async function deleteTasks({
       },
     );
 
-    return data(
-      {
-        type: ActionTypesRequests.SUCCESS as const,
-        data: response.data,
-      },
-      {
-        status: response.status,
-      },
-    );
+    return data(response.data, {
+      status: response.status,
+    });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return data(
-        {
-          type: ActionTypesRequests.ERROR_SERVER as const,
-          data: error.response?.data,
-        },
-        {
-          status: error.response?.status,
-        },
-      );
+      return data(error.response?.status, {
+        status: error.response?.status,
+      });
     }
 
     return data(
       {
-        type: ActionTypesRequests.ERROR_INTERNAL as const,
-        data: {
-          message: "Ops! erro interno ao deletar a rotina",
-          error: error,
-          status: 500,
-        },
+        message: "Ops! erro interno ao deletar a rotina",
+        error: error,
+        status: 500,
       },
       {
         status: 500,
