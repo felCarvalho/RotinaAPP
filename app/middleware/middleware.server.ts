@@ -20,10 +20,6 @@ const AuthMiddleware: MiddlewareFunction = async (
   const expDate = new Date(expAccessToken);
   const date = new Date();
 
-  if (url.pathname === "/") {
-    return redirect("/login");
-  }
-
   if (!isPublicRoute && !expAccessToken) {
     session.flash("notification", "Ops, Faça login para poder entrar");
 
