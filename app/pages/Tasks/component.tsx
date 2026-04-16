@@ -4,8 +4,9 @@ import { loader } from "./controllers/loader.server";
 import { action } from "./controllers/action.server.";
 import { handle } from "./controllers/handle";
 import { useLocation } from "react-router";
+import { middleware } from "../../middleware/middleware.server";
 
-export { loader, action, handle };
+export { loader, action, handle, middleware };
 
 export default function TasksComponent() {
   const { pathname } = useLocation();
