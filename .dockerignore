@@ -1,0 +1,10 @@
+.react-router
+build
+node_modules
+.git
+.gitignore
+.prettierrc
+eslint.config.*
+README.md
+Dockerfile
+docker-compose.yml

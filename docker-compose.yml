@@ -1,0 +1,28 @@
+services:
+  # Configuração de Produção (Stage 5 do Dockerfile)
+  app:
+    container_name: rotinaapp-prod
+    build:
+      context: .
+      target: runner
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  # Configuração de Desenvolvimento (Stage 2 do Dockerfile)
+  dev:
+    container_name: rotinaapp-dev
+    build:
+      context: .
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    # O comando 'npm run dev' já está no Dockerfile, mas podemos reforçar aqui
+    command: npm run dev
