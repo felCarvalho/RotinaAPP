@@ -10,7 +10,7 @@ export { loader, action, handle };
 export default function TasksComponent() {
   const { pathname } = useLocation();
   return (
-    <div className="h-full border border-sky-50 md:p-10">
+    <div className="h-full md:p-10">
       {pathname === "/home" && <Tasks />}
       <div className={pathname === "/home" ? "" : "h-full w-full"}>
         <Outlet />

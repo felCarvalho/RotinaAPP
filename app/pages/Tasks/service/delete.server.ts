@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { getSession } from "~/utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
+import type { Token } from "../../../utils/context/type.server";
 
 const schemaDelete = z.object({
   idTask: z.string().min(1, { error: "ID inválido" }),
@@ -11,13 +12,23 @@ const schemaDelete = z.object({
 export async function deleteTasks({
   formData,
   cookieSession,
+  context,
 }: {
   formData: FormData;
   cookieSession: string | null;
+  context: Token | null;
 }) {
-  const form = Object.fromEntries(formData);
-  const session = await getSession(cookieSession);
+  const setCookie = await getSession(cookieSession);
 
+  if (context) {
+    setCookie.set("accessToken", context?.accessToken);
+    setCookie.set("refreshToken", context?.refreshToken);
+    setCookie.set("expAccessToken", context?.expAccessToken);
+  }
+
+  const session = await getCookieTokens({ cookiesSession: cookieSession });
+
+  const form = Object.fromEntries(formData);
   const publicIdValidate = schemaDelete.safeParse(form);
 
   if (!publicIdValidate.success) {
@@ -28,6 +39,9 @@ export async function deleteTasks({
         errors: validateErrors.fieldErrors,
       },
       {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
         status: 400,
       },
     );
@@ -39,17 +53,23 @@ export async function deleteTasks({
       {
         baseURL: LOCAL_URL,
         headers: {
-          Cookie: `accessToken=${session.get("accessToken")}`,
+          Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,
         },
       },
     );
 
     return data(response.data, {
+      headers: {
+        "Set-Cookie": await commitSession(setCookie),
+      },
       status: response.status,
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return data(error.response?.status, {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
         status: error.response?.status,
       });
     }
@@ -61,6 +81,9 @@ export async function deleteTasks({
         status: 500,
       },
       {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
         status: 500,
       },
     );

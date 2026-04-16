@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { getSession } from "~/utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
+import type { Token } from "../../../../utils/context/type.server";
 
 const schemaUpdateCategory = z.object({
   titleCategory: z
@@ -28,11 +29,22 @@ const schemaUpdateCategory = z.object({
 export async function updateCategoryRascunho({
   formData,
   cookieSession,
+  context,
 }: {
   formData: FormData;
   cookieSession: string | null;
+  context: Token | null;
 }) {
-  const session = await getSession(cookieSession);
+  const setCookie = await getSession(cookieSession);
+
+  if (context) {
+    setCookie.set("accessToken", context?.accessToken);
+    setCookie.set("refreshToken", context?.refreshToken);
+    setCookie.set("expAccessToken", context?.expAccessToken);
+  }
+
+  const session = await getCookieTokens({ cookiesSession: cookieSession });
+
   const form = Object.fromEntries(formData);
 
   const schemaCategory = schemaUpdateCategory.safeParse(form);
@@ -52,17 +64,27 @@ export async function updateCategoryRascunho({
       {
         baseURL: LOCAL_URL,
         headers: {
-          Cookie: `accessToken=${session.get("accessToken")}`,
+          Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,
         },
       },
     );
 
-    return data(response.data, { status: response.status });
+    return data(response.data, {
+      headers: {
+        "Set-Cookie": await commitSession(setCookie),
+      },
+      status: response.status,
+    });
   } catch (e) {
     console.error(e);
 
     if (axios.isAxiosError(e)) {
-      return data(e.response?.data, { status: e.response?.status });
+      return data(e.response?.data, {
+        status: e.response?.status,
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
+      });
     }
 
     return data(
@@ -73,6 +95,9 @@ export async function updateCategoryRascunho({
       },
       {
         status: 500,
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
       },
     );
   }

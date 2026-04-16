@@ -1,4 +1,4 @@
-import { useNavigate, useFetcher, useParams } from "react-router";
+import { useNavigate, useFetcher } from "react-router";
 import { Overlay } from "../../component/overlay";
 import { Button } from "../../component/btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,60 +9,24 @@ import { P } from "../../component/paragrafo";
 import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
 import {
   type HandleRascunho,
-  handle as handleRascunho,
+  handle,
 } from "../../pages/rascunhos/controllers/handle";
-import {
-  handle as handleTasks,
-  type HandleTasks,
-} from "../../pages/Tasks/controllers/handle";
 import type { dataRascunhos } from "../../pages/rascunhos/type.server";
 import type { dataTasks, Category, Task } from "../../pages/Tasks/type.server";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 export function RenomearCategoriaTSX() {
-  const { id } = useParams();
-  const matches = useMatchesTypeds<HandleRascunho | HandleTasks, dataRascunhos | dataTasks>();
-  
-  const rascunho = matches.find((r) => (r.handle as HandleRascunho) === handleRascunho);
-  const tasksMatch = matches.find((r) => (r.handle as HandleTasks)?.id === handleTasks.id);
-
-  const data = useMemo(() => {
-    // Try to find in rascunhos first
-    if (rascunho && "data" in rascunho.loaderData && "c" in rascunho.loaderData.data) {
-      const rData = rascunho.loaderData as dataRascunhos;
-      const c = rData.data.c.find((c) => c.id === id);
-      const t = rData.data.t.find((t) => t.id === id);
-      if (c || t) return { categoria: c, task: t, user: c?.user ?? t?.user, action: "/home/rascunhos" };
-    }
-
-    // Then try in tasks
-    if (tasksMatch && "data" in tasksMatch.loaderData && Array.isArray(tasksMatch.loaderData.data)) {
-      const tData = tasksMatch.loaderData as dataTasks;
-      const t = tData.data.find((t: Task) => t.id === id);
-      
-      // For categories in tasksMatch, we might need to find it inside tasks
-      let c: Category | undefined;
-      if (t && typeof t.category === "object") {
-        c = t.category;
-      } else {
-        const tWithCat = tData.data.find((task: Task) => 
-          typeof task.category === "object" && task.category.id === id
-        );
-        if (tWithCat && typeof tWithCat.category === "object") {
-          c = tWithCat.category;
-        }
-      }
-
-      if (c || t) return { categoria: c, task: t, user: c?.user ?? t?.user, action: "." };
-    }
-
-    return { categoria: null, task: null, user: null, action: "." };
-  }, [rascunho, tasksMatch, id]);
-
-  const { categoria, task, user, action } = data;
+  const matches = useMatchesTypeds<HandleRascunho, dataRascunhos>();
+  const matchesRascunho = matches.find((h) => h.handle === handle);
+  const loaderRascunho = matchesRascunho?.loaderData;
+  const paramsIdRascunho = matchesRascunho?.params.id;
+  const task = loaderRascunho?.data.t.find((t) => t.id === paramsIdRascunho);
+  const category = loaderRascunho?.data.c.find(
+    (c) => c.id === paramsIdRascunho,
+  );
   const [renomear, setRenomear] = useState<string | null>(null);
-  const navigate = useNavigate();
   const fetcher = useFetcher();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -73,7 +37,7 @@ export function RenomearCategoriaTSX() {
         >
           <fetcher.Form
             method="PATCH"
-            action={action}
+            action="/home/rascunhos"
             className="flex flex-col gap-5"
           >
             <div className="flex flex-row items-center gap-2">
@@ -87,9 +51,7 @@ export function RenomearCategoriaTSX() {
                 </i>
               </Button>
               <H1
-                title={
-                  categoria?.title ? "Renomear categoria" : "Renomear tarefa"
-                }
+                title={task?.title ? "Renomear tarefa" : "Renomear categoria"}
                 className="text-lg! text-blue-400"
               />
             </div>
@@ -97,26 +59,26 @@ export function RenomearCategoriaTSX() {
               <P title="Renomear:" className="text-blue-400" />
               <Input
                 type="text"
-                defaultValue={categoria?.title ?? task?.title ?? ""}
+                defaultValue={renomear ?? task?.title ?? category?.title ?? ""}
                 onChange={(e) => setRenomear(e.target.value)}
                 placeholder="Digite o novo nome"
-                name={categoria?.title ? "titleCategory" : "titleTask"}
+                name={task?.title ? "titleTask" : "titleCategory"}
                 className="peer"
               />
               <Input
                 name="intent"
                 type="hidden"
-                value={categoria?.title ? "update-category" : "update-task"}
+                value={task?.title ? "update-task" : "update-category"}
               />
               <Input
-                name={categoria?.title ? "idCategory" : "idTask"}
+                name={task?.title ? "idTask" : "idCategory"}
                 type="hidden"
-                value={categoria?.id ?? task?.id}
+                value={task?.id ?? category?.id ?? ""}
               />
               <Input
                 name="idUser"
                 type="hidden"
-                value={user}
+                value={task?.user ?? category?.user ?? ""}
               />
             </label>
             <div className="flex w-full flex-row items-center justify-center gap-5">
@@ -150,4 +112,3 @@ export function RenomearCategoriaTSX() {
     </div>
   );
 }
-

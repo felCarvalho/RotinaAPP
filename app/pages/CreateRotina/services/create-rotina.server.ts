@@ -3,7 +3,8 @@ import { z } from "zod";
 import { ActionTypesRequests } from "../../../utils/typesGlobals/type.server";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import { getSession } from "../../../utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "../../../utils/cookies/cookies.server";
+import type { Token } from "../../../utils/context/type.server";
 
 const schemaCreateRotina = z.object({
   titleTask: z
@@ -27,11 +28,22 @@ const schemaCreateRotina = z.object({
 export async function createRotina({
   formData,
   cookieSession,
+  context,
 }: {
   formData: FormData;
   cookieSession: string | null;
+  context: Token | null;
 }) {
-  const session = await getSession(cookieSession);
+  const setCookie = await getSession(cookieSession);
+
+  if (context) {
+    setCookie.set("accessToken", context?.accessToken);
+    setCookie.set("refreshToken", context?.refreshToken);
+    setCookie.set("expAccessToken", context?.expAccessToken);
+  }
+
+  const session = await getCookieTokens({ cookiesSession: cookieSession });
+
   const form = Object.fromEntries(formData);
 
   const schemaRotina = schemaCreateRotina.safeParse(form);
@@ -59,7 +71,7 @@ export async function createRotina({
       {
         baseURL: LOCAL_URL,
         headers: {
-          Cookie: `accessToken=${session.get("accessToken")}`,
+          Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,
         },
       },
     );
@@ -69,7 +81,12 @@ export async function createRotina({
         type: ActionTypesRequests.SUCCESS as const,
         data: response.data,
       },
-      { status: 200 },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
+        status: 200,
+      },
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -80,6 +97,9 @@ export async function createRotina({
         },
         {
           status: error.response?.status,
+          headers: {
+            "Set-Cookie": await commitSession(setCookie),
+          },
         },
       );
     }
@@ -95,6 +115,9 @@ export async function createRotina({
       },
       {
         status: 500,
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
       },
     );
   }

@@ -179,7 +179,9 @@ export function Tasks() {
                     to={`/home/info-categoria/${typeof t.category === "object" ? t.category.id : t.category}`}
                     className="xs:max-2xs:w-8 3xs:max-4xs:w-14 truncate text-sm font-medium text-blue-300 hover:underline"
                   >
-                    {typeof t.category === "object" ? t.category.title : t.category}
+                    {typeof t.category === "object"
+                      ? t.category.title
+                      : t.category}
                   </NavLink>
                 </div>
                 <div>

@@ -42,6 +42,9 @@ export async function getTasksUser({
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return data(error.response?.data, {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
         status: error.response?.status,
       });
     }
@@ -53,6 +56,9 @@ export async function getTasksUser({
         code: 500,
       },
       {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
         status: 500,
       },
     );

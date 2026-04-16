@@ -2,7 +2,8 @@ import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import z from "zod";
 import { data } from "react-router";
 import axios, { isAxiosError } from "axios";
-import { getSession } from "../../../utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "../../../utils/cookies/cookies.server";
+import type { Token } from "../../../utils/context/type.server";
 
 const categoriaSchema = z.object({
   descriptionCategory: z.string().optional(),
@@ -20,11 +21,22 @@ const categoriaSchema = z.object({
 export async function createCategory({
   cookieSession,
   formData,
+  context,
 }: {
   cookieSession: string | null;
   formData: FormData;
+  context: Token | null;
 }) {
-  const session = await getSession(cookieSession);
+  const setCookie = await getSession(cookieSession);
+
+  if (context) {
+    setCookie.set("accessToken", context?.accessToken);
+    setCookie.set("refreshToken", context?.refreshToken);
+    setCookie.set("expAccessToken", context?.expAccessToken);
+  }
+
+  const session = await getCookieTokens({ cookiesSession: cookieSession });
+
   const form = Object.fromEntries(formData);
 
   const validated = categoriaSchema.safeParse(form);
@@ -47,18 +59,24 @@ export async function createCategory({
       {
         baseURL: LOCAL_URL,
         headers: {
-          Cookie: `accessToken=${session.get("accessToken")}`,
+          Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,
         },
       },
     );
 
     return data(response.data, {
+      headers: {
+        "Set-Cookie": await commitSession(setCookie),
+      },
       status: response.status,
     });
   } catch (error) {
     if (isAxiosError(error)) {
       return data(error.response?.data, {
         status: error.response?.status,
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
       });
     }
 
@@ -68,6 +86,9 @@ export async function createCategory({
       },
       {
         status: 500,
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
       },
     );
   }

@@ -55,7 +55,16 @@ export function DetalhesRotina() {
         </div>
         <div className="flex flex-row items-center gap-1 text-blue-400">
           <H3 title="Categoria:" />
-          <P className="max-w-full truncate text-blue-300" title={""} />
+          <P
+            className="max-w-full truncate text-blue-300"
+            title={
+              typeof dataHome?.category === "object"
+                ? dataHome?.category?.title
+                : typeof dataRascunhos?.category === "object"
+                  ? dataRascunhos?.category?.title
+                  : "Sem categoria"
+            }
+          />
         </div>
         <div className="flex flex-row items-center gap-1 text-blue-400">
           <H3 title="Status:" />
@@ -79,7 +88,13 @@ export function DetalhesRotina() {
           <H3 title="ID Categoria:" />
           <P
             className="max-w-full truncate text-blue-300"
-            title={"Ops, id de categoria indisponivel"}
+            title={
+              typeof dataHome?.category === "object"
+                ? dataHome?.category?.id
+                : typeof dataRascunhos?.category === "object"
+                  ? dataRascunhos?.category?.id
+                  : "Ops, id de categoria indisponivel"
+            }
           />
         </div>
         <div className="flex w-full items-center justify-center">
