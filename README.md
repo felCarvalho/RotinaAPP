@@ -84,6 +84,7 @@ LOCAL_STRAPI_API=http://seu-strapi-url.com
 - `npm run dev`: Inicia o servidor de desenvolvimento.
 - `npm run build`: Cria a versão de produção.
 - `npm start`: Inicia o servidor de produção após o build.
+- `npm run typecheck`: Executa a verificação de tipos com TypeScript.
 
 ---
 *Documentação oficial do projeto RotinaAPP-Framework.*
