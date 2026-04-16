@@ -11,6 +11,18 @@ export default [
       route("configuracoes", "./pages/Configuracao/component.tsx"),
       route("buscar", "./pages/SearchTasks/component.tsx"),
       route("adicionar-tarefa", "./pages/AdicionarTarefa/component.tsx"),
+      route("categorias", "./pages/infoCategorias/component.tsx", [
+        route("renomear/:id", "./modais/Renomear-categoria/component.tsx", {
+          id: "renomear-categoria",
+        }),
+        route(
+          "detalhes-categoria/:id",
+          "./modais/Detalhes-categoria/component.tsx",
+          {
+            id: "detalhes-categoria",
+          },
+        ),
+      ]),
       route("adicionar-categoria", "./pages/AdicionarCategoria/component.tsx"),
       route("renomear/:id", "./modais/Renomear-tarefa/component.tsx", {
         id: "renomear-home",
@@ -18,6 +30,7 @@ export default [
       route("detalhes/:id", "./modais/Detalhes-tarefa/component.tsx", {
         id: "detalhes-rotina",
       }),
+
       route("rascunhos", "./pages/rascunhos/component.tsx", [
         route(
           "renomear/:id",
@@ -33,7 +46,7 @@ export default [
           "detalhes-categoria/:id",
           "./modais/Detalhes-categoria/component.tsx",
           {
-            id: "detalhes-categoria",
+            id: "detalhes-categoria-rascunhos",
           },
         ),
       ]),
