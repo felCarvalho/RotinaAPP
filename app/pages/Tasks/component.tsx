@@ -1,7 +1,7 @@
 import { Tasks } from "./Tasks";
 import { Outlet } from "react-router";
 import { loader } from "./controllers/loader.server";
-import { action } from "./controllers/action.server.";
+import { action } from "./controllers/action.server";
 import { handle } from "./controllers/handle";
 import { useLocation } from "react-router";
 import { middleware } from "../../middleware/middleware.server";
