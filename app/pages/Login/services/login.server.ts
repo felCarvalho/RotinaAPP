@@ -48,7 +48,7 @@ export async function loginAccount({
       },
     );
 
-      console.log(response)
+    console.log(response);
 
     const { accessToken, refreshToken, expAccessToken } = response.data;
     const expAccessTokenDate = new Date(expAccessToken * 1000);
