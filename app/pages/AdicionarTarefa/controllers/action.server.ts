@@ -7,6 +7,7 @@ async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
   const intent = formData.get("intent");
   const token = context.get(tokenContext);
+  console.log(formData);
 
   switch (intent) {
     case "adicionar-tarefa":

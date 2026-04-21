@@ -3,6 +3,8 @@ import { updateCategoryRascunho } from "../services/update/update-category.serve
 import { updateTaskRascunho } from "../services/update/update-task.server";
 import { deleteCategoryRascunho } from "../services/delete/delete-category.server";
 import { deleteTaskRascunho } from "../services/delete/delete-task.server";
+import { createTaskRascunho } from "../services/create/create-task-rascunho.server";
+import { createCategoryRascunho } from "../services/create/create-category-rascunho.server";
 import { tokenContext } from "../../../utils/context/context.server";
 
 export async function action({ request, context }: ActionFunctionArgs) {
@@ -12,6 +14,18 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const token = context.get(tokenContext);
 
   switch (intent) {
+    case "create-category-rascunho":
+      return createCategoryRascunho({
+        formData,
+        cookieSession,
+        context: token,
+      });
+    case "create-task-rascunho":
+      return createTaskRascunho({
+        formData,
+        cookieSession,
+        context: token,
+      });
     case "update-category":
       return updateCategoryRascunho({
         formData,

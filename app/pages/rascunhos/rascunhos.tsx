@@ -4,6 +4,9 @@ import {
   faPen,
   faRightLeft,
   faTrash,
+  faPlus,
+  faFile,
+  faFolder,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useLoaderData, useNavigate } from "react-router";
 import { H1 } from "../../component/title";
@@ -14,19 +17,26 @@ import { P } from "../../component/paragrafo";
 import { Button } from "../../component/btn";
 import { useState } from "react";
 import { useFetcher } from "react-router";
+import { FloatingPortal } from "@floating-ui/react";
+import { usePosition } from "../../hooks/UseFloatingUI";
 
 export function Rascunhos() {
   const rascunhos: dataRascunhos = useLoaderData<typeof loader>();
   const dataCategory = rascunhos.data.c;
   const dataTasks = rascunhos.data.t;
-  const notification = rascunhos.notification;
-  const code = rascunhos.code;
   const [isLayout, setLayout] = useState(false);
   const navigate = useNavigate();
   const fetcher = useFetcher();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const { refs, floatingStyles } = usePosition({
+    offPlacement: "top",
+    offSet: 15,
+    offShift: { crossAxis: false },
+  });
 
   return (
-    <div className="h-full">
+    <div className="flex h-full flex-col">
       <div className="">
         <NavLink
           to="/home"
@@ -39,17 +49,20 @@ export function Rascunhos() {
       <div
         className={
           !isLayout
-            ? "flex h-full flex-row items-center justify-center gap-5"
-            : "flex h-full flex-row-reverse items-center justify-center gap-5"
+            ? "flex flex-1 flex-row items-center justify-center gap-5"
+            : "flex flex-1 flex-row-reverse items-center justify-center gap-5"
         }
       >
-        <div className="h-full w-full">
+        <div className="scrollbar-hide h-full w-full overflow-y-auto">
           <div className="mt-10">
             <H1 title="Tarefas" className="w-max text-sm! text-blue-400" />
           </div>
           {dataTasks.length ? (
             dataTasks.map((t: Task) => (
-              <div className="my-2 flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3">
+              <div
+                key={t.id}
+                className="my-2 flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3"
+              >
                 <div className="flex flex-row justify-between rounded-2xl">
                   <div className="flex flex-col justify-center gap-1.5">
                     <div className="flex flex-row items-center gap-1.5">
@@ -129,24 +142,43 @@ export function Rascunhos() {
             </div>
           )}
         </div>
-        <div>
-          <Button
-            type="button"
-            className="min-h-9 min-w-9 p-0!"
-            onClick={() => setLayout((s) => !s)}
+        <div className="flex h-full flex-col items-center justify-between py-10">
+          <div className="flex flex-1 items-center">
+            <Button
+              type="button"
+              className="min-h-9 min-w-9 p-0!"
+              onClick={() => setLayout((s) => !s)}
+            >
+              <i>
+                <FontAwesomeIcon icon={faRightLeft} />
+              </i>
+            </Button>
+          </div>
+          <div
+            onClick={() => setIsOpen((s) => !s)}
+            ref={(e) => refs.setReference(e)}
           >
-            <i>
-              <FontAwesomeIcon icon={faRightLeft} />
-            </i>
-          </Button>
+            <Button
+              type="button"
+              className="flex min-h-13 min-w-13 cursor-pointer items-center justify-center rounded-full bg-white! p-0! shadow-lg"
+            >
+              <FontAwesomeIcon
+                icon={faPlus}
+                className={`text-xl text-blue-400 transition-transform ${isOpen ? "rotate-45" : ""}`}
+              />
+            </Button>
+          </div>
         </div>
-        <div className="h-full w-full">
+        <div className="scrollbar-hide h-full w-full overflow-y-auto">
           <div className="mt-10">
             <H1 title="Categorias" className="w-max text-sm! text-blue-400" />
           </div>
           {dataCategory.length ? (
             dataCategory.map((c: Category) => (
-              <div className="my-2 flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3">
+              <div
+                key={c.id}
+                className="my-2 flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3"
+              >
                 <div className="flex flex-row justify-between rounded-2xl">
                   <div className="flex flex-col justify-center gap-1.5">
                     <div className="flex flex-row items-center gap-1.5">
@@ -227,14 +259,47 @@ export function Rascunhos() {
           )}
         </div>
       </div>
+
+      {isOpen && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+            className="z-50 flex flex-col gap-2 rounded-2xl border border-blue-50 bg-white p-2 shadow-xl"
+          >
+            <button
+              onClick={() => {
+                navigate("tarefa-rascunho");
+                setIsOpen(false);
+              }}
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
+            >
+              <i className="w-5 text-center text-blue-400">
+                <FontAwesomeIcon icon={faFile} />
+              </i>
+              <P
+                title="Criar tarefa de rascunho"
+                className="font-medium text-blue-400"
+              />
+            </button>
+            <button
+              onClick={() => {
+                navigate("categoria-rascunho");
+                setIsOpen(false);
+              }}
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
+            >
+              <i className="w-5 text-center text-blue-400">
+                <FontAwesomeIcon icon={faFolder} />
+              </i>
+              <P
+                title="Criar rascunho de categoria"
+                className="font-medium text-blue-400"
+              />
+            </button>
+          </div>
+        </FloatingPortal>
+      )}
     </div>
   );
 }
-
-/*
-{data.length &&
-  data.map((t) => (
-    <div>
-      <div></div>
-    </div>
-  ))}*/

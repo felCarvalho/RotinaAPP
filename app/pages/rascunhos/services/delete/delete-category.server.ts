@@ -1,4 +1,8 @@
-import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+} from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
@@ -38,7 +42,7 @@ export async function deleteCategoryRascunho({
 
   try {
     const response = await axios.delete(
-      `/home/rascunhos/deletar-categoria/${validateSchema.data.idCategory}`,
+      `/home/categorias/rascunhos/deletar-categoria/${validateSchema.data.idCategory}`,
       {
         baseURL: LOCAL_URL,
         headers: {

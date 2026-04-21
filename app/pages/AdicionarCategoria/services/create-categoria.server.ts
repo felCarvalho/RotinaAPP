@@ -2,7 +2,11 @@ import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import z from "zod";
 import { data } from "react-router";
 import axios, { isAxiosError } from "axios";
-import { getSession, commitSession, getCookieTokens } from "../../../utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+} from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
 
 const categoriaSchema = z.object({
@@ -14,8 +18,7 @@ const categoriaSchema = z.object({
     })
     .max(400, {
       error: "O título da categoria não pode ser maior que 400 caracteres",
-    })
-    .optional(),
+    }),
 });
 
 export async function createCategory({
@@ -55,6 +58,7 @@ export async function createCategory({
       {
         titleCategory: validated.data.titleCategory,
         descriptionCategory: validated.data.descriptionCategory,
+        stauts: "Inativa",
       },
       {
         baseURL: LOCAL_URL,

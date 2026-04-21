@@ -1,4 +1,4 @@
-import { NavLink, Form } from "react-router";
+import { NavLink, useFetcher, useLocation } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { H1 } from "../../component/title";
@@ -6,7 +6,13 @@ import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { Button } from "../../component/btn";
 
+const url = ["/home/adicionar-categoria"];
+
 export function AdicionarCategoria() {
+  const fetcher = useFetcher();
+  const { pathname } = useLocation();
+  const isAdicionarCategoria = url.includes(pathname);
+
   return (
     <div className="h-full w-full">
       <div className="w-full">
@@ -16,12 +22,24 @@ export function AdicionarCategoria() {
         >
           <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
           <H1
-            title="Adicione uma Categoria"
+            title={
+              isAdicionarCategoria
+                ? "Adicione uma Categoria"
+                : "Criar categoria de rascunho"
+            }
             className="w-max text-lg! text-blue-400"
           />
         </NavLink>
       </div>
-      <Form method="POST" className="flex flex-col gap-3 pt-3">
+      <fetcher.Form
+        method="POST"
+        action={
+          isAdicionarCategoria
+            ? "/home/adicionar-categoria"
+            : "/home/rascunhos"
+        }
+        className="flex flex-col gap-3 pt-3"
+      >
         <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
           <label className="flex flex-col gap-1">
             <P title="Categoria:" className="text-blue-400" />
@@ -29,7 +47,11 @@ export function AdicionarCategoria() {
               type="hidden"
               placeholder="Exemplo: 'Criar uma lading page...'"
               name="intent"
-              value="adicionar-categoria"
+              value={
+                isAdicionarCategoria
+                  ? "adicionar-categoria"
+                  : "create-category-rascunho"
+              }
             />
             <Input
               type="text"
@@ -68,7 +90,7 @@ export function AdicionarCategoria() {
         <div>
           <P title="" />
         </div>
-      </Form>
+      </fetcher.Form>
     </div>
   );
 }

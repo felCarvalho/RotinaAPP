@@ -11,7 +11,9 @@ export default [
       route("criar-rotina", "./pages/CreateRotina/component.tsx"),
       route("configuracoes", "./pages/Configuracao/component.tsx"),
       route("buscar", "./pages/SearchTasks/component.tsx"),
-      route("adicionar-tarefa", "./pages/AdicionarTarefa/component.tsx"),
+      route("adicionar-tarefa", "./pages/AdicionarTarefa/component.tsx", {
+        id: "adicionar-tarefa",
+      }),
       route("categorias", "./pages/infoCategorias/component.tsx", [
         route("renomear/:id", "./modais/Renomear-categoria/component.tsx", {
           id: "renomear-categoria",
@@ -24,7 +26,9 @@ export default [
           },
         ),
       ]),
-      route("adicionar-categoria", "./pages/AdicionarCategoria/component.tsx"),
+      route("adicionar-categoria", "./pages/AdicionarCategoria/component.tsx", {
+        id: "adicionar-categoria",
+      }),
       route("renomear/:id", "./modais/Renomear-tarefa/component.tsx", {
         id: "renomear-home",
       }),
@@ -48,6 +52,16 @@ export default [
           "./modais/Detalhes-categoria/component.tsx",
           {
             id: "detalhes-categoria-rascunhos",
+          },
+        ),
+        route("tarefa-rascunho", "./pages/AdicionarTarefa/component.tsx", {
+          id: "adicionar-tarefa-rascunho",
+        }),
+        route(
+          "categoria-rascunho",
+          "./pages/AdicionarCategoria/component.tsx",
+          {
+            id: "adicionar-categoria-rascunho",
           },
         ),
       ]),

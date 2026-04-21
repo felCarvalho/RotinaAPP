@@ -1,4 +1,8 @@
-import { getSession, commitSession, getCookieTokens } from "../../../utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+} from "../../../utils/cookies/cookies.server";
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import z from "zod";
 import { data } from "react-router";
@@ -15,6 +19,10 @@ const schemaCreateTarefa = z.object({
     .min(0)
     .max(400, { error: "Ops, maximo de caracteres atingido" })
     .optional(),
+  idCategory: z
+    .string()
+    .min(5, { error: "Por favor, selecione uma categoria" })
+    .max(400, { error: "Ops, maximo de caracteres atingido" }),
 });
 
 export async function createTarefa({
@@ -49,10 +57,11 @@ export async function createTarefa({
 
   try {
     const response = await axios.post(
-      "home/criar-tarefa",
+      "home/adicionar-tarefa",
       {
         titleTask: form.titleTask,
         descriptionTask: form.descriptionTask,
+        idCategory: form.idCategory,
       },
       {
         baseURL: LOCAL_URL,

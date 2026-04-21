@@ -9,28 +9,22 @@ import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
 
-const schemaUpdateCategory = z.object({
-  titleCategory: z
+const schemaCreateTaskRascunho = z.object({
+  titleTask: z
     .string({
-      error: "Ops, o título da categoria é obrigatório",
+      error: "Ops, o título da tarefa é obrigatório",
     })
-    .min(5, { error: "Ops, categoria precisa ter no minino 5 caracteres" })
-    .max(200, { error: "Ops , categoria pode ter no máximo 200 caracteres" }),
-  descriptionCategory: z
+    .min(5, { error: "Ops, sua task precisa ter no minino 5 caracteres" })
+    .max(255, {
+      error: "Ops, o título da tarefa pode ter no máximo 255 caracteres",
+    }),
+  descriptionTask: z
     .string()
     .max(400, { error: "Ops, descrição pode ter no máximo 400 caracteres" })
     .optional(),
-  idCategory: z
-    .string("Ops, o ID da categoria é obrigatório")
-    .min(5, {
-      error: "Ops, o ID da categoria precisa ter no mínimo 5 caracteres",
-    })
-    .max(400, {
-      error: "Ops, o ID da categoria pode ter no máximo 400 caracteres",
-    }),
 });
 
-export async function updateCategoryRascunho({
+export async function createTaskRascunho({
   formData,
   cookieSession,
   context,
@@ -50,20 +44,20 @@ export async function updateCategoryRascunho({
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
   const form = Object.fromEntries(formData);
+  const validateSchema = schemaCreateTaskRascunho.safeParse(form);
 
-  const schemaCategory = schemaUpdateCategory.safeParse(form);
-
-  if (!schemaCategory.success) {
-    const error = z.flattenError(schemaCategory.error);
+  if (!validateSchema.success) {
+    const error = z.flattenError(validateSchema.error);
     return data(error.fieldErrors, { status: 400 });
   }
 
   try {
-    const response = await axios.patch(
-      `home/categorias/rascunhos/atualizar-categoria/${schemaCategory?.data?.idCategory}`,
+    const response = await axios.post(
+      "home/rascunhos/adicionar-tarefa-rascunho",
       {
-        titleCategory: form.titleCategory,
-        descriptionCategory: form.descriptionCategory,
+        titleTask: validateSchema.data.titleTask,
+        descriptionTask: validateSchema.data.descriptionTask,
+        status: "Inativa",
       },
       {
         baseURL: LOCAL_URL,
@@ -93,8 +87,8 @@ export async function updateCategoryRascunho({
 
     return data(
       {
-        message: "Erro ao executar a action",
-        stauts: 500,
+        status: 500,
+        message: "Erro ao executar sua action",
         error: e,
       },
       {

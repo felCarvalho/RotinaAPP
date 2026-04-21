@@ -12,7 +12,6 @@ import {
   handle,
 } from "../../pages/rascunhos/controllers/handle";
 import type { dataRascunhos } from "../../pages/rascunhos/type.server";
-import type { dataTasks, Category, Task } from "../../pages/Tasks/type.server";
 import { useState } from "react";
 
 export function RenomearCategoriaTSX() {
