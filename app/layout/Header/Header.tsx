@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { useLocation } from "react-router";
 import { Nav } from "../../component/Nav/Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,7 +16,6 @@ import { useState } from "react";
 
 export function Header() {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const [openBar, setOpenBar] = useState<string>("");
   const navLinks = [
     {
@@ -69,7 +67,7 @@ export function Header() {
 
   return (
     <div
-      className={`flex transition-all ${openBar ? "flex flex-col items-end justify-start" : "flex flex-col items-center justify-start"} gap-5 bg-blue-50/30 px-4 py-5`}
+      className={`sticky top-0 z-50 h-screen shrink-0 overflow-y-auto transition-all ${openBar ? "justify-startw-full flex flex-col items-end" : "flex flex-col items-center justify-start"} gap-5 bg-blue-50/30 px-4 py-5`}
     >
       <div
         className="flex h-5 w-7 flex-row-reverse rounded-[5px] border border-blue-400 bg-white shadow-2xl shadow-blue-400"
