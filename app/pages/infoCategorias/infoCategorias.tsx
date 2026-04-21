@@ -2,14 +2,20 @@ import { Button } from "../../component/btn";
 import { H1 } from "../../component/title";
 import { P } from "../../component/paragrafo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faCheck,
+  faPen,
+  faTrash,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useFetcher, NavLink, useLocation } from "react-router";
 import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
-import { handle, type Handle } from "./controllers/handle";
+import { handle, type HandleCategorias } from "./controllers/handle";
 import type { dataCategorias, Category } from "./type.server";
 
 export function InfoCategoria() {
-  const matches = useMatchesTypeds<Handle, dataCategorias>();
+  const matches = useMatchesTypeds<HandleCategorias, dataCategorias>();
   const findHandle = matches.find((s) => s?.handle?.id === handle.id);
   const data = findHandle?.loaderData;
   const navigate = useNavigate();
@@ -92,6 +98,52 @@ export function InfoCategoria() {
                     >
                       <i>
                         <FontAwesomeIcon icon={faTrash} />
+                      </i>
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      className="min-h-9 min-w-9 p-0!"
+                      onClick={() =>
+                        fetcher.submit(
+                          {
+                            idCategory: c.id,
+                            completed: "Concluída",
+                            intent: "update-status-task-category",
+                          },
+                          {
+                            method: "PATCH",
+                            action: "/home/categorias",
+                          },
+                        )
+                      }
+                    >
+                      <i>
+                        <FontAwesomeIcon icon={faCheck} />
+                      </i>
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      type="button"
+                      className="min-h-9 min-w-9 p-0!"
+                      onClick={() =>
+                        fetcher.submit(
+                          {
+                            idCategory: c.id,
+                            completed: "Incompleta",
+                            intent: "update-status-task-category",
+                          },
+                          {
+                            method: "PATCH",
+                            action: "/home/categorias",
+                          },
+                        )
+                      }
+                    >
+                      <i>
+                        <FontAwesomeIcon icon={faX} />
                       </i>
                     </Button>
                   </div>

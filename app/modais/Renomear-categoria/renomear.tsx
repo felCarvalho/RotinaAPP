@@ -36,7 +36,7 @@ export function RenomearCategoriaTSX() {
       >
         <fetcher.Form
           method="PATCH"
-          action="/home"
+          action="/home/categorias"
           id="task-update-form"
           className="flex flex-col gap-5"
         >
@@ -62,7 +62,7 @@ export function RenomearCategoriaTSX() {
               name="titleCategory"
               className="peer"
             />
-            <input name="intent" type="hidden" value="update-category" />
+            <input name="intent" type="hidden" value="update-title-category" />
             <input
               name="idCategory"
               type="hidden"

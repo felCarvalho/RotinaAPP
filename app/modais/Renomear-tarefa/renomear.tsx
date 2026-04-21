@@ -8,7 +8,6 @@ import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useFetcher, useNavigate } from "react-router";
 import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
 import type { dataTasks } from "../../pages/Tasks/type.server";
-import type { dataRascunhos } from "../../pages/rascunhos/type.server";
 import { useState } from "react";
 
 export function RenomearTarefaTSX() {

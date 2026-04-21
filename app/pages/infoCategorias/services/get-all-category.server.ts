@@ -26,7 +26,8 @@ export async function getAllCategory({
   const session = await getCookieTokens({ cookiesSession });
 
   try {
-    const response = await axios.get("home/listar-categorias", {
+    //é no categoryService
+    const response = await axios.get("home/categorias/listar-categorias", {
       headers: {
         Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,
       },

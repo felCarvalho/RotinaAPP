@@ -47,8 +47,9 @@ export async function deleteCategoryTask({
   }
 
   try {
+    //é um orquestrador
     const response = await axios.delete(
-      `/home/categorias/deletar-tarefas-categoria/${validate.data.idCategory}`,
+      `home/categorias/deletar-tarefas-categoria/${validate.data.idCategory}`,
       {
         baseURL: LOCAL_URL,
         headers: {

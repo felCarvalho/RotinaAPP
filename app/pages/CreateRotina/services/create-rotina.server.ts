@@ -3,7 +3,11 @@ import { z } from "zod";
 import { ActionTypesRequests } from "../../../utils/typesGlobals/type.server";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import { getSession, commitSession, getCookieTokens } from "../../../utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+} from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
 
 const schemaCreateRotina = z.object({
@@ -61,12 +65,13 @@ export async function createRotina({
 
   try {
     const response = await axios.post(
-      "/criar-rotina",
+      "home/criar-rotina",
       {
         titleTask: schemaRotina.data.titleTask,
         descriptionTask: schemaRotina.data.descriptionTask,
         titleCategory: schemaRotina.data.titleCategory,
         descriptionCategory: schemaRotina.data.descriptionCategory,
+        status: "Ativa",
       },
       {
         baseURL: LOCAL_URL,
