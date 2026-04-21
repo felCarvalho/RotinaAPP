@@ -14,7 +14,7 @@ O **RotinaAPP-Framework** é uma aplicação web moderna voltada para o gerencia
 ### Estilização & UI
 - **Tailwind CSS v4**: Framework de utilitários para estilização rápida e moderna.
 - **Framer Motion**: Biblioteca para animações fluidas e transições de layout.
-- **Floating UI**: Gerenciamento de elementos flutuantes (popups, menus de contexto).
+- **Floating UI**: Gerenciamento de elementos flutuantes (popups, menus de contexto e botões de ação).
 - **FontAwesome**: Conjunto de ícones vetoriais.
 - **Sonner**: Sistema de notificações (toasts) elegante.
 
@@ -29,12 +29,12 @@ O **RotinaAPP-Framework** é uma aplicação web moderna voltada para o gerencia
 
 O projeto segue uma estrutura modular organizada por funcionalidades dentro da pasta `app/`:
 
-- **`/component`**: Componentes reutilizáveis de UI (botões, inputs, modais, etc.).
+- **`/component`**: Componentes reutilizáveis de UI (botões, inputs, modais, overlay, etc.).
 - **`/layout`**: Definições de estruturas globais (ex: Layout de Autenticação, Layout da Home).
 - **`/pages`**: Cada pasta representa uma funcionalidade/página, contendo:
     - `component.tsx`: Componente React principal da rota.
     - `controllers/`: Lógica de `loader` (busca de dados) e `action` (mutação de dados).
-    - `services/`: Chamadas diretas à API.
+    - `services/`: Chamadas diretas à API, segmentadas por domínio (ex: `create`, `delete`, `update`).
 - **`/middleware`**: Lógica de proteção de rotas e renovação de tokens (AuthMiddleware).
 - **`/modais`**: Componentes de diálogo que são disparados via rotas.
 - **`/utils`**: Funções utilitárias, contextos globais e constantes.
@@ -46,22 +46,24 @@ O projeto segue uma estrutura modular organizada por funcionalidades dentro da p
 ### 🔐 Autenticação e Segurança
 - **Login e Registro**: Fluxos completos com validação de sessão.
 - **Gestão de Sessão**: Utiliza cookies para armazenar tokens de acesso.
-- **Refresh Token Automático**: Middleware que renova o `accessToken` silenciosamente, garantindo a permanência do login.
+- **Refresh Token Automático**: Middleware que renova o `accessToken` silenciosamente.
 
 ### 📝 Gestão de Tarefas (Tasks)
 - **CRUD Completo**: Criar, visualizar, editar e excluir tarefas.
 - **Status em Tempo Real**: Marcar tarefas como "Concluída" ou "Incompleta" diretamente na listagem.
-- **Detalhes**: Visualização aprofundada de cada rotina cadastrada.
 
-### 🏷️ Categorização
-- **Organização**: Vínculo de tarefas a categorias específicas.
-- **Gestão de Categorias**: Interface para adição e visualização de categorias.
+### 🏷️ Gestão de Categorias
+- **Vínculo Dinâmico**: Organização de tarefas por categorias.
+- **Ações Rápidas**: Interface para atualizar o status de todas as tarefas de uma categoria simultaneamente (Concluir todas / Marcar todas como incompletas).
+- **Renomeação**: Edição de títulos e metadados de categorias via modais dedicados.
 
 ### 📂 Rascunhos (Drafts)
-- Espaço dedicado para tarefas ou categorias que ainda não foram finalizadas ou que estão guardadas separadamente.
+- **Criação Rápida**: Sistema de rascunhos para tarefas e categorias que podem ser convertidas em itens definitivos posteriormente.
+- **Interface Flutuante**: Botão de ação rápida (Plus) utilizando `Floating UI` para criação ágil de novos rascunhos sem sair da página.
+- **Gestão de Layout**: Alternância entre listagem de tarefas e categorias para melhor visualização.
 
 ### 🔍 Busca e Filtros
-- Sistema de busca que utiliza parâmetros de URL (`nuqs`), permitindo filtrar por título, categoria ou status de forma persistente.
+- Sistema de busca que utiliza parâmetros de URL (`nuqs`), permitindo filtrar por título, categoria ou status de forma persistente e compartilhável.
 
 ---
 
@@ -77,7 +79,6 @@ npm install
 Crie um arquivo `.env` na raiz do projeto:
 ```env
 LOCAL_URL=http://seu-backend-api.com
-LOCAL_STRAPI_API=http://seu-strapi-url.com
 ```
 
 ### Comandos Disponíveis
@@ -87,4 +88,4 @@ LOCAL_STRAPI_API=http://seu-strapi-url.com
 - `npm run typecheck`: Executa a verificação de tipos com TypeScript.
 
 ---
-*Documentação oficial do projeto RotinaAPP-Framework.*
+*Documentação atualizada em: 21 de Abril de 2026.*
