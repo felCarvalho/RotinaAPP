@@ -8,15 +8,15 @@ import {
   faFile,
   faFolder,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useLoaderData, useNavigate } from "react-router";
+import { NavLink, useLoaderData, useNavigate, useFetcher } from "react-router";
 import { H1 } from "../../component/title";
+import { H3 } from "../../component/subTitle";
 import type { loader } from "./controllers/loader.server";
 import type { dataRascunhos } from "./type.server";
 import type { Task, Category } from "../Tasks/type.server";
 import { P } from "../../component/paragrafo";
 import { Button } from "../../component/btn";
 import { useState } from "react";
-import { useFetcher } from "react-router";
 import { FloatingPortal } from "@floating-ui/react";
 import { usePosition } from "../../hooks/UseFloatingUI";
 
@@ -35,16 +35,22 @@ export function Rascunhos() {
     offShift: { crossAxis: false },
   });
 
+  console.log(rascunhos);
+
   return (
     <div className="flex h-full flex-col">
-      <div className="">
-        <NavLink
-          to="/home"
-          className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+      <div className="sticky top-0 z-40 mb-8 bg-white/80 py-4 px-2 backdrop-blur-md">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
-          <H1 title="Rascunhos" className="w-max text-lg! text-blue-400" />
-        </NavLink>
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="text-blue-400"
+            size="lg"
+          />
+          <H1 title="Rascunhos" className="w-max text-blue-400" />
+        </button>
       </div>
       <div
         className={
@@ -54,8 +60,8 @@ export function Rascunhos() {
         }
       >
         <div className="scrollbar-hide h-full w-full overflow-y-auto">
-          <div className="mt-10">
-            <H1 title="Tarefas" className="w-max text-sm! text-blue-400" />
+          <div className="mt-10 mb-4">
+            <H3 title="Tarefas" className="w-max text-2xl text-blue-400" />
           </div>
           {dataTasks.length ? (
             dataTasks.map((t: Task) => (
@@ -66,42 +72,39 @@ export function Rascunhos() {
                 <div className="flex flex-row justify-between rounded-2xl">
                   <div className="flex flex-col justify-center gap-1.5">
                     <div className="flex flex-row items-center gap-1.5">
-                      <H1
-                        title="Titulo:"
-                        className="text-base! text-blue-400"
-                      />
+                      <H3 title="Titulo:" className="text-2xl text-blue-400" />
                       <P
                         title={t.title ?? "Ops, título não disponível"}
                         className={"text-blue-400"}
                       />
                     </div>
                     <div className="flex flex-row items-center gap-1.5">
-                      <H1
+                      <H3
                         title="Descrição:"
-                        className="text-base! text-blue-400"
+                        className="text-2xl text-blue-400"
                       />
                       <P
                         title={t.description ?? "Ops, descrição não disponível"}
                         className="text-blue-300"
                       />
                     </div>
-                  </div>
+                  </div>{" "}
                   <div className="flex flex-row items-center justify-center gap-2">
                     <div>
                       <Button
                         type="button"
-                        className="min-h-9 min-w-9 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() => navigate(`renomear/${t.id}`)}
                       >
                         <i>
-                          <FontAwesomeIcon icon={faPen} />
+                          <FontAwesomeIcon icon={faPen} size="lg" />
                         </i>
                       </Button>
                     </div>
                     <div>
                       <Button
                         type="button"
-                        className="min-h-9 min-w-9 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() =>
                           fetcher.submit(
                             {
@@ -116,7 +119,7 @@ export function Rascunhos() {
                         }
                       >
                         <i>
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrash} size="lg" />
                         </i>
                       </Button>
                     </div>
@@ -125,7 +128,7 @@ export function Rascunhos() {
                 <div className="w-full text-center">
                   <Button
                     type="button"
-                    className="px-3 pt-1 pb-1 text-base font-medium"
+                    className="text-base font-medium"
                     onClick={() => navigate(`detalhes-tarefa/${t.id}`)}
                   >
                     <p className="text-white">Ver detalhes</p>
@@ -146,11 +149,11 @@ export function Rascunhos() {
           <div className="flex flex-1 items-center">
             <Button
               type="button"
-              className="min-h-9 min-w-9 p-0!"
+              className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
               onClick={() => setLayout((s) => !s)}
             >
               <i>
-                <FontAwesomeIcon icon={faRightLeft} />
+                <FontAwesomeIcon icon={faRightLeft} size="lg" />
               </i>
             </Button>
           </div>
@@ -160,18 +163,19 @@ export function Rascunhos() {
           >
             <Button
               type="button"
-              className="flex min-h-13 min-w-13 cursor-pointer items-center justify-center rounded-full bg-white! p-0! shadow-lg"
+              className="flex aspect-square min-h-13 min-w-13 cursor-pointer items-center justify-center rounded-full bg-white! p-0! shadow-lg"
             >
               <FontAwesomeIcon
                 icon={faPlus}
-                className={`text-xl text-blue-400 transition-transform ${isOpen ? "rotate-45" : ""}`}
+                size="lg"
+                className={`text-blue-400 transition-transform ${isOpen ? "rotate-45" : ""}`}
               />
             </Button>
           </div>
         </div>
         <div className="scrollbar-hide h-full w-full overflow-y-auto">
-          <div className="mt-10">
-            <H1 title="Categorias" className="w-max text-sm! text-blue-400" />
+          <div className="mt-10 mb-4">
+            <H3 title="Categorias" className="w-max text-2xl text-blue-400" />
           </div>
           {dataCategory.length ? (
             dataCategory.map((c: Category) => (
@@ -182,42 +186,39 @@ export function Rascunhos() {
                 <div className="flex flex-row justify-between rounded-2xl">
                   <div className="flex flex-col justify-center gap-1.5">
                     <div className="flex flex-row items-center gap-1.5">
-                      <H1
-                        title="Titulo:"
-                        className="text-base! text-blue-400"
-                      />
+                      <H3 title="Titulo:" className="text-2xl text-blue-400" />
                       <P
                         title={c.title ?? "Ops, título não disponível"}
                         className={"text-blue-400"}
                       />
                     </div>
                     <div className="flex flex-row items-center gap-1.5">
-                      <H1
+                      <H3
                         title="Descrição:"
-                        className="text-base! text-blue-400"
+                        className="text-2xl text-blue-400"
                       />
                       <P
                         title={c.description ?? "Ops, descrição não disponível"}
                         className="text-blue-300"
                       />
                     </div>
-                  </div>
+                  </div>{" "}
                   <div className="flex flex-row items-center justify-center gap-2">
                     <div>
                       <Button
                         type="button"
-                        className="min-h-9 min-w-9 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() => navigate(`renomear/${c.id}`)}
                       >
                         <i>
-                          <FontAwesomeIcon icon={faPen} />
+                          <FontAwesomeIcon icon={faPen} size="lg" />
                         </i>
                       </Button>
                     </div>
                     <div>
                       <Button
                         type="button"
-                        className="min-h-9 min-w-9 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() =>
                           fetcher.submit(
                             {
@@ -232,7 +233,7 @@ export function Rascunhos() {
                         }
                       >
                         <i>
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrash} size="lg" />
                         </i>
                       </Button>
                     </div>
@@ -241,7 +242,7 @@ export function Rascunhos() {
                 <div className="w-full text-center">
                   <Button
                     type="button"
-                    className="px-3 pt-1 pb-1 text-base font-medium"
+                    className="text-base font-medium"
                     onClick={() => navigate(`detalhes-categoria/${c.id}`)}
                   >
                     <p className="text-white">Ver detalhes</p>
@@ -275,7 +276,7 @@ export function Rascunhos() {
               className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
             >
               <i className="w-5 text-center text-blue-400">
-                <FontAwesomeIcon icon={faFile} />
+                <FontAwesomeIcon icon={faFile} size="lg" />
               </i>
               <P
                 title="Criar tarefa de rascunho"
@@ -290,7 +291,7 @@ export function Rascunhos() {
               className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
             >
               <i className="w-5 text-center text-blue-400">
-                <FontAwesomeIcon icon={faFolder} />
+                <FontAwesomeIcon icon={faFolder} size="lg" />
               </i>
               <P
                 title="Criar rascunho de categoria"

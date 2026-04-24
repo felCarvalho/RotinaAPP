@@ -1,52 +1,44 @@
-import { faListAlt, faPen, faX } from "@fortawesome/free-solid-svg-icons";
+import { faListAlt, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../../btn";
-import { parseAsString, useQueryStates } from "nuqs";
-import { useSubmit } from "react-router";
+import { useSubmit, useNavigate } from "react-router";
 
 export function PopupOptionsTasks({ id }: { id: string }) {
-  const [, setSearchParams] = useQueryStates({
-    renomear: parseAsString,
-    detalhes: parseAsString,
-  });
   const submit = useSubmit();
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 p-1">
       <Button
         type="button"
-        onClick={() => setSearchParams({ renomear: id })}
-        className="flex flex-row gap-2 rounded-full bg-white text-base shadow-sm shadow-blue-50"
+        onClick={() => navigate(`detalhes/${id}`)}
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
       >
-        <i className="text-blue-400">
-          <FontAwesomeIcon icon={faPen} />
-        </i>
-        <p className="font-medium text-blue-400">Renomear</p>
+        <FontAwesomeIcon icon={faListAlt} size="lg" />
+        <span className="font-medium text-blue-400">Ver detalhes</span>
       </Button>
+
       <Button
         type="button"
-        className="flex flex-row gap-2 rounded-full bg-white text-base shadow-sm shadow-blue-50"
+        onClick={() => navigate(`renomear/${id}`)}
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+      >
+        <FontAwesomeIcon icon={faPen} size="lg" />
+        <span className="font-medium text-blue-400">Renomear</span>
+      </Button>
+
+      <Button
+        type="button"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
         onClick={() =>
           submit(
-            { intent: "delete", idTask: id },
+            { intent: "delete-task", idTask: id },
             { method: "DELETE", action: "/home" },
           )
         }
       >
-        <i className="text-blue-400">
-          <FontAwesomeIcon icon={faX} />
-        </i>
-        <p className="font-medium text-blue-400">Apagar</p>
-      </Button>
-      <Button
-        type="submit"
-        className="flex flex-row gap-2 rounded-full bg-white text-base shadow-sm shadow-blue-50"
-        onClick={() => setSearchParams({ detalhes: id })}
-      >
-        <i className="text-blue-400">
-          <FontAwesomeIcon icon={faListAlt} />
-        </i>
-        <p className="font-medium text-blue-400">detalhes</p>
+        <FontAwesomeIcon icon={faTrash} size="lg" />
+        <span className="font-medium text-blue-400">Apagar</span>
       </Button>
     </div>
   );
