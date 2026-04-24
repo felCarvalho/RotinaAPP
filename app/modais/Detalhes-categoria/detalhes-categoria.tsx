@@ -4,6 +4,7 @@ import { Button } from "../../component/btn";
 import { Overlay } from "../../component/overlay";
 import { H3 } from "../../component/subTitle";
 import { P } from "../../component/paragrafo";
+import { H1 } from "../../component/title";
 import { useNavigate } from "react-router";
 import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
 import type { dataRascunhos } from "../../pages/rascunhos/type.server";
@@ -37,60 +38,67 @@ export function DetalhesCategoriaTSX() {
       initial={{ scale: 0.2, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
     >
-      <div className="absolute right-2 left-2 flex flex-col justify-center gap-2 rounded-[50px] p-5 shadow-2xl shadow-blue-50">
-        <div className="flex flex-row items-center gap-1 text-blue-400">
-          <H3 title="Categoria:" />
-          <P
-            className="max-w-full truncate text-blue-300"
-            title={
-              categoriaInfo?.title ??
-              categoriaRascunho?.title ??
-              "Ops, título indisponível"
-            }
-          />
+      <div className="w-[95%] min-w-[350px] md:min-w-[1000px] md:max-w-7xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xl shadow-blue-100 md:relative md:mx-auto">
+        <div className="mb-4 flex flex-row items-center justify-start">
+          <H1 title="Detalhes da Categoria" className="text-2xl text-blue-400" />
         </div>
-        <div className="flex flex-row items-center gap-1 text-blue-400">
-          <H3 title="Descrição:" />
-          <P
-            className="max-w-full truncate text-blue-300"
-            title={
-              categoriaInfo?.description ??
-              categoriaRascunho?.description ??
-              "Ops, descrição indisponível"
-            }
-          />
+
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
+            <H3 title="Categoria:" className="text-base font-bold shrink-0" />
+            <P
+              className="truncate text-blue-300"
+              title={
+                categoriaInfo?.title ??
+                categoriaRascunho?.title ??
+                "Ops, título indisponível"
+              }
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
+            <H3 title="Descrição:" className="text-base font-bold shrink-0" />
+            <P
+              className="truncate text-blue-300"
+              title={
+                categoriaInfo?.description ??
+                categoriaRascunho?.description ??
+                "Ops, descrição indisponível"
+              }
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
+            <H3 title="Status:" className="text-base font-bold shrink-0" />
+            <P
+              className="truncate text-blue-300"
+              title={
+                categoriaInfo?.status ??
+                categoriaRascunho?.status ??
+                "Ops, situação indisponivel"
+              }
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
+            <H3 title="ID Categoria:" className="text-base font-bold shrink-0" />
+            <P
+              className="truncate text-blue-300"
+              title={
+                categoriaInfo?.id ??
+                categoriaRascunho?.id ??
+                "Ops, id de categoria indisponivel"
+              }
+            />
+          </div>
         </div>
-        <div className="flex flex-row items-center gap-1 text-blue-400">
-          <H3 title="Status:" />
-          <P
-            className="max-w-full truncate text-blue-300"
-            title={
-              categoriaInfo?.status ??
-              categoriaRascunho?.status ??
-              "Ops, situação indisponivel"
-            }
-          />
-        </div>
-        <div className="flex flex-row items-center gap-1 text-blue-400">
-          <H3 title="ID Categoria:" />
-          <P
-            className="max-w-full truncate text-blue-300"
-            title={
-              categoriaInfo?.id ??
-              categoriaRascunho?.id ??
-              "Ops, id de categoria indisponivel"
-            }
-          />
-        </div>
-        <div className="flex w-full items-center justify-center">
+
+        <div className="flex w-full items-center justify-center pt-2">
           <Button
             type="reset"
             ariaLabel="Fechar"
-            className="min-h-10 min-w-10 p-0!"
+            className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0! rounded-full"
             onClick={() => navigate(-1)}
           >
             <i>
-              <FontAwesomeIcon icon={faX} />
+              <FontAwesomeIcon icon={faX} size="lg" />
             </i>
           </Button>
         </div>
