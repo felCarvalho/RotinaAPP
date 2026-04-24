@@ -38,17 +38,11 @@ export function LoginJSX() {
             />
           </div>
           <div className="p-5">
-            <H3
-              title={""}
-              className="my-1 text-[17px]! tracking-wide text-blue-400"
-            />
-            <H3
-              title={""}
-              className="my-1 text-[16px]! tracking-wide text-blue-300"
-            />
+            <H3 title={""} className="my-1 tracking-wide text-blue-400" />
+            <H3 title={""} className="my-1 tracking-wide text-blue-300" />
           </div>
           <div>
-            <Button type="button" onClick={() => ""}>
+            <Button type="button" className="min-h-11" onClick={() => ""}>
               <p className="text-white">Abrir Conta!</p>
             </Button>
           </div>
@@ -90,34 +84,35 @@ export function LoginJSX() {
                   />
                   <Button
                     type="button"
-                    className="min-h-11! min-w-11! bg-white! p-0! text-blue-400!"
+                    className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     onClick={() => setOpenPassword((s) => !s)}
                   >
                     <i>
                       <FontAwesomeIcon
                         icon={isOpenPassword ? faEyeSlash : faEye}
+                        size="lg"
                       />
                     </i>
                   </Button>
                 </div>
               </label>
               <div className="flex w-full flex-row items-center justify-center gap-5">
-                <Button type="submit">
+                <Button type="submit" className="min-h-11">
                   <p className="font-medium">Confirmar</p>
                 </Button>
-                <Button type="reset" className="bg-white! text-blue-400!">
+                <Button
+                  type="reset"
+                  className="min-h-11 bg-white! text-blue-400!"
+                >
                   <p className="font-medium">Cancelar</p>
                 </Button>
               </div>
             </Form>
           </div>
           <div className="mt-5 flex w-full flex-row items-center justify-between">
-            <P title={""} className="text-xs font-medium text-red-400" />
+            <P title={""} className="font-medium text-red-400" />
             <NavLink to="/redefinir-senha">
-              <P
-                title="Esqueceu a senha?"
-                className="text-[13px] text-blue-300"
-              />
+              <P title="Esqueceu a senha?" className="text-blue-300" />
             </NavLink>
           </div>
         </div>
@@ -128,7 +123,7 @@ export function LoginJSX() {
       >
         <P title="Abrir conta" className="font-medium" />
         <i>
-          <FontAwesomeIcon icon={faAngleRight} />
+          <FontAwesomeIcon icon={faAngleRight} size="lg" />
         </i>
       </NavLink>
     </div>

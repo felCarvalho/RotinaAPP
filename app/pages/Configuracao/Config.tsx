@@ -49,10 +49,10 @@ export function Config() {
             to="/home"
             className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
           >
-            <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
+            <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" size="lg" />
             <H1
               title="Configurações"
-              className="w-max text-lg! text-blue-400"
+              className="w-max text-2xl text-blue-400"
             />
           </NavLink>
         </div>
@@ -66,16 +66,16 @@ export function Config() {
               <div className="w-full">
                 <H3
                   title={s.title}
-                  className="text-md! cursor-pointer text-blue-400"
+                  className="cursor-pointer text-blue-400"
                 />
                 <P
                   title={s.description}
                   className="xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate font-light whitespace-nowrap text-blue-300 md:w-full"
                 />
               </div>
-              <Button type="button" className="min-h-10 min-w-10 bg-white">
+              <Button type="button" className="min-h-11 min-w-11 bg-white">
                 <i className="text-blue-400">
-                  <FontAwesomeIcon icon={faAngleRight} />
+                  <FontAwesomeIcon icon={faAngleRight} size="lg" />
                 </i>
               </Button>
             </NavLink>

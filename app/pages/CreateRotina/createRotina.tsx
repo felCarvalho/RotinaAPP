@@ -1,43 +1,23 @@
 import {
   faAngleLeft,
-  faAngleRight,
   faCheck,
-  faFax,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { NavLink, useFetcher, useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useFetcher, useNavigate } from "react-router";
 import { error, success, warning } from "~/utils/FunctionUtils/FunctionUtils";
 import { Button } from "../../component/btn";
-import { HeaderContent } from "../../component/headerContent";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
+import { H3 } from "../../component/subTitle";
 import type { createRotina } from "./services/create-rotina.server";
 import { H1 } from "~/component/title";
-import { Overlay } from "../../component/overlay";
 
 export function CreateRotina() {
-  const [isPopupOption, setIsPopupOption] = useState(false);
-  const [category, setCategory] = useState("");
-  const [isInputCategory, setIsInputCategory] = useState(false);
   const fetcher = useFetcher<typeof createRotina>();
   const navigate = useNavigate();
 
-  function setIsCategory({ category }: { category: string }) {
-    if (!category) return;
-    setIsPopupOption((s) => !s);
-    setCategory((s) => (s !== category ? category : s));
-  }
-
-  function setInputCategory() {
-    setIsInputCategory((s) => !s);
-    setCategory("");
-    setIsPopupOption(false);
-  }
-
-  const validation =
-    fetcher.data?.type === "ERROR_VALIDATION" ? fetcher.data?.errors : null;
   const errorServer =
     fetcher.data?.type === "ERROR_SERVER" ? fetcher.data?.data : null;
   const errorInternal =
@@ -63,166 +43,83 @@ export function CreateRotina() {
 
   return (
     <div className="h-full w-full">
-      <div className="flex w-full flex-col gap-3">
-        <div className="">
-          <NavLink
-            to="/home"
-            className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+      <div className="flex w-full flex-col">
+        <div className="sticky top-0 z-40 mb-6 bg-white/80 py-4 px-2 backdrop-blur-md">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
           >
-            <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
+            <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" size="lg" />
             <H1
               title="Crie sua rotina"
-              className="w-max text-lg! text-blue-400"
+              className="w-max text-blue-400"
             />
-          </NavLink>
+          </button>
         </div>
         <fetcher.Form
           method="POST"
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-5"
           action="/home/criar-rotina"
         >
-          <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
-            <label className="flex flex-col gap-1">
-              <P title="Rotina:" className="text-blue-400" />
-              <input
-                type="hidden"
-                placeholder="Exemplo: 'Criar uma lading page...'"
-                name="intent"
-                value="create"
-              />
+          <div className="flex flex-col gap-4 rounded-3xl border border-solid border-blue-50/85 bg-blue-50/10 p-4">
+            <div className="flex flex-col gap-2">
+              <H3 title="Rotina:" className="text-base font-bold text-blue-400" />
+              <input type="hidden" name="intent" value="create" />
               <Input
                 type="text"
                 placeholder="Exemplo: 'Criar uma lading page...'"
                 name="titleTask"
               />
-            </label>
-            <label className="flex flex-col gap-1">
-              <P title="Descrição para rotina:" className="text-blue-400" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <H3 title="Descrição para rotina:" className="text-base font-bold text-blue-400" />
               <Input
                 type="text"
-                className=""
                 placeholder="Exemplo: 'landing page deve ter...'"
                 name="descriptionTask"
               />
-            </label>
-          </div>
-          <div className="flex flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
-            <div className="">
-              <label className="flex flex-col gap-1">
-                <P title="Categoria:" className="text-blue-400" />
-                <Input
-                  type="text"
-                  name="titleCategory"
-                  placeholder="Crie sua categoria aqui..."
-                />
-              </label>
             </div>
-            <label className="flex flex-col gap-1">
-              <P title="Descrição para Categoria:" className="text-blue-400" />
+          </div>
+
+          <div className="flex flex-col gap-4 rounded-3xl border border-solid border-blue-50/85 bg-blue-50/10 p-4">
+            <div className="flex flex-col gap-2">
+              <H3 title="Categoria:" className="text-base font-bold text-blue-400" />
               <Input
                 type="text"
-                className=""
-                placeholder="Exemplo: 'Essa categoria fica´rá responsável...'"
+                name="titleCategory"
+                placeholder="Crie sua categoria aqui..."
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <H3 title="Descrição para Categoria:" className="text-base font-bold text-blue-400" />
+              <Input
+                type="text"
+                placeholder="Exemplo: 'Essa categoria ficará responsável...'"
                 name="descriptionCategory"
               />
-            </label>
+            </div>
           </div>
+
           <div className="flex flex-row items-center justify-center gap-5">
-            <Button type="submit" className="flex flex-row justify-start gap-2">
-              <p className="text-base font-medium text-white">confirmar</p>
+            <Button type="submit" className="flex min-h-11 flex-row items-center gap-2">
+              <p className="text-base font-medium text-white">Confirmar</p>
               <i>
-                <FontAwesomeIcon icon={faCheck} />
+                <FontAwesomeIcon icon={faCheck} size="lg" />
               </i>
             </Button>
             <Button
               type="reset"
-              className="flex flex-row justify-start gap-2 bg-gray-400"
+              className="flex min-h-11 flex-row items-center gap-2 bg-gray-400!"
+              onClick={() => navigate(-1)}
             >
-              <p className="text-base font-medium text-white">cancelar</p>
+              <p className="text-base font-medium text-white">Cancelar</p>
               <i>
-                <FontAwesomeIcon icon={faX} />
+                <FontAwesomeIcon icon={faX} size="lg" />
               </i>
             </Button>
           </div>
         </fetcher.Form>
       </div>
-      <div></div>
     </div>
   );
-}
-
-{
-  /*
-    {!isInputCategory && (
-      <label className="flex max-w-min flex-col gap-1">
-        <P title="Categoria:" className="text-blue-400" />
-        <Button
-          type="button"
-          onClick={() => setIsPopupOption((s) => !s)}
-          className="flex flex-row justify-start gap-2"
-        >
-          <p className="xs:max-2xs:w-20 3xs:max-4xs:w-20 truncate text-base font-medium text-white">
-            {category || "Selecionar"}
-          </p>
-          <i>
-            <FontAwesomeIcon icon={faAngleRight} />
-          </i>
-        </Button>
-      </label>
-    )} */
-  /*
-    {isPopupOption && (
-      <div className="absolute top-40 rounded-3xl bg-white p-3 shadow-xs shadow-blue-100">
-        <div className="flex max-w-min flex-col gap-2">
-          <Button
-            type="button"
-            className="bg-white text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setIsCategory({ category: "Trabalho" })}
-          >
-            <P title="Traballho" className="text-blue-400" />
-          </Button>
-          <Button
-            type="button"
-            className="bg-white text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setIsCategory({ category: "Estudos" })}
-          >
-            <P title="Estudos" className="text-blue-400" />
-          </Button>
-          <Button
-            type="button"
-            className="bg-white text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setIsCategory({ category: "Finanças" })}
-          >
-            <P title="Finanças" className="text-blue-400" />
-          </Button>
-          <Button
-            type="button"
-            className="bg-white text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setIsCategory({ category: "Lazer" })}
-          >
-            <P title="Lazer" className="text-blue-400" />
-          </Button>
-          <Button
-            type="button"
-            className="bg-white text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setIsCategory({ category: "Saúde" })}
-          >
-            <P title="Saúde" className="text-blue-400" />
-          </Button>
-          <Button
-            type="button"
-            className="flex flex-row items-center gap-2 text-left font-medium shadow-sm shadow-blue-50"
-            onClick={() => setInputCategory()}
-          >
-            <P
-              title="Criar categoria"
-              className="whitespace-nowrap text-white"
-            />
-            <i>
-              <FontAwesomeIcon icon={faAngleRight} />
-            </i>
-          </Button>
-        </div>
-      </div>
-    )} */
 }

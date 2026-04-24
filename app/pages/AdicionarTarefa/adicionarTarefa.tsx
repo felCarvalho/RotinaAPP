@@ -11,10 +11,10 @@ import {
   useSearchParams,
   useNavigate,
   useLocation,
+  useFetcher,
 } from "react-router";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
-import { useFetcher } from "react-router";
 import { Button } from "../../component/btn";
 import { Overlay } from "../../component/overlay";
 import { useMatchesTypeds } from "~/utils/FunctionUtils/FunctionUtils";
@@ -42,21 +42,21 @@ export function AdicionarTarefa() {
 
   return (
     <div className="h-full w-full">
-      <div className="w-full">
-        <NavLink
-          to="/home"
-          className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+      <div className="sticky top-0 z-40 mb-6 w-full bg-white/80 py-4 px-2 backdrop-blur-md">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
+          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" size="lg" />
           <H1
             title={
               isAdicionarTarefa
                 ? "Adicione uma tarefa"
                 : "Criar tarefa de rascunho"
             }
-            className="w-max text-lg! text-blue-400"
+            className="w-max text-blue-400"
           />
-        </NavLink>
+        </button>
       </div>
       <fetcher.Form
         method="POST"
@@ -96,13 +96,13 @@ export function AdicionarTarefa() {
               <P title="Categoria:" className="text-blue-400" />
               <Button
                 type="button"
-                className="flex max-w-min flex-row items-center gap-1.5 px-2! py-1.5!"
+                className="flex max-w-min flex-row items-center gap-1.5"
                 onClick={() =>
                   setSearchParams({ categorias: "lista-categorias" })
                 }
               >
                 <i>
-                  <FontAwesomeIcon icon={faList} />
+                  <FontAwesomeIcon icon={faList} size="lg" />
                 </i>
                 <p className="min-w-max font-medium">
                   {categorias?.title
@@ -118,16 +118,16 @@ export function AdicionarTarefa() {
                 <div className="absolute top-0 right-0 left-0 z-10 flex flex-row items-center gap-2 rounded-t-[50px] bg-white/15 p-5 backdrop-blur-3xl">
                   <Button
                     type="button"
-                    className="min-h-11! min-w-11!"
+                    className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
                     onClick={() => navigate(-1)}
                   >
                     <i>
-                      <FontAwesomeIcon icon={faAngleLeft} />
+                      <FontAwesomeIcon icon={faAngleLeft} size="lg" />
                     </i>
                   </Button>
                   <H1
                     title="Selecionar uma categoria"
-                    className="text-lg! text-blue-400"
+                    className="text-2xl text-blue-400"
                   />
                 </div>
                 <div className="scrollbar-hide absolute top-0 right-0 bottom-5 left-0 z-0 overflow-auto rounded-[50px]">
@@ -181,7 +181,7 @@ export function AdicionarTarefa() {
           >
             <p className="text-base font-medium text-white">Confirmar</p>
             <i>
-              <FontAwesomeIcon icon={faCheck} className="text-white" />
+              <FontAwesomeIcon icon={faCheck} className="text-white" size="lg" />
             </i>
           </Button>
           <Button
@@ -189,7 +189,7 @@ export function AdicionarTarefa() {
             className="flex flex-row items-center justify-center gap-1.5 bg-gray-400!"
           >
             <p className="text-base font-medium text-white">cancelar</p>
-            <FontAwesomeIcon icon={faX} className="text-white" />
+            <FontAwesomeIcon icon={faX} className="text-white" size="lg" />
           </Button>
         </div>
         <div>

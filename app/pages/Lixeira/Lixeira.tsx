@@ -39,7 +39,7 @@ export function Lixeira() {
             </div>
           </div>
           <div className="pr-3">
-            <Button type="button" onClick={() => {}}>
+            <Button type="button" className="min-h-11" onClick={() => {}}>
               <p>Restaurar</p>
             </Button>
           </div>
@@ -48,7 +48,7 @@ export function Lixeira() {
         <div className="flex h-full items-center justify-center">
           <P
             title="Ops, não existe Rotinas deletas aqui"
-            className="text-lg! text-blue-400"
+            className="text-blue-400"
           />
         </div>
       </div>

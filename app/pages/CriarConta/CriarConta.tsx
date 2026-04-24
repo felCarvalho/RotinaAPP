@@ -112,18 +112,18 @@ export function CriarContaJSX() {
         <div className="flex w-full items-center justify-center gap-5 rounded-2xl md:w-full">
           {false && (
             <div>
-              <div className="p-5 mt-20">
+              <div className="mt-20 p-5">
                 <H3
                   title="Já tem sua conta?!"
-                  className="my-1 text-[17px]! tracking-wide text-blue-400"
+                  className="my-1 tracking-wide text-blue-400"
                 />
                 <H3
                   title="Faça login agora mesmo clicando no botão abaixo."
-                  className="my-1 text-[16px]! tracking-wide text-blue-300"
+                  className="my-1 tracking-wide text-blue-300"
                 />
               </div>
               <div>
-                <Button type="button" onClick={() => {}}>
+                <Button type="button" className="min-h-11" onClick={() => {}}>
                   <p className="text-white">Login!</p>
                 </Button>
               </div>
@@ -139,7 +139,7 @@ export function CriarContaJSX() {
           </div>
           <div className="w-full rounded-4xl max-md:p-4 md:p-4">
             <Form method="POST" className="flex flex-col gap-5 md:w-full">
-              <label className="flex flex-col w-full items-start gap-1.5">
+              <label className="flex w-full flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P
                     title="Usuario:"
@@ -167,7 +167,7 @@ export function CriarContaJSX() {
                 {error?.name?.at(-1) && (
                   <P
                     title={error.name.at(-1) ?? ""}
-                    className="text-xs font-medium text-red-400"
+                    className="font-medium text-red-400"
                   />
                 )}
               </label>
@@ -204,7 +204,7 @@ export function CriarContaJSX() {
                 {error?.identifier?.at(-1) && (
                   <P
                     title={error.identifier.at(-1) ?? ""}
-                    className="text-xs font-medium text-red-400"
+                    className="font-medium text-red-400"
                   />
                 )}
               </label>
@@ -237,11 +237,12 @@ export function CriarContaJSX() {
                     <Button
                       onClick={() => setShowPassword((s) => !s)}
                       type="button"
-                      className="min-h-11! min-w-11! bg-white! p-0! text-blue-400!"
+                      className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     >
                       <i>
                         <FontAwesomeIcon
                           icon={showPassword ? faEyeSlash : faEye}
+                          size="lg"
                         />
                       </i>
                     </Button>
@@ -249,7 +250,7 @@ export function CriarContaJSX() {
                   {error?.password?.at(-1) && (
                     <P
                       title={error.password.at(-1) ?? ""}
-                      className="text-xs font-medium text-red-400"
+                      className="font-medium text-red-400"
                     />
                   )}
                 </div>
@@ -283,11 +284,12 @@ export function CriarContaJSX() {
                     <Button
                       onClick={() => setShowConfirmPassword((s) => !s)}
                       type="button"
-                      className="min-h-11! min-w-11! bg-white! p-0! text-blue-400!"
+                      className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     >
                       <i>
                         <FontAwesomeIcon
                           icon={showConfirmPassword ? faEyeSlash : faEye}
+                          size="lg"
                         />
                       </i>
                     </Button>
@@ -295,7 +297,7 @@ export function CriarContaJSX() {
                   {error?.passwordConfirm?.at(-1) && (
                     <P
                       title={error.passwordConfirm.at(-1) ?? ""}
-                      className="text-xs font-medium text-red-400"
+                      className="font-medium text-red-400"
                     />
                   )}
                 </div>
@@ -303,6 +305,7 @@ export function CriarContaJSX() {
               <div className="flex w-full flex-row items-center justify-center gap-5">
                 <Button
                   onClick={() => verifyForm("tudo")}
+                  className="min-h-11"
                   type={
                     verifyErrors() && navigation.state === "submitting"
                       ? "button"
@@ -312,7 +315,7 @@ export function CriarContaJSX() {
                   <p
                     className={
                       verifyErrors() && navigation.state === "submitting"
-                        ? "text-blue-100 bg-blue-300"
+                        ? "bg-blue-300 text-blue-100"
                         : "text-white"
                     }
                   >
@@ -324,7 +327,7 @@ export function CriarContaJSX() {
                 <Button
                   type="reset"
                   onClick={() => setError({})}
-                  className="bg-white! text-blue-400!"
+                  className="min-h-11 bg-white! text-blue-400!"
                 >
                   <p className="font-medium">Cancelar</p>
                 </Button>
@@ -334,7 +337,7 @@ export function CriarContaJSX() {
           <div className="w-full text-end">
             <NavLink
               to="/redefinir-senha"
-              className="min-w-max text-sm font-medium text-blue-300"
+              className="min-w-max font-medium text-blue-300"
             >
               Esqueceu a senha?
             </NavLink>
@@ -347,7 +350,7 @@ export function CriarContaJSX() {
       >
         <P title="Fazer login" className="font-medium" />
         <i>
-          <FontAwesomeIcon icon={faAngleRight} />
+          <FontAwesomeIcon icon={faAngleRight} size="lg" />
         </i>
       </NavLink>
     </div>

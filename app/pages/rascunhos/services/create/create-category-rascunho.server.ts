@@ -22,6 +22,8 @@ const schemaCreateCategoryRascunho = z.object({
     .string()
     .max(400, { error: "Ops, descrição pode ter no máximo 400 caracteres" })
     .optional(),
+
+  status: z.enum(["Inativa"]),
 });
 
 export async function createCategoryRascunho({
@@ -55,9 +57,7 @@ export async function createCategoryRascunho({
     const response = await axios.post(
       "home/rascunhos/adicionar-categoria-rascunho",
       {
-        titleCategory: validateSchema.data.titleCategory,
-        descriptionCategory: validateSchema.data.descriptionCategory,
-        status: "Inativa",
+        ...validateSchema.data,
       },
       {
         baseURL: LOCAL_URL,

@@ -1,4 +1,4 @@
-import { NavLink, useFetcher, useLocation } from "react-router";
+import { useFetcher, useLocation, useNavigate } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { H1 } from "../../component/title";
@@ -10,33 +10,36 @@ const url = ["/home/adicionar-categoria"];
 
 export function AdicionarCategoria() {
   const fetcher = useFetcher();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const isAdicionarCategoria = url.includes(pathname);
 
   return (
     <div className="h-full w-full">
-      <div className="w-full">
-        <NavLink
-          to="/home"
-          className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+      <div className="sticky top-0 z-40 mb-6 w-full bg-white/80 py-4 px-2 backdrop-blur-md">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="text-blue-400"
+            size="lg"
+          />
           <H1
             title={
               isAdicionarCategoria
                 ? "Adicione uma Categoria"
                 : "Criar categoria de rascunho"
             }
-            className="w-max text-lg! text-blue-400"
+            className="w-max text-blue-400"
           />
-        </NavLink>
+        </button>
       </div>
       <fetcher.Form
         method="POST"
         action={
-          isAdicionarCategoria
-            ? "/home/adicionar-categoria"
-            : "/home/rascunhos"
+          isAdicionarCategoria ? "/home/adicionar-categoria" : "/home/rascunhos"
         }
         className="flex flex-col gap-3 pt-3"
       >
@@ -45,13 +48,17 @@ export function AdicionarCategoria() {
             <P title="Categoria:" className="text-blue-400" />
             <input
               type="hidden"
-              placeholder="Exemplo: 'Criar uma lading page...'"
               name="intent"
               value={
                 isAdicionarCategoria
                   ? "adicionar-categoria"
                   : "create-category-rascunho"
               }
+            />
+            <input
+              type="hidden"
+              name="status"
+              value={isAdicionarCategoria ? "Ativa" : "Inativa"}
             />
             <Input
               type="text"
@@ -60,7 +67,7 @@ export function AdicionarCategoria() {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <P title="Descrição para cateegoria:" className="text-blue-400" />
+            <P title="Descrição para categoria:" className="text-blue-400" />
             <Input
               type="text"
               className=""
@@ -76,15 +83,20 @@ export function AdicionarCategoria() {
           >
             <p className="text-base font-medium text-white">Confirmar</p>
             <i>
-              <FontAwesomeIcon icon={faCheck} className="text-white" />
+              <FontAwesomeIcon
+                icon={faCheck}
+                className="text-white"
+                size="lg"
+              />
             </i>
           </Button>
           <Button
             type="reset"
             className="flex flex-row items-center justify-center gap-1.5 bg-gray-400!"
+            onClick={() => navigate(-1)}
           >
             <p className="text-base font-medium text-white">cancelar</p>
-            <FontAwesomeIcon icon={faX} className="text-white" />
+            <FontAwesomeIcon icon={faX} className="text-white" size="lg" />
           </Button>
         </div>
         <div>

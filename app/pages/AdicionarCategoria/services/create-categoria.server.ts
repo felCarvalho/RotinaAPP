@@ -19,6 +19,7 @@ const categoriaSchema = z.object({
     .max(400, {
       error: "O título da categoria não pode ser maior que 400 caracteres",
     }),
+  status: z.enum(["Ativa"]),
 });
 
 export async function createCategory({
@@ -54,11 +55,9 @@ export async function createCategory({
 
   try {
     const response = await axios.post(
-      "home/rascunhos/adicionar-categoria",
+      "",
       {
-        titleCategory: validated.data.titleCategory,
-        descriptionCategory: validated.data.descriptionCategory,
-        stauts: "Inativa",
+        ...validated.data,
       },
       {
         baseURL: LOCAL_URL,
