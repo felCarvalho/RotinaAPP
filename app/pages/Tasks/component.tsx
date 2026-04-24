@@ -10,12 +10,11 @@ export { loader, action, handle, middleware };
 
 export default function TasksComponent() {
   const { pathname } = useLocation();
+  const isHome = pathname === "/home";
+
   return (
-    <div className="h-full md:p-10">
-      {pathname === "/home" && <Tasks />}
-      <div className={pathname === "/home" ? "" : "h-full w-full"}>
-        <Outlet />
-      </div>
+    <div className="h-full w-full">
+      {isHome ? <Tasks /> : <Outlet />}
     </div>
   );
 }

@@ -40,19 +40,23 @@ export function Tasks() {
 
   return (
     <div className="h-full w-full">
-      <div className="">
-        <NavLink
-          to="/login"
-          className="flex w-min flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
+      <div className="sticky top-0 z-40 mb-6 bg-white/80 py-4 px-2 backdrop-blur-md">
+        <button
+          onClick={() => navigate("/login")}
+          className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" />
-          <H1 title="Inicio" className="w-max text-lg! text-blue-400" />
-        </NavLink>
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="text-blue-400"
+            size="lg"
+          />
+          <H1 title="Inicio" className="w-max text-blue-400" />
+        </button>
       </div>
       {data?.data.length ? (
         data.data.map((t: Task) => (
           <div className="pt-3" key={t.id}>
-            <div className="mb-4 flex flex-col gap-4 overflow-hidden rounded-full border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none">
+            <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none">
               <div className="mx-3 flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <div className="flex flex-row items-center">
@@ -84,13 +88,13 @@ export function Tasks() {
                     />
                     <motion.label
                       htmlFor={t.id}
-                      className="min-h-5 min-w-6 cursor-pointer rounded-full bg-white text-center peer-checked:bg-blue-400"
+                      className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white text-center peer-checked:bg-blue-400"
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 300 }}
                       aria-label={""}
                     >
                       <i className="text-white">
-                        <FontAwesomeIcon icon={faCheck} className={""} />
+                        <FontAwesomeIcon icon={faCheck} size="lg" />
                       </i>
                     </motion.label>
                   </div>
@@ -102,7 +106,7 @@ export function Tasks() {
                   <button
                     type="button"
                     aria-label="opções"
-                    className="flex min-h-10 min-w-10 cursor-pointer items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50 lg:hidden"
+                    className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50 lg:hidden"
                     ref={(e) => {
                       return isPopup.itemId === t.id && isPopup.popup
                         ? refs.setReference(e)
@@ -113,22 +117,22 @@ export function Tasks() {
                     }
                   >
                     <i>
-                      <FontAwesomeIcon icon={faEllipsisVertical} />
+                      <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
                     </i>
                   </button>
                   <div className="flex flex-row items-center justify-center gap-2 max-md:hidden">
                     <Button
                       type="button"
-                      className="min-h-9 min-w-9 p-0!"
+                      className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                       onClick={() => navigate(`renomear/${t.id}`)}
                     >
                       <i>
-                        <FontAwesomeIcon icon={faPen} />
+                        <FontAwesomeIcon icon={faPen} size="lg" />
                       </i>
                     </Button>
                     <Button
                       type="button"
-                      className="min-h-9 min-w-9 p-0!"
+                      className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                       onClick={() =>
                         fetcher.submit(
                           {
@@ -143,7 +147,7 @@ export function Tasks() {
                       }
                     >
                       <i>
-                        <FontAwesomeIcon icon={faTrash} />
+                        <FontAwesomeIcon icon={faTrash} size="lg" />
                       </i>
                     </Button>
                   </div>
@@ -169,39 +173,38 @@ export function Tasks() {
                   )}
                 </div>
               </div>
-              <div className="mx-3 flex flex-row items-center justify-between">
-                <div className="flex flex-row items-center justify-center gap-0.5 text-[10px]">
+              <div className="mx-3 flex flex-row items-center justify-between gap-2 overflow-hidden">
+                <div className="flex min-w-0 flex-1 flex-row items-center justify-start gap-1 text-base">
                   <H3
                     title="categoria:"
-                    className="text-sm font-medium text-blue-400"
+                    className="xs:block hidden shrink-0 font-medium text-blue-400"
                   />
                   <NavLink
                     to={`/home/info-categoria/${typeof t.category === "object" ? t.category.id : t.category}`}
-                    className="xs:max-2xs:w-8 3xs:max-4xs:w-14 truncate text-sm font-medium text-blue-300 hover:underline"
+                    className="truncate font-medium text-blue-300 hover:underline"
                   >
                     {typeof t.category === "object"
                       ? t.category.title
                       : t.category}
                   </NavLink>
                 </div>
-                <div>
+
+                <div className="hidden flex-1 items-center justify-center p-2 md:flex">
                   <Button
                     type="button"
-                    className="px-3! py-1! text-base font-medium"
+                    className="font-medium"
                     onClick={() => navigate(`detalhes/${t.id}`)}
                   >
                     <p className="text-white">Ver detalhes</p>
                   </Button>
                 </div>
-                <div className="flex flex-row items-center justify-center gap-0.5 text-[10px]">
+
+                <div className="flex flex-1 flex-row items-center justify-end gap-1 text-base">
                   <H3
                     title="Criada em:"
-                    className="mr-1 text-sm font-medium text-blue-400"
+                    className="hidden font-medium text-blue-400 sm:block"
                   />
-                  <P
-                    title={t.createAt}
-                    className="text-sm font-medium text-blue-300"
-                  />
+                  <P title={t.createAt} className="font-medium text-blue-300" />
                 </div>
               </div>
             </div>
@@ -218,15 +221,3 @@ export function Tasks() {
     </div>
   );
 }
-
-/*
-if (t.publicId === isPopup.publicId)
-  refs.setReference(el);
-}}
-onClick={() =>
-setIsPopup((s) => ({
-  ...s,
-  status: !s.status,
-  publicId: t.publicId,
-}))
-}*/
