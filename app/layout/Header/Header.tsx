@@ -1,97 +1,75 @@
-import { useNavigate } from "react-router";
-import { Nav } from "../../component/Nav/Nav";
+import { useNavigate, useLocation, NavLink } from "react-router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faClipboardCheck,
-  faFilter,
-  faGear,
-  faHome,
-  faLayerGroup,
-  faPenToSquare,
-  faPlus,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { P } from "../../component/paragrafo";
+import { NAV_LINKS } from "../../utils/constants/navigation";
 
 export function Header() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [openBar, setOpenBar] = useState<string>("");
-  const navLinks = [
-    {
-      title: "Inicio",
-      link: "home",
-      icon: faHome,
-    },
-    {
-      title: "Categorias",
-      link: "home/categorias",
-      icon: faLayerGroup,
-    },
-    {
-      title: "Buscar",
-      link: "home/buscar",
-      icon: faSearch,
-    },
-    {
-      title: "Configurações",
-      link: "home/configuracoes",
-      icon: faGear,
-    },
-    {
-      title: "Filtro",
-      link: "home/filtros",
-      icon: faFilter,
-    },
-    {
-      title: "Adicionar Tarefa",
-      link: "home/adicionar-tarefa",
-      icon: faCheck,
-    },
-    {
-      title: "Adicionar Categoria",
-      link: "home/adicionar-categoria",
-      icon: faPlus,
-    },
-    {
-      title: "Rascunhos",
-      link: "home/rascunhos",
-      icon: faClipboardCheck,
-    },
-    {
-      title: "Criar Rotina",
-      link: "home/criar-rotina",
-      icon: faPenToSquare,
-    },
-  ];
 
   return (
     <div
-      className={`sticky top-0 z-50 h-screen shrink-0 overflow-y-auto transition-all ${openBar ? "justify-startw-full flex flex-col items-end" : "flex flex-col items-center justify-start"} gap-5 bg-blue-50/30 px-4 py-5`}
+      className={`sticky top-0 z-50 h-screen shrink-0 hidden lg:flex flex-col items-center justify-start bg-blue-50/30 border-r border-blue-100/50 transition-all`}
     >
-      <div
-        className="flex h-5 w-7 flex-row-reverse rounded-[5px] border border-blue-400 bg-white shadow-2xl shadow-blue-400"
-        onClick={() =>
-          setOpenBar((s) => (s.trim() ? "" : "mr-2.5 animate-pulse "))
-        }
-      >
-        <div
-          className={`${openBar} h-4.5 w-4.5 rounded-[5px] bg-blue-400`}
-        ></div>
+      {/* Container Fixo do Botão de Toggle */}
+      <div className="w-full flex items-center justify-center py-5 sticky top-0 bg-transparent z-10">
+        <button
+          type="button"
+          aria-label="Toggle Menu"
+          className="flex aspect-square min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full border border-blue-50 bg-white hover:bg-blue-100"
+          onClick={() => setOpenBar((s) => (s.trim() ? "" : "open"))}
+        >
+          {openBar.trim() ? (
+            <div className="relative h-6 w-6">
+              <span className="absolute top-1/2 left-0 h-0.5 w-6 -translate-y-1/2 rotate-45 rounded-full bg-blue-400" />
+              <span className="absolute top-1/2 left-0 h-0.5 w-6 -translate-y-1/2 -rotate-45 rounded-full bg-blue-400" />
+            </div>
+          ) : (
+            <div className="flex h-5 w-5 flex-col items-center justify-center gap-1.5">
+              <span className="h-0.5 w-6 rounded-full bg-blue-400" />
+              <span className="h-0.5 w-6 rounded-full bg-blue-400" />
+              <span className="h-0.5 w-6 rounded-full bg-blue-400" />
+            </div>
+          )}
+        </button>
       </div>
-      {navLinks.map((s) => (
-        <div className={openBar.trim() ? "w-60" : "w-full"}>
-          <div
-            className="flex flex-row items-center rounded-2xl border-b border-b-blue-100 p-2 hover:bg-white"
-            onClick={() => navigate(s.link)}
-          >
-            <i className="text-blue-400">
-              <FontAwesomeIcon icon={s.icon} />
-            </i>
-            {openBar.trim() && <Nav to={s.link} title={s.title} />}
-          </div>
-        </div>
-      ))}
+
+      {/* Container de Scroll dos Links */}
+      <div className="scrollbar-hide flex-1 w-full overflow-y-auto px-4 flex flex-col gap-5 pb-5">
+        {NAV_LINKS.map((s) => {
+          const isActive = pathname === `/${s.link}` || (s.link !== "home" && pathname.includes(s.link));
+          
+          return (
+            <div key={s.link} className="w-full">
+              <NavLink
+                to={s.link}
+                end={s.link === "home"}
+                className={`flex flex-row items-center p-1 rounded-full cursor-pointer ${
+                  openBar.trim() 
+                    ? (isActive ? "border-blue-100 bg-white border" : "bg-white border-blue-50 border hover:bg-blue-50") 
+                    : (isActive ? "border-blue-100 border bg-blue-50/20" : "border border-transparent border hover:bg-white")
+                } ${openBar.trim() ? "justify-start gap-4" : "justify-center"}`}
+              >
+                <i className="flex aspect-square min-h-11 min-w-11 items-center justify-center">
+                  <FontAwesomeIcon 
+                    icon={s.icon} 
+                    size="lg" 
+                    className={isActive ? "text-blue-300" : "text-blue-400"}
+                  />
+                </i>
+                {openBar.trim() && (
+                  <P 
+                    title={s.title} 
+                    className={`font-medium ${isActive ? "text-blue-300" : "text-blue-400"}`} 
+                  />
+                )}
+              </NavLink>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
