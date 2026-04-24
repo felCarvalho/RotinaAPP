@@ -15,7 +15,7 @@ export function HeaderMobile() {
     <>
       {/* Barra Inferior Horizontal */}
       {!isMenuOpen && (
-        <nav className="fixed right-0 bottom-0 left-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/90 backdrop-blur-lg lg:hidden">
+        <nav className="fixed right-0 bottom-0 left-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/30 backdrop-blur-md lg:hidden">
           <div className="scrollbar-hide flex h-full flex-1 items-center gap-4 overflow-x-auto px-4 pb-1">
             {NAV_LINKS.map((s) => {
               const isActive =
@@ -56,7 +56,9 @@ export function HeaderMobile() {
               <i className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border border-blue-50 bg-white text-blue-400 active:bg-blue-50">
                 <FontAwesomeIcon icon={faBars} size="lg" />
               </i>
-              <span className="text-[10px] font-medium text-blue-400">Menu</span>
+              <span className="text-[10px] font-medium text-blue-400">
+                Menu
+              </span>
             </button>
           </div>
         </nav>
@@ -69,9 +71,9 @@ export function HeaderMobile() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
-            className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden"
+            className="fixed inset-0 z-50 flex flex-col bg-white/80 backdrop-blur-md lg:hidden"
           >
-            <div className="flex items-center justify-between border-b border-blue-50 bg-white px-6 py-4">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-50 bg-transparent px-6 py-4 backdrop-blur-lg">
               <div className="flex flex-col">
                 <H3
                   title="Navegação"

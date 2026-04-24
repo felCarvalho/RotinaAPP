@@ -31,7 +31,7 @@ export function DetalhesRotina() {
       initial={{ scale: 0.2, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
     >
-      <div className="w-[95%] min-w-[350px] md:min-w-[1000px] md:max-w-7xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xl shadow-blue-100 md:relative md:mx-auto">
+      <div className="w-[95%] min-w-[350px] md:min-w-[1000px] md:max-w-7xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto">
         <div className="mb-4 flex flex-row items-center justify-start">
           <H1 title="Detalhes da Rotina" className="text-blue-400" />
         </div>

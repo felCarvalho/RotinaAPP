@@ -47,7 +47,7 @@ export function LoginJSX() {
             </Button>
           </div>
         </div>
-        <div className="flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xl shadow-blue-50 md:w-full md:py-4">
+        <div className="flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xs shadow-blue-50 md:w-full md:py-4">
           <div className="text-center">
             <H1
               title="Login"

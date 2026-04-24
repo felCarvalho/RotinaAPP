@@ -40,7 +40,7 @@ export function SearchFloatBar({ onBack, onChange, value }: SearchFloat) {
         onChange={onChange}
         value={value}
         placeholder="Pesquise suas Rotinas..."
-        className="border-blue-100 bg-white/80 opacity-95 shadow-2xl! shadow-blue-100 backdrop-blur-3xl placeholder:font-semibold placeholder:tracking-wide focus:border-white focus:bg-white/90 focus:outline-white"
+        className="border-blue-100 bg-white/80 opacity-95 shadow-2xs! shadow-blue-100 backdrop-blur-3xl placeholder:font-semibold placeholder:tracking-wide focus:border-white focus:bg-white/90 focus:outline-white"
       />
     </motion.form>
   );

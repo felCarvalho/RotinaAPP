@@ -130,7 +130,7 @@ export function CriarContaJSX() {
             </div>
           )}
         </div>
-        <div className="flex-col items-center justify-center gap-2 rounded-4xl max-md:p-2 shadow-2xl shadow-blue-50 md:w-full md:p-2">
+        <div className="flex-col items-center justify-center gap-2 rounded-4xl max-md:p-2 shadow-2xs shadow-blue-50 md:w-full md:p-2">
           <div className="text-center">
             <H1
               title="Criar Conta"

@@ -48,12 +48,6 @@ export const NAV_LINKS = [
     description: "Crie uma nova atividade"
   },
   {
-    title: "Nova Categoria",
-    link: "home/adicionar-categoria",
-    icon: faPlus,
-    description: "Organize por novos temas"
-  },
-  {
     title: "Rascunhos",
     link: "home/rascunhos",
     icon: faClipboardCheck,

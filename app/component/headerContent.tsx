@@ -40,7 +40,7 @@ export function HeaderContent({
             <Button
               onClick={btnBack}
               type="button"
-              className={`${classNameBtn} ${classNameBtnBack} aspect-square flex items-center justify-center min-h-11 min-w-11 rounded-full bg-blue-400 p-0! text-white shadow-2xl shadow-blue-100`}
+              className={`${classNameBtn} ${classNameBtnBack} aspect-square flex items-center justify-center min-h-11 min-w-11 rounded-full bg-blue-400 p-0! text-white shadow-2xs shadow-blue-100`}
               ariaLabel="Voltar"
             >
               <FontAwesomeIcon icon={iconBack} size="lg" />
@@ -56,7 +56,7 @@ export function HeaderContent({
           <Button
             onClick={btnClosed}
             type="button"
-            className={`${classNameBtn} ${classNameBtnClosed} min-h-11 min-w-11 rounded-full bg-blue-400 p-0! text-white shadow-2xl shadow-blue-100`}
+            className={`${classNameBtn} ${classNameBtnClosed} min-h-11 min-w-11 rounded-full bg-blue-400 p-0! text-white shadow-2xs shadow-blue-100`}
             ariaLabel="Fechar"
           >
             <FontAwesomeIcon icon={iconClosed} />

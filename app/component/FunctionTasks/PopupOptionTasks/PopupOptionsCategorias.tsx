@@ -12,7 +12,7 @@ export function PopupOptionsCategorias({ id }: { id: string }) {
       <Button
         type="button"
         onClick={() => navigate(`detalhes-categoria/${id}`)}
-        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-2xs border border-blue-50"
       >
         <FontAwesomeIcon icon={faListAlt} size="lg" />
         <span className="font-medium">Ver detalhes</span>
@@ -21,7 +21,7 @@ export function PopupOptionsCategorias({ id }: { id: string }) {
       <Button
         type="button"
         onClick={() => navigate(`renomear/${id}`)}
-        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-2xs border border-blue-50"
       >
         <FontAwesomeIcon icon={faPen} size="lg" />
         <span className="font-medium">Renomear</span>
@@ -29,7 +29,7 @@ export function PopupOptionsCategorias({ id }: { id: string }) {
 
       <Button
         type="button"
-        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-2xs border border-blue-50"
         onClick={() =>
           submit(
             {
@@ -49,7 +49,7 @@ export function PopupOptionsCategorias({ id }: { id: string }) {
 
       <Button
         type="button"
-        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-2xs border border-blue-50"
         onClick={() =>
           submit(
             {
@@ -70,7 +70,7 @@ export function PopupOptionsCategorias({ id }: { id: string }) {
 
       <Button
         type="button"
-        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-xs border border-blue-50"
+        className="flex flex-row items-center gap-3 rounded-full bg-white! text-blue-400! shadow-2xs border border-blue-50"
         onClick={() =>
           submit(
             {

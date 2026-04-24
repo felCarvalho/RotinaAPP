@@ -17,26 +17,26 @@ export function Config() {
   const settingsData = [
     {
       title: "Tema",
-      description: "Escolha o tema da aplicação",
+      description: "Escolha o tema da aplicação (em desenvolvimento)",
       icon: faAngleRight,
       link: "home/configuracoes/tema",
     },
     {
       title: "Conta",
-      description: "Gerenciar sua conta",
+      description: "Gerenciar sua conta (em desenvolvimento)",
       icon: faAngleRight,
       link: "home/configuracoes/conta",
     },
     {
       title: "Permissões",
-      description: "Defina as permissões de acesso a funções para sua conta",
+      description: "Defina as permissões de acesso a funções para sua conta (em desenvolvimento)",
       icon: faLock,
       link: "home/configuracoes/Permissoes",
     },
     {
       title: "Lixeira",
       description:
-        "Permite restaurar e excluir de forma permanente os itens deletados",
+        "Permite restaurar e excluir de forma permanente os itens deletados (em desenvolvimento)",
       icon: faTrashAlt,
       link: "home/configuracoes/lixeira",
     },

@@ -114,7 +114,7 @@ export function AdicionarTarefa() {
           )}
           {isOpenModal && isAdicionarTarefa && (
             <Overlay className="p-5 lg:px-80 lg:py-20">
-              <div className="relative h-full w-full rounded-[50px] bg-white shadow-2xl shadow-blue-50">
+              <div className="relative h-full w-full rounded-[50px] bg-white shadow-2xs shadow-blue-50">
                 <div className="absolute top-0 right-0 left-0 z-10 flex flex-row items-center gap-2 rounded-t-[50px] bg-white/15 p-5 backdrop-blur-3xl">
                   <Button
                     type="button"
