@@ -1,6 +1,6 @@
 import { SearchTasks } from "./SearchTasks";
 import { Input } from "../../component/input";
-import { Form, useLoaderData } from "react-router";
+import { Form, useLoaderData, Outlet } from "react-router";
 import { useQueryState } from "nuqs";
 import { loader } from "./controllers/loader.server";
 import { handle } from "./controllers/handle";
@@ -35,6 +35,8 @@ export default function SearchTasksComponent() {
           </div>
         </Form>
       </div>
+
+      <Outlet />
     </div>
   );
 }

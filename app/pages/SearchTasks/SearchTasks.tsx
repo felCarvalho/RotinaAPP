@@ -49,7 +49,7 @@ export function SearchTasks() {
 
   return (
     <div className="flex h-full min-h-[calc(100vh-160px)] flex-col">
-      <div className="sticky top-0 z-40 mb-6 bg-white/80 py-4 px-2 backdrop-blur-md">
+      <div className="sticky top-0 z-40 mb-6 bg-white/80 px-2 py-4 backdrop-blur-md">
         <button
           onClick={() => navigate(-1)}
           className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
@@ -120,8 +120,8 @@ export function SearchTasks() {
                         )
                       }
                       className={`flex min-h-11 min-w-11 flex-row items-center justify-center gap-2 transition-colors ${
-                        t.completed === "Concluída" 
-                          ? "bg-white! text-blue-400 border border-blue-400 shadow-xs" 
+                        t.completed === "Concluída"
+                          ? "border border-blue-400 bg-white! text-blue-400 shadow-xs"
                           : "bg-blue-400! text-white"
                       }`}
                     >
@@ -129,16 +129,27 @@ export function SearchTasks() {
                         <FontAwesomeIcon
                           icon={t.completed === "Concluída" ? faX : faCheck}
                           size="lg"
-                          className={t.completed === "Concluída" ? "text-blue-400" : "text-white"}
+                          className={
+                            t.completed === "Concluída"
+                              ? "text-blue-400"
+                              : "text-white"
+                          }
                         />
                       </i>
                       <P
                         title={
-                          t.completed === "Concluída" ? "Incompleta" : "Concluída"
+                          t.completed === "Concluída"
+                            ? "Incompleta"
+                            : "Concluída"
                         }
-                        className={t.completed === "Concluída" ? "text-blue-400" : "text-white"}
+                        className={
+                          t.completed === "Concluída"
+                            ? "text-blue-400"
+                            : "text-white"
+                        }
                       />
-                    </Button>                  </div>
+                    </Button>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col items-start md:hidden">
@@ -153,7 +164,7 @@ export function SearchTasks() {
                   onClick={() =>
                     setPopup((s) => ({ itemId: t.id, popup: !s.popup }))
                   }
-                  className="aspect-square flex min-h-11 min-w-11 items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50 cursor-pointer"
+                  className="flex aspect-square min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50"
                 >
                   <i>
                     <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
@@ -180,7 +191,7 @@ export function SearchTasks() {
               <div className="flex w-full flex-row items-center justify-center">
                 <Button
                   type="button"
-                  className="aspect-square flex items-center justify-center min-h-11 min-w-11 bg-white p-0!"
+                  className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                   onClick={() =>
                     setItemId((s) => ({
                       item: t.id,
@@ -206,7 +217,7 @@ export function SearchTasks() {
                           )
                         }
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 bg-white p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faTrash} size="lg" />
@@ -221,7 +232,7 @@ export function SearchTasks() {
                       <Button
                         onClick={() => {}}
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 bg-white p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faTrashCanArrowUp} size="lg" />
@@ -229,7 +240,10 @@ export function SearchTasks() {
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
-                      <H3 title="Renomear rotina:" className="text-blue-400/80" />
+                      <H3
+                        title="Renomear rotina:"
+                        className="text-blue-400/80"
+                      />
                       <Button
                         onClick={() =>
                           navigate({
@@ -238,7 +252,7 @@ export function SearchTasks() {
                           })
                         }
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 bg-white p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
                         <i className="text-blue-300">
                           <FontAwesomeIcon icon={faPen} size="lg" />
@@ -266,12 +280,13 @@ export function SearchTasks() {
             </motion.div>
           ))
         ) : (
-        <div className="flex flex-1 flex-col items-center justify-center pb-20">
-          <P title="Nenhuma rotina foi encontrada" className="text-blue-400 text-xl font-medium" />
-          <span className="text-blue-300 text-xs font-normal text-center">
-            (As funcionalidades desta rota ainda estão sendo desenvolvidas)
-          </span>
-        </div>        )}
+          <div className="flex flex-1 flex-col items-center justify-center pb-20">
+            <P
+              title="Nenhuma rotina foi encontrada"
+              className="text-xl font-medium text-blue-400"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
