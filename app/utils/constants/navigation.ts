@@ -37,7 +37,7 @@ export const NAV_LINKS = [
   },
   {
     title: "Filtro",
-    link: "home/filtros",
+    link: "home/filtro",
     icon: faFilter,
     description: "Refine sua visualização"
   },
