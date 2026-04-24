@@ -10,7 +10,14 @@ export default [
     route("home", "./pages/Tasks/component.tsx", [
       route("criar-rotina", "./pages/CreateRotina/component.tsx"),
       route("configuracoes", "./pages/Configuracao/component.tsx"),
-      route("buscar", "./pages/SearchTasks/component.tsx"),
+      route("buscar", "./pages/SearchTasks/component.tsx", [
+        route("renomear/:id", "./modais/Renomear-tarefa/component.tsx", {
+          id: "renomear-buscar",
+        }),
+        route("detalhes/:id", "./modais/Detalhes-tarefa/component.tsx", {
+          id: "detalhes-buscar",
+        }),
+      ]),
       route("adicionar-tarefa", "./pages/AdicionarTarefa/component.tsx", {
         id: "adicionar-tarefa",
       }),
