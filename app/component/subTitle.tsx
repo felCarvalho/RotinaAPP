@@ -11,7 +11,7 @@ export function H3({ children, title, className, ...props }: H3) {
   return (
     <motion.h3
       {...props}
-      className={`${className} text-sm font-medium tracking-wide text-shadow-blue-100 text-shadow-xs`}
+      className={`${className} text-base font-medium tracking-wide text-shadow-blue-100 text-shadow-xs`}
     >
       {children} {title}
     </motion.h3>
