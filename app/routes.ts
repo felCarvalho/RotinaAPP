@@ -36,6 +36,7 @@ export default [
       route("adicionar-categoria", "./pages/AdicionarCategoria/component.tsx", {
         id: "adicionar-categoria",
       }),
+      route("filtro", "./pages/Filtro/component.tsx"),
       route("renomear/:id", "./modais/Renomear-tarefa/component.tsx", {
         id: "renomear-home",
       }),

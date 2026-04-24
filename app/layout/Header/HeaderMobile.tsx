@@ -15,10 +15,12 @@ export function HeaderMobile() {
     <>
       {/* Barra Inferior Horizontal */}
       {!isMenuOpen && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/90 backdrop-blur-lg lg:hidden">
+        <nav className="fixed right-0 bottom-0 left-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/90 backdrop-blur-lg lg:hidden">
           <div className="scrollbar-hide flex h-full flex-1 items-center gap-4 overflow-x-auto px-4 pb-1">
             {NAV_LINKS.map((s) => {
-              const isActive = pathname === `/${s.link}` || (s.link !== "home" && pathname.includes(s.link));
+              const isActive =
+                pathname === `/${s.link}` ||
+                (s.link !== "home" && pathname.includes(s.link));
               return (
                 <NavLink
                   key={s.link}
@@ -26,12 +28,18 @@ export function HeaderMobile() {
                   end={s.link === "home"}
                   className="flex shrink-0 flex-col items-center justify-center gap-1"
                 >
-                  <i className={`flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full transition-all border ${
-                    isActive ? "border-blue-100 bg-white text-blue-300" : "border-transparent text-blue-400"
-                  }`}>
+                  <i
+                    className={`flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border transition-all ${
+                      isActive
+                        ? "border-blue-100 bg-white text-blue-300"
+                        : "border-transparent text-blue-400"
+                    }`}
+                  >
                     <FontAwesomeIcon icon={s.icon} size="lg" />
                   </i>
-                  <span className={`text-[10px] font-medium transition-colors ${isActive ? "text-blue-300" : "text-blue-400"} whitespace-nowrap`}>
+                  <span
+                    className={`text-[10px] font-medium transition-colors ${isActive ? "text-blue-300" : "text-blue-400"} whitespace-nowrap`}
+                  >
                     {s.title}
                   </span>
                 </NavLink>
@@ -40,7 +48,7 @@ export function HeaderMobile() {
           </div>
 
           {/* Botão Hambúrguer Fixo */}
-          <div className="flex h-full w-20 items-center justify-center border-l border-blue-50 bg-white/90 px-2 backdrop-blur-lg shrink-0">
+          <div className="flex h-full w-20 shrink-0 items-center justify-center border-l border-blue-50 bg-white/90 px-2 backdrop-blur-lg">
             <button
               onClick={() => setIsMenuOpen(true)}
               className="flex flex-col items-center justify-center gap-1"
@@ -63,12 +71,18 @@ export function HeaderMobile() {
             exit={{ opacity: 0, x: 50 }}
             className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden"
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-blue-50 bg-white">
+            <div className="flex items-center justify-between border-b border-blue-50 bg-white px-6 py-4">
               <div className="flex flex-col">
-                <H3 title="Navegação" className="text-lg font-bold text-blue-400" />
-                <P title="Selecione uma opção" className="text-xs text-blue-300" />
+                <H3
+                  title="Navegação"
+                  className="text-lg font-bold text-blue-400"
+                />
+                <P
+                  title="Selecione uma opção"
+                  className="text-xs text-blue-300"
+                />
               </div>
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(false)}
                 className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border border-blue-50 bg-white text-blue-400 active:scale-90"
               >
@@ -76,26 +90,38 @@ export function HeaderMobile() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-3 overflow-y-auto p-4 flex-1 scrollbar-hide bg-blue-50/5">
+            <div className="scrollbar-hide flex flex-1 flex-col gap-3 overflow-y-auto bg-blue-50/5 p-4">
               {NAV_LINKS.map((s) => {
-                const isActive = pathname === `/${s.link}` || (s.link !== "home" && pathname.includes(s.link));
+                const isActive =
+                  pathname === `/${s.link}` ||
+                  (s.link !== "home" && pathname.includes(s.link));
                 return (
                   <NavLink
                     key={s.link}
                     to={s.link}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`flex flex-row items-center gap-4 rounded-3xl p-4 transition-all border ${
-                      isActive 
-                        ? "border-blue-100 bg-white" 
-                        : "bg-white border-blue-50 hover:bg-blue-50"
+                    className={`flex flex-row items-center gap-4 rounded-3xl border p-4 transition-all ${
+                      isActive
+                        ? "border-blue-100 bg-white"
+                        : "border-blue-50 bg-white hover:bg-blue-50"
                     }`}
                   >
-                    <div className={`flex aspect-square min-h-12 min-w-12 items-center justify-center rounded-2xl bg-blue-50/50 ${isActive ? "text-blue-300" : "text-blue-400"}`}>
+                    <div
+                      className={`flex aspect-square min-h-12 min-w-12 items-center justify-center rounded-full border transition-all ${isActive ? "border-blue-200 text-blue-300" : "border-blue-50 text-blue-400"}`}
+                    >
                       <FontAwesomeIcon icon={s.icon} size="lg" />
                     </div>
                     <div className="flex flex-col overflow-hidden">
-                      <span className={`text-base font-medium ${isActive ? "text-blue-300" : "text-blue-400"}`}>{s.title}</span>
-                      <span className={`text-xs truncate font-normal ${isActive ? "text-blue-300/80" : "text-blue-300"}`}>{s.description}</span>
+                      <span
+                        className={`text-base font-medium ${isActive ? "text-blue-300" : "text-blue-400"}`}
+                      >
+                        {s.title}
+                      </span>
+                      <span
+                        className={`truncate text-xs font-normal ${isActive ? "text-blue-300/80" : "text-blue-300"}`}
+                      >
+                        {s.description}
+                      </span>
                     </div>
                   </NavLink>
                 );
