@@ -43,7 +43,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonType>(
         layoutId={layoutId}
         id={id}
         aria-label={ariaLabel}
-        className={`${className} cursor-pointer rounded-full border-none bg-blue-400 px-5 py-2.5 text-base font-medium text-white shadow-md shadow-blue-50 outline-2 outline-offset-4 outline-transparent transition-discrete will-change-auto focus:outline-blue-200 active:bg-blue-200`}
+        className={`${className} cursor-pointer truncate rounded-full border-none bg-blue-400 px-5 py-2.5 text-base font-medium text-white shadow-md shadow-blue-50 outline-2 outline-offset-4 outline-transparent transition-discrete will-change-auto focus:outline-blue-200 active:bg-blue-200`}
       >
         {children}
       </motion.button>

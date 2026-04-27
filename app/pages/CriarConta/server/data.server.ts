@@ -5,7 +5,7 @@ import {
   getSession,
 } from "../../../utils/cookies/cookies.server";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import type { Data } from "../../../utils/typesGlobals/type.server";
+import type { Data } from "~/utils/typesGlobals/type.server";
 
 export async function createAccountAction({
   cookiesSession,
@@ -18,7 +18,7 @@ export async function createAccountAction({
   const form = Object.fromEntries(formData);
 
   try {
-    const response = await axios.post(
+    const response: Data<unknown> = await axios.post(
       "/criar-conta",
       {
         name: form.name,
@@ -30,8 +30,10 @@ export async function createAccountAction({
         baseURL: LOCAL_URL,
       },
     );
-
-    cookieSession.flash("success", "Sua conta foi criada com sucesso!");
+    cookieSession.flash(
+      "notification",
+      response.notification?.find((m) => m.type === "INFO")?.message,
+    );
 
     return redirect("/login", {
       headers: {

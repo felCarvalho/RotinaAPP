@@ -3,6 +3,7 @@ import { Button } from "./btn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
+import { P } from "./paragrafo";
 
 interface SearchFloat {
   onBack: () => void;
@@ -33,14 +34,14 @@ export function SearchFloatBar({ onBack, onChange, value }: SearchFloat) {
         <i>
           <FontAwesomeIcon icon={faAngleLeft} />
         </i>
-        <p className="font-medium">Voltar</p>
+        <P title="Voltar" className="font-medium text-white" />
       </Button>
       <Input
         type=""
         onChange={onChange}
         value={value}
         placeholder="Pesquise suas Rotinas..."
-        className="border-blue-100 bg-white/80 opacity-95 shadow-2xs! shadow-blue-100 backdrop-blur-3xl placeholder:font-semibold placeholder:tracking-wide focus:border-white focus:bg-white/90 focus:outline-white"
+        className="border-blue-100 bg-white/95 opacity-95 shadow-2xs! shadow-blue-100 backdrop-blur-md placeholder:font-semibold placeholder:tracking-wide focus:border-white focus:bg-white/90 focus:outline-white"
       />
     </motion.form>
   );

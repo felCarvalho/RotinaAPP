@@ -11,3 +11,10 @@
 body {
   user-select: none;
 }
+
+@media (prefers-reduced-transparency: reduce) {
+  * {
+    backdrop-filter: none !important;
+    background-opacity: 1 !important;
+  }
+}

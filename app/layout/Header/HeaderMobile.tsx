@@ -15,7 +15,7 @@ export function HeaderMobile() {
     <>
       {/* Barra Inferior Horizontal */}
       {!isMenuOpen && (
-        <nav className="fixed right-0 bottom-0 left-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/30 backdrop-blur-md lg:hidden">
+        <nav className="fixed right-0 bottom-0 left-0 z-50 flex h-20 items-center border-t border-blue-50 bg-white/95 backdrop-blur-md lg:hidden">
           <div className="scrollbar-hide flex h-full flex-1 items-center gap-4 overflow-x-auto px-4 pb-1">
             {NAV_LINKS.map((s) => {
               const isActive =
@@ -48,7 +48,7 @@ export function HeaderMobile() {
           </div>
 
           {/* Botão Hambúrguer Fixo */}
-          <div className="flex h-full w-20 shrink-0 items-center justify-center border-l border-blue-50 bg-white/90 px-2 backdrop-blur-lg">
+          <div className="flex h-full w-20 shrink-0 items-center justify-center border-l border-blue-50 bg-white/95 px-2 backdrop-blur-md">
             <button
               onClick={() => setIsMenuOpen(true)}
               className="flex flex-col items-center justify-center gap-1"
@@ -71,9 +71,9 @@ export function HeaderMobile() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
-            className="fixed inset-0 z-50 flex flex-col bg-white/80 backdrop-blur-md lg:hidden"
+            className="fixed inset-0 z-50 flex flex-col bg-white/95 backdrop-blur-md lg:hidden"
           >
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-50 bg-transparent px-6 py-4 backdrop-blur-lg">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-50 bg-white/95 px-6 py-4 backdrop-blur-md">
               <div className="flex flex-col">
                 <H3
                   title="Navegação"

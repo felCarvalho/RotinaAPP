@@ -4,9 +4,11 @@ import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import {
   commitSession,
   getCookieTokens,
+  getSessionNotification,
 } from "../../../utils/cookies/cookies.server";
 import { getSession } from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
+import type { Data } from "../../../utils/typesGlobals/type.server";
 
 export async function getAllCategory({
   cookiesSession,
@@ -24,6 +26,10 @@ export async function getAllCategory({
   }
 
   const session = await getCookieTokens({ cookiesSession });
+  const notification = await getSessionNotification(
+    cookiesSession,
+    "notification",
+  );
 
   try {
     //é no categoryService
@@ -34,22 +40,26 @@ export async function getAllCategory({
       baseURL: LOCAL_URL,
     });
 
-    console.log(response.data, "ops, categoria aqui");
-
-    return data(response.data, {
-      headers: {
-        "Set-Cookie": await commitSession(setCookie),
-      },
-      status: 200,
-    });
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return data(error.response?.data, {
+    return data(
+      { ...response.data, notification },
+      {
         headers: {
           "Set-Cookie": await commitSession(setCookie),
         },
-        status: error.response?.status,
-      });
+        status: 200,
+      },
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return data(
+        { ...error.response?.data, notification },
+        {
+          headers: {
+            "Set-Cookie": await commitSession(setCookie),
+          },
+          status: error.response?.status,
+        },
+      );
     }
 
     return data(
@@ -57,6 +67,7 @@ export async function getAllCategory({
         message: "Ops! erro interno ao buscar categorias",
         error: error,
         code: 500,
+        notification,
       },
       {
         headers: {

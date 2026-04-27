@@ -8,6 +8,7 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
+import type { Data } from "../../../utils/typesGlobals/type.server";
 
 const schemaUpdateCategoryStatus = z.object({
   idCategory: z.string().min(1, { message: "ID da categoria inválido" }),

@@ -1,5 +1,10 @@
 import { LOCAL_URL } from "../../../../utils/constants/contants.server";
-import { getSession, commitSession, getCookieTokens } from "../../../../utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+  getSessionNotification,
+} from "../../../../utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import type { Token } from "../../../../utils/context/type.server";
@@ -20,6 +25,10 @@ export async function getAllRascunho({
   }
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
+  const notification = await getSessionNotification(
+    cookieSession,
+    "notification",
+  );
 
   try {
     const response = await axios.get("home/rascunhos", {
@@ -29,17 +38,21 @@ export async function getAllRascunho({
       },
     });
 
-    return data(response.data, {
-      headers: {
-        "Set-Cookie": await commitSession(setCookie),
+    return data(
+      { ...response.data, notification },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(setCookie),
+        },
+        status: response.status,
       },
-      status: response.status,
-    });
+    );
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return data(
         {
-          data: error.response?.data,
+          ...error.response?.data,
+          notification,
         },
         {
           headers: {
@@ -53,6 +66,7 @@ export async function getAllRascunho({
     return data(
       {
         data: "Ops! erro interno no loader",
+        notification,
       },
       {
         headers: {

@@ -33,7 +33,7 @@ export function HeaderContent({
   return (
     <header className={`${classNameHeader} relative`}>
       <div
-        className={`${classNameHeaderDiv} absolute top-0 z-50 right-0 left-0 flex flex-row justify-between rounded-t-[50px] p-5 backdrop-blur-3xl`}
+        className={`${classNameHeaderDiv} absolute top-0 z-50 right-0 left-0 flex flex-row justify-between rounded-t-[50px] p-5 bg-white/95 backdrop-blur-md`}
       >
         {btnBack && (
           <div className="flex flex-row items-center gap-2">
@@ -48,7 +48,7 @@ export function HeaderContent({
             <H3
               children={null}
               title={title}
-              className={`${classNameTitle} text-lg! font-medium text-blue-400`}
+              className={`${classNameTitle} min-w-0 text-lg! font-medium text-blue-400`}
             />
           </div>
         )}

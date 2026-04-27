@@ -4,6 +4,7 @@ import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import {
   commitSession,
   getCookieTokens,
+  getSessionNotification,
 } from "../../../utils/cookies/cookies.server";
 import { getSession } from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
@@ -24,6 +25,10 @@ export async function getTasksUser({
   }
 
   const session = await getCookieTokens({ cookiesSession });
+  const notification = await getSessionNotification(
+    cookiesSession,
+    "notification",
+  );
 
   try {
     const response = await axios.get("/home", {
@@ -33,20 +38,26 @@ export async function getTasksUser({
       baseURL: LOCAL_URL,
     });
 
-    return data(response.data, {
-      headers: {
-        "Set-Cookie": await commitSession(setCookie),
-      },
-      status: 200,
-    });
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return data(error.response?.data, {
+    return data(
+      { ...response.data, notification },
+      {
         headers: {
           "Set-Cookie": await commitSession(setCookie),
         },
-        status: error.response?.status,
-      });
+        status: 200,
+      },
+    );
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return data(
+        { ...error.response?.data, notification },
+        {
+          headers: {
+            "Set-Cookie": await commitSession(setCookie),
+          },
+          status: error.response?.status,
+        },
+      );
     }
 
     return data(
@@ -54,6 +65,7 @@ export async function getTasksUser({
         message: "Ops! erro interno ao buscar rotinas",
         error: error,
         code: 500,
+        notification,
       },
       {
         headers: {

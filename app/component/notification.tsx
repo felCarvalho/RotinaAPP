@@ -7,7 +7,7 @@ export function Notification() {
       <motion.div className="flex w-full flex-row items-center justify-center">
         <i></i>
 
-        <h2 className="text-blue-200">{}</h2>
+        <h2 className="truncate text-blue-200">{}</h2>
       </motion.div>
     </motion.div>
   );

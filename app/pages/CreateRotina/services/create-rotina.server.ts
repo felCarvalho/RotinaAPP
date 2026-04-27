@@ -1,6 +1,5 @@
 import { data } from "react-router";
 import { z } from "zod";
-import { ActionTypesRequests } from "../../../utils/typesGlobals/type.server";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import {
@@ -56,7 +55,6 @@ export async function createRotina({
     const validate = z.flattenError(schemaRotina.error);
     return data(
       {
-        type: ActionTypesRequests.ERROR_VALIDATION as const,
         errors: validate.fieldErrors,
       },
       { status: 400 },
@@ -83,7 +81,6 @@ export async function createRotina({
 
     return data(
       {
-        type: ActionTypesRequests.SUCCESS as const,
         data: response.data,
       },
       {
@@ -97,7 +94,6 @@ export async function createRotina({
     if (axios.isAxiosError(error)) {
       return data(
         {
-          type: ActionTypesRequests.ERROR_SERVER as const,
           data: error.response?.data,
         },
         {
@@ -111,7 +107,6 @@ export async function createRotina({
 
     return data(
       {
-        type: ActionTypesRequests.ERROR_INTERNAL as const,
         data: {
           message: "Ops! tivemos algum problema ao criar sua rotina",
           error: error,

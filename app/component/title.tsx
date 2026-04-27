@@ -11,7 +11,7 @@ export function H1({ children, title, className, ...props }: H1) {
   return (
     <motion.h1
       {...props}
-      className={`${className} text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-shadow-blue-100 text-shadow-sm`}
+      className={`${className} truncate text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide`}
     >
       {title}
       {children}

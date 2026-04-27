@@ -34,9 +34,9 @@ export function Nav({
                 : "flex flex-row items-center justify-between gap-2 font-normal text-blue-300"
             }
           >
-            <span className="flex flex-row items-center justify-between gap-3">
+            <span className="flex min-w-0 flex-row items-center justify-between gap-3">
               <i>{""}</i>
-              <P className={``} title={title ?? ""} />
+              <P className="min-w-0" title={title ?? ""} />
             </span>
             {children}
           </NavLink>
