@@ -1,8 +1,26 @@
+import { z } from "zod";
 import type { ActionFunctionArgs } from "react-router";
+import { data } from "react-router";
 import { deleteCategoryTask } from "../services/delete-category-task.server";
 import { updateCategoryTitle } from "../services/update-category-title.server";
 import { updateCategoryTasksStatus } from "../services/update-category-status.server";
 import { tokenContext } from "../../../utils/context/context.server";
+
+const schemaDeleteCategoryTask = z.object({
+  idCategory: z.string().min(1, { message: "ID da categoria inválido" }),
+});
+
+const schemaUpdateCategoryTitle = z.object({
+  idCategory: z.string().min(1, { message: "ID da categoria inválido" }),
+  titleCategory: z.string().min(1, { message: "Título inválido" }),
+});
+
+const schemaUpdateCategoryStatus = z.object({
+  idCategory: z.string().min(1, { message: "ID da categoria inválido" }),
+  completed: z.enum(["Incompleta", "Concluída"], {
+    error: "Ops, situação inválida para update",
+  }),
+});
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -11,29 +29,52 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const token = context.get(tokenContext);
 
   switch (intent) {
-    case "delete-category-task":
+    case "delete-category-task": {
+      const validate = schemaDeleteCategoryTask.safeParse(
+        Object.fromEntries(formData),
+      );
+      if (!validate.success) {
+        const validateErrors = z.flattenError(validate.error);
+        return data({ errors: validateErrors.fieldErrors }, { status: 400 });
+      }
       return await deleteCategoryTask({
-        formData,
+        parsedData: validate.data,
         cookieSession,
         context: token,
       });
+    }
 
-    case "update-title-category":
+    case "update-title-category": {
+      const validate = schemaUpdateCategoryTitle.safeParse(
+        Object.fromEntries(formData),
+      );
+      if (!validate.success) {
+        const validateErrors = z.flattenError(validate.error);
+        return data({ errors: validateErrors.fieldErrors }, { status: 400 });
+      }
       return await updateCategoryTitle({
-        formData,
+        parsedData: validate.data,
         cookieSession,
         context: token,
       });
+    }
 
-    case "update-status-task-category":
+    case "update-status-task-category": {
+      const validate = schemaUpdateCategoryStatus.safeParse(
+        Object.fromEntries(formData),
+      );
+      if (!validate.success) {
+        const validateErrors = z.flattenError(validate.error);
+        return data({ errors: validateErrors.fieldErrors }, { status: 400 });
+      }
       return await updateCategoryTasksStatus({
-        formData,
+        parsedData: validate.data,
         cookieSession,
         context: token,
       });
+    }
 
     case "restaurar-category":
-      // Implementação futura ou conforme padrão do projeto
       return null;
 
     default:

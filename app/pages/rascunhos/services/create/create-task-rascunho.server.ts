@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -8,28 +8,14 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-
-const schemaCreateTaskRascunho = z.object({
-  titleTask: z
-    .string({
-      error: "Ops, o título da tarefa é obrigatório",
-    })
-    .min(5, { error: "Ops, sua task precisa ter no minino 5 caracteres" })
-    .max(255, {
-      error: "Ops, o título da tarefa pode ter no máximo 255 caracteres",
-    }),
-  descriptionTask: z
-    .string()
-    .max(400, { error: "Ops, descrição pode ter no máximo 400 caracteres" })
-    .optional(),
-});
+import type { schemaCreateTaskRascunho } from "../../controllers/schemas";
 
 export async function createTaskRascunho({
-  formData,
+  validatedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  validatedData: z.infer<typeof schemaCreateTaskRascunho>;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -43,20 +29,12 @@ export async function createTaskRascunho({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-  const validateSchema = schemaCreateTaskRascunho.safeParse(form);
-
-  if (!validateSchema.success) {
-    const error = z.flattenError(validateSchema.error);
-    return data(error.fieldErrors, { status: 400 });
-  }
-
   try {
     const response = await axios.post(
       "home/rascunhos/adicionar-tarefa-rascunho",
       {
-        titleTask: validateSchema.data.titleTask,
-        descriptionTask: validateSchema.data.descriptionTask,
+        titleTask: validatedData.titleTask,
+        descriptionTask: validatedData.descriptionTask,
         status: "Inativa",
       },
       {
@@ -74,7 +52,6 @@ export async function createTaskRascunho({
       status: response.status,
     });
   } catch (e) {
-    console.error(e);
 
     if (axios.isAxiosError(e)) {
       return data(e.response?.data, {

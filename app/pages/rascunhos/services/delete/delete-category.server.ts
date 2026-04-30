@@ -1,3 +1,4 @@
+import type { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -6,20 +7,16 @@ import {
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import { z } from "zod";
 import type { Token } from "../../../../utils/context/type.server";
-
-const schemaIdCategory = z.object({
-  idCategory: z.string().min(5, { error: "Ops, id inválido" }),
-});
+import type { schemaIdCategory } from "../../controllers/schemas";
 
 export async function deleteCategoryRascunho({
   cookieSession,
-  formData,
+  validatedData,
   context,
 }: {
   cookieSession: string | null;
-  formData: FormData;
+  validatedData: z.infer<typeof schemaIdCategory>;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);
@@ -32,17 +29,9 @@ export async function deleteCategoryRascunho({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-  const validateSchema = schemaIdCategory.safeParse(form);
-
-  if (!validateSchema.success) {
-    const error = z.flattenError(validateSchema.error);
-    return data(error, { status: 400 });
-  }
-
   try {
     const response = await axios.delete(
-      `/home/categorias/rascunhos/deletar-categoria/${validateSchema.data.idCategory}`,
+      `/home/categorias/rascunhos/deletar-categoria/${validatedData.idCategory}`,
       {
         baseURL: LOCAL_URL,
         headers: {

@@ -5,15 +5,17 @@ import {
 } from "../../../utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
-import { LOCAL_URL } from "../../../utils/constants/contants.server";
+import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
+import type { z } from "zod";
+import type { schemaUpdateStatus } from "../controllers/action.server";
 
-export async function deleteCategoryTask({
-  parsedData,
+export async function updateStatusTasks({
+  validatedData,
   cookieSession,
   context,
 }: {
-  parsedData: { idCategory: string };
+  validatedData: z.infer<typeof schemaUpdateStatus>;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -28,8 +30,11 @@ export async function deleteCategoryTask({
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
   try {
-    const response = await axios.delete(
-      `home/categorias/deletar-tarefas-categoria/${parsedData.idCategory}`,
+    const response = await axios.patch(
+      `home/status/${validatedData.idTask}`,
+      {
+        completed: validatedData.completed,
+      },
       {
         baseURL: LOCAL_URL,
         headers: {
@@ -42,28 +47,29 @@ export async function deleteCategoryTask({
       headers: {
         "Set-Cookie": await commitSession(setCookie),
       },
-      status: response.status,
+      status: 200,
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return data(error.response?.data, {
-        status: error.response?.status,
         headers: {
           "Set-Cookie": await commitSession(setCookie),
         },
+        status: error.response?.status,
       });
     }
 
     return data(
       {
-        message: "Ops! erro interno ao deletar as tarefas da categoria",
+        message: "Ops! erro interno ao atualizar a rotina",
         error: error,
+        status: 500,
       },
       {
-        status: 500,
         headers: {
           "Set-Cookie": await commitSession(setCookie),
         },
+        status: 500,
       },
     );
   }

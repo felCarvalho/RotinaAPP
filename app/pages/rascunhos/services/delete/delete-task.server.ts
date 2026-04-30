@@ -1,21 +1,18 @@
+import type { z } from "zod";
 import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import { z } from "zod";
 import type { Token } from "../../../../utils/context/type.server";
-
-const schemaIdTask = z.object({
-  idTask: z.string().min(5, { error: "Ops, id inválido" }),
-});
+import type { schemaIdTask } from "../../controllers/schemas";
 
 export async function deleteTaskRascunho({
   cookieSession,
-  formData,
+  validatedData,
   context,
 }: {
   cookieSession: string | null;
-  formData: FormData;
+  validatedData: z.infer<typeof schemaIdTask>;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);
@@ -28,16 +25,8 @@ export async function deleteTaskRascunho({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-  const validateSchema = schemaIdTask.safeParse(form);
-
-  if (!validateSchema.success) {
-    const error = z.flattenError(validateSchema.error);
-    return data(error, { status: 400 });
-  }
-
   try {
-    const response = await axios.delete(`/home/${validateSchema.data.idTask}`, {
+    const response = await axios.delete(`/home/${validatedData.idTask}`, {
       baseURL: LOCAL_URL,
       headers: {
         Cookie: `accessToken=${context?.accessToken || session?.accessToken}`,

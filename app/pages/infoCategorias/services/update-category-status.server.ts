@@ -1,4 +1,3 @@
-import { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -8,21 +7,13 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { Data } from "../../../utils/typesGlobals/type.server";
-
-const schemaUpdateCategoryStatus = z.object({
-  idCategory: z.string().min(1, { message: "ID da categoria inválido" }),
-  completed: z.enum(["Incompleta", "Concluída"], {
-    error: "Ops, situação inválida para update",
-  }),
-});
 
 export async function updateCategoryTasksStatus({
-  formData,
+  parsedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  parsedData: { idCategory: string; completed: "Incompleta" | "Concluída" };
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -35,26 +26,12 @@ export async function updateCategoryTasksStatus({
   }
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
-  const form = Object.fromEntries(formData);
-  const validate = schemaUpdateCategoryStatus.safeParse(form);
-
-  if (!validate.success) {
-    const validateErrors = z.flattenError(validate.error);
-    return data(
-      {
-        errors: validateErrors.fieldErrors,
-      },
-      {
-        status: 400,
-      },
-    );
-  }
 
   try {
     const response = await axios.patch(
-      `home/categorias/atualizar-tarefas/${validate.data.idCategory}`,
+      `home/categorias/atualizar-tarefas/${parsedData.idCategory}`,
       {
-        completed: validate.data.completed,
+        completed: parsedData.completed,
       },
       {
         baseURL: LOCAL_URL,

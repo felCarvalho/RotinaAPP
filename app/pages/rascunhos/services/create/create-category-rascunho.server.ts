@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -8,30 +8,14 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-
-const schemaCreateCategoryRascunho = z.object({
-  titleCategory: z
-    .string({
-      error: "Ops, o título da categoria é obrigatório",
-    })
-    .min(5, { error: "Ops, sua categoria precisa ter no mínimo 5 caracteres" })
-    .max(255, {
-      error: "Ops, o título da categoria pode ter no máximo 255 caracteres",
-    }),
-  descriptionCategory: z
-    .string()
-    .max(400, { error: "Ops, descrição pode ter no máximo 400 caracteres" })
-    .optional(),
-
-  status: z.enum(["Inativa"]),
-});
+import type { schemaCreateCategoryRascunho } from "../../controllers/schemas";
 
 export async function createCategoryRascunho({
-  formData,
+  validatedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  validatedData: z.infer<typeof schemaCreateCategoryRascunho>;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -45,19 +29,11 @@ export async function createCategoryRascunho({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-  const validateSchema = schemaCreateCategoryRascunho.safeParse(form);
-
-  if (!validateSchema.success) {
-    const error = z.flattenError(validateSchema.error);
-    return data(error.fieldErrors, { status: 400 });
-  }
-
   try {
     const response = await axios.post(
       "home/rascunhos/adicionar-categoria-rascunho",
       {
-        ...validateSchema.data,
+        ...validatedData,
       },
       {
         baseURL: LOCAL_URL,
@@ -74,7 +50,6 @@ export async function createCategoryRascunho({
       status: response.status,
     });
   } catch (e) {
-    console.error(e);
 
     if (axios.isAxiosError(e)) {
       return data(e.response?.data, {

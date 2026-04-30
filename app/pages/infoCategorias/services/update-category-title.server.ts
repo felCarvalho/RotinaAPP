@@ -1,4 +1,3 @@
-import { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -8,19 +7,13 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { Data } from "../../../utils/typesGlobals/type.server";
-
-const schemaUpdateCategoryTitle = z.object({
-  idCategory: z.string().min(1, { message: "ID da categoria inválido" }),
-  titleCategory: z.string().min(1, { message: "Título inválido" }),
-});
 
 export async function updateCategoryTitle({
-  formData,
+  parsedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  parsedData: { idCategory: string; titleCategory: string };
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -33,26 +26,12 @@ export async function updateCategoryTitle({
   }
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
-  const form = Object.fromEntries(formData);
-  const validate = schemaUpdateCategoryTitle.safeParse(form);
-
-  if (!validate.success) {
-    const validateErrors = z.flattenError(validate.error);
-    return data(
-      {
-        errors: validateErrors.fieldErrors,
-      },
-      {
-        status: 400,
-      },
-    );
-  }
 
   try {
     const response = await axios.patch(
-      `home/categorias/atualizar-categoria/${validate.data.idCategory}`,
+      `home/categorias/atualizar-categoria/${parsedData.idCategory}`,
       {
-        titleCategory: validate.data.titleCategory,
+        titleCategory: parsedData.titleCategory,
       },
       {
         baseURL: LOCAL_URL,

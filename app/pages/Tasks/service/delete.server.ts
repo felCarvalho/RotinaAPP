@@ -1,20 +1,24 @@
-import { z } from "zod";
-import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
+import {
+  getSession,
+  commitSession,
+  getCookieTokens,
+} from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-
-const schemaDelete = z.object({
-  idTask: z.string().min(1, { error: "ID inválido" }),
-});
+import { getSessionNotification } from "../../../utils/cookies/cookies.server";
+import type { Data } from "../../../utils/typesGlobals/type.server";
+import type { dataTasks } from "../type.server";
+import type { z } from "zod";
+import type { schemaDelete } from "../controllers/action.server";
 
 export async function deleteTasks({
-  formData,
+  validatedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  validatedData: z.infer<typeof schemaDelete>;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -28,28 +32,9 @@ export async function deleteTasks({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-  const publicIdValidate = schemaDelete.safeParse(form);
-
-  if (!publicIdValidate.success) {
-    const validateErrors = z.flattenError(publicIdValidate.error);
-
-    return data(
-      {
-        errors: validateErrors.fieldErrors,
-      },
-      {
-        headers: {
-          "Set-Cookie": await commitSession(setCookie),
-        },
-        status: 400,
-      },
-    );
-  }
-
   try {
     const response = await axios.delete(
-      `/home/${publicIdValidate.data.idTask}`,
+      `/home/${validatedData.idTask}`,
       {
         baseURL: LOCAL_URL,
         headers: {
@@ -62,7 +47,7 @@ export async function deleteTasks({
       headers: {
         "Set-Cookie": await commitSession(setCookie),
       },
-      status: response.status,
+      status: response.data.code,
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
