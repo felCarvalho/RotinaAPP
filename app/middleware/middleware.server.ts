@@ -48,7 +48,6 @@ const AuthMiddleware: MiddlewareFunction = async (
         expAccessToken: Number(refresh.data.expAccessToken),
       });
     } catch (e) {
-      console.error(e);
       session.set("accessToken", "");
       session.set("expAccessToken", "");
       session.set("refreshToken", "");

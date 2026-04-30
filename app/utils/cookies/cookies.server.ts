@@ -1,5 +1,8 @@
-import { createCookieSessionStorage } from "react-router";
-import type { Token } from "../context/type.server";
+import {
+  createCookieSessionStorage,
+  type Session,
+  type SessionData,
+} from "react-router";
 
 const cookies = createCookieSessionStorage({
   cookie: {
@@ -13,13 +16,15 @@ const cookies = createCookieSessionStorage({
 
 export const { getSession, commitSession, destroySession } = cookies;
 
+interface notification {
+  message: string;
+  type: "INFO" | "ERROR" | "WARNING";
+}
 export async function getSessionNotification(
-  cookiesSession: string | null,
-  notification: string,
+  cookiesSession: Session<SessionData, SessionData>,
+  notification: "notification",
 ) {
-  const session = await getSession(cookiesSession);
-
-  const message = session.get(notification);
+  const message: notification[] = cookiesSession.get(notification);
 
   if (!message) return false;
 

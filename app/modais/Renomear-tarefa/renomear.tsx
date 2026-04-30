@@ -6,9 +6,14 @@ import { H1 } from "../../component/title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useFetcher, useNavigate } from "react-router";
-import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
+import {
+  useMatchesTypeds,
+  success,
+  error,
+  warning,
+} from "../../utils/FunctionUtils/FunctionUtils";
 import type { dataTasks } from "../../pages/Tasks/type.server";
-import { useState } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 
 export function RenomearTarefaTSX() {
   //carregando dados de rotas
@@ -34,12 +39,49 @@ export function RenomearTarefaTSX() {
   //form
   const fetcher = useFetcher();
 
+  const useEvent = useEffectEvent(() => {
+    const notification: dataTasks | null = fetcher.data ?? null;
+    if (!notification) {
+      return;
+    }
+
+    const successMessage = notification.notification?.find(
+      (s) => s.type === "INFO",
+    );
+    const errorMessage = notification.notification?.find(
+      (s) => s.type === "ERROR",
+    );
+    const warningMessage = notification.notification?.find(
+      (s) => s.type === "WARNING",
+    );
+
+    if (successMessage) {
+      return success({ success: successMessage.message });
+    }
+
+    if (errorMessage) {
+      return error({ error: errorMessage.message });
+    }
+
+    if (warningMessage) {
+      return warning({ warning: warningMessage.message });
+    }
+  });
+
+  useEffect(() => {
+    useEvent();
+  }, [fetcher.data]);
+
+  const dataError = fetcher.data?.titleTask
+    ? fetcher.data.titleTask.at(-1)
+    : null;
+
   return (
     <>
       <Overlay>
         <div
           onDoubleClick={() => navigate(-1)}
-          className="w-[90%] min-w-[320px] md:min-w-[750px] md:max-w-5xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:peer-visited:h-full landscape:overflow-auto md:relative md:mx-auto"
+          className="flex w-[90%] min-w-[320px] flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:peer-visited:h-full md:relative md:mx-auto md:max-w-5xl md:min-w-[750px] landscape:overflow-auto"
         >
           <fetcher.Form
             method="PATCH"
@@ -50,20 +92,20 @@ export function RenomearTarefaTSX() {
             <div className="mb-6 flex flex-row items-center gap-2">
               <Button
                 type="button"
-                className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+                className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                 onClick={() => navigate(-1)}
               >
                 <i>
                   <FontAwesomeIcon icon={faAngleLeft} size="lg" />
                 </i>
               </Button>
-              <H1
-                title={"Renomear rotina"}
-                className="text-blue-400"
-              />
+              <H1 title={"Renomear rotina"} className="text-blue-400" />
             </div>
             <label className="flex flex-col gap-1.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3 font-semibold text-blue-400">
-              <P title="Renomear:" className="text-blue-400" />
+              <P
+                title="Renomear:"
+                className={`text-blue-400 ${dataError ? "text-red-400!" : ""}`}
+              />
               <Input
                 type="text"
                 defaultValue={task?.title ?? ""}
@@ -71,10 +113,16 @@ export function RenomearTarefaTSX() {
                 placeholder="Digite o novo nome da rotina"
                 name="titleTask"
                 form="task-update-form"
-                className="peer"
+                className={`peer ${dataError ? "bg-red-50! text-red-400! placeholder-red-400! outline-red-400!" : ""}`}
               />
-              <input name="intent" type="hidden" value="update-task" />
+              <input name="intent" type="hidden" value="update-title-task" />
               <input name="idTask" type="hidden" value={paramsHome ?? ""} />
+              <div>
+                <P
+                  title={dataError ?? ""}
+                  className={`${dataError ? "text-sm text-red-400!" : ""}`}
+                />
+              </div>
             </label>
             <div className="flex w-full flex-row items-center justify-center gap-5">
               <label>
