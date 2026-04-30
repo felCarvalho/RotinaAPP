@@ -16,13 +16,6 @@ import type { loader } from "./controllers/loader.server";
 
 export function LoginJSX() {
   const [isOpenPassword, setOpenPassword] = useState(false);
-  const loaderData = useLoaderData<typeof loader>();
-
-  useEffect(() => {
-    if (loaderData.notification) {
-      toast.success(loaderData.notification);
-    }
-  }, [loaderData]);
 
   return (
     <div className="flex min-h-lvh flex-col items-center justify-center gap-10">

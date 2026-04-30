@@ -1,8 +1,7 @@
 import { LoginJSX } from "./Login";
 import { action } from "./controllers/action.server";
-import { loader } from "./controllers/loader.server";
 
-export { action, loader };
+export { action };
 
 export const handle = {
   title: "Login",
