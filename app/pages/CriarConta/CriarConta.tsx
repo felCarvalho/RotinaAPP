@@ -104,8 +104,6 @@ export function CriarContaJSX() {
     return true;
   }
 
-  console.log(data);
-
   return (
     <div className="flex flex-col min-h-lvh items-center max-lg:mx-5 justify-center gap-5 py-5">
       <div className="w-full lg:w-4/12">
