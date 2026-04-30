@@ -13,12 +13,17 @@ import { PopupOptionsTasks } from "../../component/FunctionTasks/PopupOptionTask
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
-import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
+import {
+  success,
+  error,
+  warning,
+  useMatchesTypeds,
+} from "../../utils/FunctionUtils/FunctionUtils";
 import { handle, type HandleTasks } from "./controllers/handle";
-import type { dataTasks, Task } from "./type.server";
+import type { Task, dataTasks } from "./type.server";
 import { useFetcher, useNavigate, NavLink } from "react-router";
 import { usePosition } from "../../hooks/UseFloatingUI";
-import { useState } from "react";
+import { useEffectEvent, useEffect, useState } from "react";
 
 export function Tasks() {
   const matches = useMatchesTypeds<HandleTasks, dataTasks>();
@@ -38,9 +43,42 @@ export function Tasks() {
   });
   const navigate = useNavigate();
 
+  const useEvent = useEffectEvent(() => {
+    const notification: dataTasks | null = fetcher.data;
+    if (!notification) {
+      return;
+    }
+
+    const successMessage = notification.notification.find(
+      (s) => s.type === "INFO",
+    );
+    const errorMessage = notification.notification.find(
+      (s) => s.type === "ERROR",
+    );
+    const warningMessage = notification.notification.find(
+      (s) => s.type === "WARNING",
+    );
+
+    if (successMessage) {
+      return success({ success: successMessage.message });
+    }
+
+    if (errorMessage) {
+      return error({ error: errorMessage.message });
+    }
+
+    if (warningMessage) {
+      return warning({ warning: warningMessage.message });
+    }
+  });
+
+  useEffect(() => {
+    useEvent();
+  }, [data?.data]);
+
   return (
     <div className="h-full w-full">
-      <div className="sticky top-0 z-40 mb-6 bg-white/80 py-4 px-2 backdrop-blur-md">
+      <div className="sticky top-0 z-40 mb-6 bg-white/80 px-2 py-4 backdrop-blur-md">
         <button
           onClick={() => navigate("/login")}
           className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
@@ -53,7 +91,7 @@ export function Tasks() {
           <H1 title="Inicio" className="w-max text-blue-400" />
         </button>
       </div>
-      {data?.data.length ? (
+      {data?.data ? (
         data.data.map((t: Task) => (
           <div className="pt-3" key={t.id}>
             <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none">
@@ -77,7 +115,7 @@ export function Tasks() {
                               : "Incompleta",
                             idTask: t.id,
                             idUser: t.user,
-                            intent: "update-task",
+                            intent: "update-status-task",
                           },
                           {
                             method: "PATCH",

@@ -1,3 +1,5 @@
+import type { notification } from "../../utils/typesGlobals/type.server";
+
 export interface Task {
   id: string;
   title: string;
@@ -24,6 +26,6 @@ export interface Category {
 export interface dataTasks {
   data: Task[];
   success: boolean;
-  notification: [];
+  notification: notification[];
   code: string;
 }

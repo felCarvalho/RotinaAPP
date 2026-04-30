@@ -25,10 +25,7 @@ export async function getTasksUser({
   }
 
   const session = await getCookieTokens({ cookiesSession });
-  const notification = await getSessionNotification(
-    cookiesSession,
-    "notification",
-  );
+  const notification = await getSessionNotification(setCookie, "notification");
 
   try {
     const response = await axios.get("/home", {
