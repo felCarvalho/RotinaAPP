@@ -1,5 +1,4 @@
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
-import z from "zod";
 import { data } from "react-router";
 import axios, { isAxiosError } from "axios";
 import {
@@ -8,6 +7,7 @@ import {
   getCookieTokens,
 } from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
+import { z } from "zod";
 
 const categoriaSchema = z.object({
   descriptionCategory: z.string().optional(),
@@ -22,13 +22,15 @@ const categoriaSchema = z.object({
   status: z.enum(["Ativa"]),
 });
 
+type CreateCategoryData = z.infer<typeof categoriaSchema>;
+
 export async function createCategory({
+  validatedData,
   cookieSession,
-  formData,
   context,
 }: {
+  validatedData: CreateCategoryData;
   cookieSession: string | null;
-  formData: FormData;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);
@@ -41,23 +43,11 @@ export async function createCategory({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-
-  const validated = categoriaSchema.safeParse(form);
-
-  if (!validated.success) {
-    const error = z.flattenError(validated.error);
-
-    return data(error.fieldErrors, {
-      status: 400,
-    });
-  }
-
   try {
     const response = await axios.post(
       "",
       {
-        ...validated.data,
+        ...validatedData,
       },
       {
         baseURL: LOCAL_URL,

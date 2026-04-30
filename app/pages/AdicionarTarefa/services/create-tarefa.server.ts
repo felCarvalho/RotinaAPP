@@ -4,33 +4,18 @@ import {
   getCookieTokens,
 } from "../../../utils/cookies/cookies.server";
 import { LOCAL_URL } from "../../../utils/constants/contants.server";
-import z from "zod";
 import { data } from "react-router";
 import axios from "axios";
 import type { Token } from "../../../utils/context/type.server";
-
-const schemaCreateTarefa = z.object({
-  titleTask: z
-    .string()
-    .min(1, { error: "Por favor, sua task precisa ter algum valor" })
-    .max(400, { error: "Ops, maximo de caraateres atingido" }),
-  descriptionTask: z
-    .string()
-    .min(0)
-    .max(400, { error: "Ops, maximo de caracteres atingido" })
-    .optional(),
-  idCategory: z
-    .string()
-    .min(5, { error: "Por favor, selecione uma categoria" })
-    .max(400, { error: "Ops, maximo de caracteres atingido" }),
-});
+import type { z } from "zod";
+import type { schemaCreateTarefa } from "../controllers/action.server";
 
 export async function createTarefa({
-  formData,
+  validatedData,
   cookieSession,
   context,
 }: {
-  formData: FormData;
+  validatedData: z.infer<typeof schemaCreateTarefa>;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -44,24 +29,13 @@ export async function createTarefa({
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
-  const form = Object.fromEntries(formData);
-
-  const schemaSafeParse = schemaCreateTarefa.safeParse(form);
-
-  if (!schemaSafeParse.success) {
-    const error = z.flattenError(schemaSafeParse.error).fieldErrors;
-    return data(error, {
-      status: 400,
-    });
-  }
-
   try {
     const response = await axios.post(
       "home/adicionar-tarefa",
       {
-        titleTask: form.titleTask,
-        descriptionTask: form.descriptionTask,
-        idCategory: form.idCategory,
+        titleTask: validatedData.titleTask,
+        descriptionTask: validatedData.descriptionTask,
+        idCategory: validatedData.idCategory,
       },
       {
         baseURL: LOCAL_URL,

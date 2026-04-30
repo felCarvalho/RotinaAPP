@@ -38,7 +38,6 @@ export function AdicionarTarefa() {
   const { pathname } = useLocation();
   const fetcher = useFetcher();
   const isAdicionarTarefa = url.includes(pathname);
-  console.log(isAdicionarTarefa);
 
   return (
     <div className="h-full w-full">
