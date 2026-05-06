@@ -7,15 +7,14 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { z } from "zod";
-import type { schemaUpdateTitle } from "../controllers/action.server";
+import type { UpdateTaskTitleProps } from "../../../utils/schemas/task.schema";
 
 export async function updateTitleTasks({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaUpdateTitle>;
+  validatedData: UpdateTaskTitleProps;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -31,9 +30,13 @@ export async function updateTitleTasks({
 
   try {
     const response = await axios.patch(
-      `home/title/${validatedData.idTask}`,
+      `/home/${validatedData.idTask}`,
       {
+        completed: validatedData.completed,
         titleTask: validatedData.titleTask,
+        descriptionTask: validatedData.descriptionTask,
+        idUser: validatedData.idUser,
+        idTask: validatedData.idTask,
       },
       {
         baseURL: LOCAL_URL,

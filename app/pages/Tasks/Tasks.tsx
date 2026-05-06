@@ -115,6 +115,8 @@ export function Tasks() {
                               : "Incompleta",
                             idTask: t.id,
                             idUser: t.user,
+                            titleTask: t.title,
+                            descriptionTask: t.description,
                             intent: "update-status-task",
                           },
                           {

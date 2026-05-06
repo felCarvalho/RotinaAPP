@@ -7,29 +7,14 @@ import {
   getCookieTokens,
 } from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
-import { z } from "zod";
-
-const categoriaSchema = z.object({
-  descriptionCategory: z.string().optional(),
-  titleCategory: z
-    .string()
-    .min(5, {
-      error: "O título da categoria não pode ser menor que 5 caracteres",
-    })
-    .max(400, {
-      error: "O título da categoria não pode ser maior que 400 caracteres",
-    }),
-  status: z.enum(["Ativa"]),
-});
-
-type CreateCategoryData = z.infer<typeof categoriaSchema>;
+import type { CreateCategoryProps } from "../../../utils/schemas/category.schema";
 
 export async function createCategory({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: CreateCategoryData;
+  validatedData: CreateCategoryProps;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -45,9 +30,13 @@ export async function createCategory({
 
   try {
     const response = await axios.post(
-      "",
+      "home/criar-rotina",
       {
-        ...validatedData,
+        titleTask: "",
+        descriptionTask: "",
+        titleCategory: validatedData.titleCategory,
+        descriptionCategory: validatedData.descriptionCategory || "",
+        status: validatedData.status,
       },
       {
         baseURL: LOCAL_URL,

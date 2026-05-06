@@ -117,6 +117,9 @@ export function RenomearTarefaTSX() {
               />
               <input name="intent" type="hidden" value="update-title-task" />
               <input name="idTask" type="hidden" value={paramsHome ?? ""} />
+              <input name="idUser" type="hidden" value={task?.user ?? ""} />
+              <input name="descriptionTask" type="hidden" value={task?.description ?? ""} />
+              <input name="completed" type="hidden" value={task?.completed ?? ""} />
               <div>
                 <P
                   title={dataError ?? ""}
