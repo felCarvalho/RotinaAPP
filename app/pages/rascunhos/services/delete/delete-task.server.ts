@@ -1,10 +1,9 @@
-import type { z } from "zod";
 import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { schemaIdTask } from "../../controllers/schemas";
+import type { IdTaskProps } from "../../controllers/schemas";
 
 export async function deleteTaskRascunho({
   cookieSession,
@@ -12,7 +11,7 @@ export async function deleteTaskRascunho({
   context,
 }: {
   cookieSession: string | null;
-  validatedData: z.infer<typeof schemaIdTask>;
+  validatedData: IdTaskProps;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);

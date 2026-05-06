@@ -1,14 +1,9 @@
-import type { z } from "zod";
-import {
-  getSession,
-  commitSession,
-  getCookieTokens,
-} from "~/utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { schemaIdCategory } from "../../controllers/schemas";
+import type { IdCategoryProps } from "../../controllers/schemas";
 
 export async function deleteCategoryRascunho({
   cookieSession,
@@ -16,7 +11,7 @@ export async function deleteCategoryRascunho({
   context,
 }: {
   cookieSession: string | null;
-  validatedData: z.infer<typeof schemaIdCategory>;
+  validatedData: IdCategoryProps;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);

@@ -1,27 +1,15 @@
 import type { ActionFunctionArgs } from "react-router";
 import { createRotina } from "../services/create-rotina.server";
 import { tokenContext } from "../../../utils/context/context.server";
-import { z } from "zod";
 import { data } from "react-router";
+import {
+  createRotinaRules,
+  type CreateRotinaProps,
+} from "../../../utils/schemas/rotina.schema";
+import { makeValidator } from "../../../utils/schemas/factory";
 
-export const schemaCreateRotina = z.object({
-  titleTask: z
-    .string()
-    .min(5, { error: "Minimo de 5 caracteres para criar um titulo" })
-    .max(255, { error: "Maximo de 255 caracteres para seu titulo" }),
-  descriptionTask: z
-    .string()
-    .min(0, { error: "Minimo de 0 caracteres para criar uma descrição" })
-    .max(400, { error: "Máximo de 400 caracteres para sua descrição" }),
-  titleCategory: z
-    .string()
-    .min(5, { error: "Minimo de 5 caracteres para criar uma categoria" })
-    .max(255, { error: "Maximo de 255 caracteres para sua categoria" }),
-  descriptionCategory: z
-    .string()
-    .min(0, { error: "Minimo de 0 caracteres para criar uma descrição" })
-    .max(400, { error: "Máximo de 400 caracteres para sua descrição" }),
-});
+const rotinaSchemaValidator =
+  makeValidator<CreateRotinaProps>(createRotinaRules);
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -31,13 +19,16 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   switch (intent) {
     case "create": {
-      const form = Object.fromEntries(formData);
-      const parsed = schemaCreateRotina.safeParse(form);
-      if (!parsed.success) {
-        const validate = z.flattenError(parsed.error).fieldErrors;
-        return data(validate, { status: 400 });
+      const form = Object.fromEntries(formData) as unknown as CreateRotinaProps;
+      const result = await rotinaSchemaValidator.execute(form);
+      if (!result.success) {
+        return data(result.notification, { status: 400 });
       }
-      return createRotina({ validatedData: parsed.data, cookieSession, context: token });
+      return createRotina({
+        validatedData: result.data,
+        cookieSession,
+        context: token,
+      });
     }
     default:
       throw new Error("Ops não action foi executada");

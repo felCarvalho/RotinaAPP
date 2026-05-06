@@ -4,105 +4,22 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffectEvent, useState } from "react";
+import { useState } from "react";
 import { Form, NavLink, useNavigation } from "react-router";
 import { Button } from "../../component/btn";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
-import { z } from "zod";
-import { type FormErrors, InputNames } from "./type";
 import type { Data } from "../../utils/typesGlobals/type.server";
 import { useActionData } from "react-router";
 import { error as Alert } from "../../utils/FunctionUtils/FunctionUtils";
-
-const schemaCreateAccount = z
-  .object({
-    name: z
-      .string({ error: "Nome de usuário é obrigátorio" })
-      .min(8, "Ops! minímo de 8 caracteres")
-      .max(150, "Ops! Esse nome de usua´rio está muito lonfo"),
-    identifier: z
-      .email("Seu formato de email está inválido")
-      .min(8, "Ops! Email precisa ter no minímo 8 caracteres")
-      .max(150, "Ops! Email pode ter no máximo 150 caracteres"),
-    password: z
-      .string("Sua senha não pode ficar vazia")
-      .min(8, "Ops! senha precisa ter no minímo 8 caracteres")
-      .max(150, "Ops! Senha pode ter no máximo 150 caracteres"),
-    passwordConfirm: z
-      .string("Senha de confirmação é obrigatória")
-      .min(8, "Ops! Sua confirmação de senha não coincide com sua senha")
-      .max(150, "Ops! Sua confirmação de senha não coincide com sua senha"),
-  })
-  .refine((s) => s.password === s.passwordConfirm, {
-    path: ["passwordConfirm"],
-    error: "Ops! Suas senhas não estão coincidindo",
-  });
 
 export function CriarContaJSX() {
   const data: Data<unknown> = useActionData();
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState<z.infer<typeof schemaCreateAccount>>(
-    {
-      name: "",
-      identifier: "",
-      password: "",
-      passwordConfirm: "",
-    },
-  );
-
-  const [error, setError] = useState<FormErrors>({
-    name: undefined,
-    identifier: undefined,
-    password: undefined,
-    passwordConfirm: undefined,
-  });
-
-  function verifyForm(input: string) {
-    const schemaSuccess = schemaCreateAccount.safeParse(formData);
-
-    if (!schemaSuccess.success) {
-      const error = z.flattenError(schemaSuccess.error).fieldErrors;
-
-      switch (input) {
-        case InputNames.name:
-          setError((s) => ({ ...s, name: error.name }));
-          break;
-        case InputNames.identifier:
-          setError((s) => ({ ...s, identifier: error.identifier }));
-          break;
-        case InputNames.password:
-          setError((s) => ({ ...s, password: error.password }));
-          break;
-        case InputNames.passwordConfirm:
-          setError((s) => ({
-            ...s,
-            passwordConfirm: error.passwordConfirm,
-          }));
-          break;
-
-        default:
-          setError((s) => ({ ...s, ...error }));
-      }
-    }
-  }
-
-  function verifyErrors() {
-    if (
-      !error.name ||
-      !error.identifier ||
-      !error.password ||
-      !error.passwordConfirm
-    ) {
-      return false;
-    }
-
-    return true;
-  }
 
   return (
     <div className="flex flex-col min-h-lvh items-center max-lg:mx-5 justify-center gap-5 py-5">
@@ -139,98 +56,35 @@ export function CriarContaJSX() {
             <Form method="POST" className="flex flex-col gap-5 md:w-full">
               <label className="flex w-full flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
-                  <P
-                    title="Usuario:"
-                    className={error.name ? "text-red-400" : "text-blue-400"}
-                  />
+                  <P title="Usuario:" className="text-blue-400" />
                   <input name="intent" type="hidden" value="login" />
                   <Input
-                    onBlur={() => verifyForm(InputNames.name)}
-                    onChange={(e) =>
-                      setFormData((s) => ({
-                        ...s,
-                        name: e.target.value,
-                      }))
-                    }
-                    name={InputNames.name}
+                    name="name"
                     type="text"
                     placeholder="Digite seu nome de usuário"
-                    className={
-                      error.name && error?.name.at(-1)
-                        ? "border-red-300 placeholder:text-red-300 focus:outline-red-300! bg-white!"
-                        : ""
-                    }
                   />
                 </div>
-                {error?.name?.at(-1) && (
-                  <P
-                    title={error.name.at(-1) ?? ""}
-                    className="font-medium text-red-400"
-                  />
-                )}
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
-                  <P
-                    title="Email:"
-                    className={
-                      error?.identifier?.at(-1)
-                        ? "text-red-400"
-                        : "text-blue-400"
-                    }
-                  />
+                  <P title="Email:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onBlur={() => verifyForm(InputNames.identifier)}
-                      onChange={(e) =>
-                        setFormData((s) => ({
-                          ...s,
-                          identifier: e.target.value,
-                        }))
-                      }
-                      name={InputNames.identifier}
+                      name="identifier"
                       type="email"
                       placeholder="Digite novamente seu email"
-                      className={
-                        error?.identifier
-                          ? "border-red-300 placeholder:text-red-300 focus:outline-red-300! bg-white!"
-                          : ""
-                      }
                     />
                   </div>
                 </div>
-                {error?.identifier?.at(-1) && (
-                  <P
-                    title={error.identifier.at(-1) ?? ""}
-                    className="font-medium text-red-400"
-                  />
-                )}
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
-                  <P
-                    title="Senha:"
-                    className={
-                      error.password ? "text-red-400" : "text-blue-400"
-                    }
-                  />
+                  <P title="Senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onBlur={() => verifyForm(InputNames.password)}
-                      onChange={(e) =>
-                        setFormData((s) => ({
-                          ...s,
-                          password: e.target.value,
-                        }))
-                      }
                       type={showPassword ? "text" : "password"}
-                      name={InputNames.password}
+                      name="password"
                       placeholder="Digite seus senha"
-                      className={
-                        error?.password?.at(-1)
-                          ? "border-red-300 placeholder:text-red-300 focus:outline-red-300! bg-white!"
-                          : ""
-                      }
                     />
                     <Button
                       onClick={() => setShowPassword((s) => !s)}
@@ -245,39 +99,16 @@ export function CriarContaJSX() {
                       </i>
                     </Button>
                   </div>
-                  {error?.password?.at(-1) && (
-                    <P
-                      title={error.password.at(-1) ?? ""}
-                      className="font-medium text-red-400"
-                    />
-                  )}
                 </div>
               </label>
               <label className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
-                  <P
-                    title="Repetir senha:"
-                    className={
-                      error.passwordConfirm ? "text-red-400" : "text-blue-400"
-                    }
-                  />
+                  <P title="Repetir senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
-                      onBlur={() => verifyForm(InputNames.passwordConfirm)}
-                      onChange={(e) =>
-                        setFormData((s) => ({
-                          ...s,
-                          passwordConfirm: e.target.value,
-                        }))
-                      }
                       type={showConfirmPassword ? "text" : "password"}
-                      name={InputNames.passwordConfirm}
+                      name="passwordConfirm"
                       placeholder="Digite novamente sua senha"
-                      className={
-                        error?.passwordConfirm?.at(-1)
-                          ? "border-red-300 placeholder:text-red-300 focus:outline-red-300! bg-white!"
-                          : ""
-                      }
                     />
                     <Button
                       onClick={() => setShowConfirmPassword((s) => !s)}
@@ -292,31 +123,11 @@ export function CriarContaJSX() {
                       </i>
                     </Button>
                   </div>
-                  {error?.passwordConfirm?.at(-1) && (
-                    <P
-                      title={error.passwordConfirm.at(-1) ?? ""}
-                      className="font-medium text-red-400"
-                    />
-                  )}
                 </div>
               </label>
               <div className="flex w-full flex-row items-center justify-center gap-5">
-                <Button
-                  onClick={() => verifyForm("tudo")}
-                  className="min-h-11"
-                  type={
-                    verifyErrors() && navigation.state === "submitting"
-                      ? "button"
-                      : "submit"
-                  }
-                >
-                  <p
-                    className={
-                      verifyErrors() && navigation.state === "submitting"
-                        ? "bg-blue-300 text-blue-100"
-                        : "text-white"
-                    }
-                  >
+                <Button type="submit" className="min-h-11">
+                  <p className="text-white">
                     {navigation.state === "submitting"
                       ? "Confirmando..."
                       : "Confirmar"}
@@ -324,7 +135,6 @@ export function CriarContaJSX() {
                 </Button>
                 <Button
                   type="reset"
-                  onClick={() => setError({})}
                   className="min-h-11 bg-white! text-blue-400!"
                 >
                   <p className="font-medium">Cancelar</p>

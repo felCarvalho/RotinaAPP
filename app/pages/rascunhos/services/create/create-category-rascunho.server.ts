@@ -1,4 +1,3 @@
-import type { z } from "zod";
 import {
   getSession,
   commitSession,
@@ -8,14 +7,14 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { schemaCreateCategoryRascunho } from "../../controllers/schemas";
+import type { CreateCategoryRascunhoProps } from "../../controllers/schemas";
 
 export async function createCategoryRascunho({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaCreateCategoryRascunho>;
+  validatedData: CreateCategoryRascunhoProps;
   cookieSession: string | null;
   context: Token | null;
 }) {

@@ -4,15 +4,13 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
-import { Form, NavLink, useLoaderData } from "react-router";
-import { toast } from "sonner";
+import { useState } from "react";
+import { Form, NavLink } from "react-router";
 import { Button } from "../../component/btn";
 import { Input } from "../../component/input";
 import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
-import type { loader } from "./controllers/loader.server";
 
 export function LoginJSX() {
   const [isOpenPassword, setOpenPassword] = useState(false);

@@ -6,14 +6,14 @@ import {
 } from "../../../utils/cookies/cookies.server";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Data } from "~/utils/typesGlobals/type.server";
-import type { CreateAccountData } from "../controllers/action.server";
+import type { CreateUserProps } from "~/utils/schemas/user.schema";
 
 export async function createAccountAction({
   cookiesSession,
   validatedData,
 }: {
   cookiesSession: string | null;
-  validatedData: CreateAccountData;
+  validatedData: CreateUserProps;
 }) {
   const cookieSession = await getSession(cookiesSession);
 

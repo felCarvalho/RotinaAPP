@@ -7,15 +7,14 @@ import {
   getCookieTokens,
 } from "../../../utils/cookies/cookies.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { z } from "zod";
-import type { schemaCreateRotina } from "../controllers/action.server";
+import type { CreateRotinaProps } from "../../../utils/schemas/rotina.schema";
 
 export async function createRotina({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaCreateRotina>;
+  validatedData: CreateRotinaProps;
   cookieSession: string | null;
   context: Token | null;
 }) {

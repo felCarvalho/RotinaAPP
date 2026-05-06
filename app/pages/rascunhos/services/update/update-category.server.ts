@@ -1,21 +1,16 @@
-import type { z } from "zod";
-import {
-  getSession,
-  commitSession,
-  getCookieTokens,
-} from "~/utils/cookies/cookies.server";
+import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { schemaUpdateCategory } from "../../controllers/schemas";
+import type { UpdateCategoryProps } from "../../controllers/schemas";
 
 export async function updateCategoryRascunho({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaUpdateCategory>;
+  validatedData: UpdateCategoryProps;
   cookieSession: string | null;
   context: Token | null;
 }) {

@@ -31,14 +31,14 @@ export function DetalhesRotina() {
       initial={{ scale: 0.2, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
     >
-      <div className="w-[95%] min-w-[350px] md:min-w-[1000px] md:max-w-7xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto">
+      <div className="flex w-[95%] min-w-[350px] flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto md:min-w-[1000px] md:max-w-7xl">
         <div className="mb-4 flex flex-row items-center justify-start">
           <H1 title="Detalhes da Rotina" className="text-blue-400" />
         </div>
         
         <div className="flex flex-col gap-3">
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="Rotina:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="Rotina:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={
@@ -48,8 +48,8 @@ export function DetalhesRotina() {
               }
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="Descrição:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="Descrição:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={
@@ -59,8 +59,8 @@ export function DetalhesRotina() {
               }
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="Categoria:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="Categoria:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={
@@ -72,8 +72,8 @@ export function DetalhesRotina() {
               }
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="Status:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="Status:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={
@@ -83,15 +83,15 @@ export function DetalhesRotina() {
               }
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="ID Rotina:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="ID Rotina:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={dataHome?.id ?? dataRascunhos?.id ?? "Ops, id indisponivel"}
             />
           </div>
-          <div className="flex flex-row items-center gap-2 text-blue-400 whitespace-nowrap overflow-hidden">
-            <H3 title="ID Categoria:" className="text-base font-bold shrink-0" />
+          <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
+            <H3 title="ID Categoria:" className="shrink-0 text-base font-bold" />
             <P
               className="truncate text-blue-300"
               title={
@@ -109,7 +109,7 @@ export function DetalhesRotina() {
           <Button
             type="reset"
             ariaLabel="Fechar"
-            className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+            className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
             onClick={() => navigate(-1)}
           >
             <i>

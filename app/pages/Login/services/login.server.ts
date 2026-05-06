@@ -2,7 +2,6 @@ import axios, { isAxiosError } from "axios";
 import { data, redirect } from "react-router";
 import { commitSession, getSession } from "~/utils/cookies/cookies.server";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import type { z } from "zod";
 
 type LoginInput = {
   identifier: string;

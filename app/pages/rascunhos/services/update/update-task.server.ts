@@ -1,17 +1,16 @@
-import type { z } from "zod";
 import { getSession, commitSession, getCookieTokens } from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { schemaUpdateTask } from "../../controllers/schemas";
+import type { UpdateTaskRascunhoProps } from "../../controllers/schemas";
 
 export async function updateTaskRascunho({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaUpdateTask>;
+  validatedData: UpdateTaskRascunhoProps;
   cookieSession: string | null;
   context: Token | null;
 }) {

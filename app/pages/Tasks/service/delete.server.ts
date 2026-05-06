@@ -7,18 +7,14 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import { getSessionNotification } from "../../../utils/cookies/cookies.server";
-import type { Data } from "../../../utils/typesGlobals/type.server";
-import type { dataTasks } from "../type.server";
-import type { z } from "zod";
-import type { schemaDelete } from "../controllers/action.server";
+import type { DeleteTaskProps } from "../../../utils/schemas/task.schema";
 
 export async function deleteTasks({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaDelete>;
+  validatedData: DeleteTaskProps;
   cookieSession: string | null;
   context: Token | null;
 }) {

@@ -7,15 +7,14 @@ import { LOCAL_URL } from "../../../utils/constants/contants.server";
 import { data } from "react-router";
 import axios from "axios";
 import type { Token } from "../../../utils/context/type.server";
-import type { z } from "zod";
-import type { schemaCreateTarefa } from "../controllers/action.server";
+import type { CreateTaskProps } from "../../../utils/schemas/task.schema";
 
 export async function createTarefa({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: z.infer<typeof schemaCreateTarefa>;
+  validatedData: CreateTaskProps;
   cookieSession: string | null;
   context: Token | null;
 }) {
