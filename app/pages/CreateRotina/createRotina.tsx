@@ -10,7 +10,6 @@ import { H1 } from "~/component/title";
 import { useEffect, useState, useEffectEvent } from "react";
 import type { FieldErrors } from "./type.server";
 import { success, error } from "../../utils/FunctionUtils/FunctionUtils";
-import type { Data } from "../../utils/typesGlobals/type.server";
 import type { dataTasks } from "../Tasks/type.server";
 
 export function CreateRotina() {
