@@ -230,7 +230,12 @@ export function SearchTasks() {
                         className="text-blue-400/80"
                       />
                       <Button
-                        onClick={() => {}}
+                        onClick={() =>
+                          fetcher.submit(
+                            { intent: "restore-task", idTask: t.id },
+                            { method: "POST", action: "/home" },
+                          )
+                        }
                         type="button"
                         className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
