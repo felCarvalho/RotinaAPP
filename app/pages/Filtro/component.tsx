@@ -81,7 +81,12 @@ export default function FiltroPage() {
               <Button
                 key={opt.value}
                 type="button"
-                className="flex flex-row items-center gap-2 bg-blue-400 px-5 py-2.5 shadow-sm shadow-blue-100"
+                className={`flex flex-row items-center gap-2 px-5 py-2.5 shadow-sm shadow-blue-100 ${(() => {
+                  const currentStatus = searchParams.get("status");
+                  if (opt.value === "all" && !currentStatus) return "bg-blue-600";
+                  if (opt.value === currentStatus) return "bg-blue-600";
+                  return "bg-blue-400";
+                })()}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams);
                   if (opt.value === "all") {
@@ -115,18 +120,30 @@ export default function FiltroPage() {
             className="mb-4 font-bold text-blue-900 opacity-70"
           />
           <div className="scrollbar-hide flex max-h-48 flex-wrap gap-2 overflow-y-auto p-2">
-            {categories.map((cat) => (
-              <Button
-                key={cat.id}
-                type="button"
-                className="border-none bg-blue-400 px-5 py-2.5 shadow-sm shadow-blue-100"
-              >
-                <P
-                  title={cat.title}
-                  className="text-sm font-medium text-white!"
-                />
-              </Button>
-            ))}
+            {categories.map((cat) => {
+              const isActive = searchParams.get("categoria") === cat.title;
+              return (
+                <Button
+                  key={cat.id}
+                  type="button"
+                  className={`border-none px-5 py-2.5 shadow-sm shadow-blue-100 ${isActive ? "bg-blue-600" : "bg-blue-400"}`}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams);
+                    if (isActive) {
+                      params.delete("categoria");
+                    } else {
+                      params.set("categoria", cat.title);
+                    }
+                    setSearchParams(params);
+                  }}
+                >
+                  <P
+                    title={cat.title}
+                    className="text-sm font-medium text-white!"
+                  />
+                </Button>
+              );
+            })}
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."
@@ -178,19 +195,31 @@ export default function FiltroPage() {
             className="mb-4 font-bold text-blue-900 opacity-70"
           />
           <div className="flex flex-wrap gap-2 p-2">
-            {SORT_DATE_OPTIONS.map((opt) => (
-              <Button
-                key={opt.value}
-                type="button"
-                className="flex max-w-min! flex-row items-center gap-3 bg-blue-400 px-5 py-3 shadow-md shadow-blue-100"
-              >
-                <P
-                  title={opt.title}
-                  className="text-sm font-medium whitespace-nowrap text-white!"
-                />
-                <FontAwesomeIcon icon={opt.icon} className="text-white!" />
-              </Button>
-            ))}
+            {SORT_DATE_OPTIONS.map((opt) => {
+              const isActive = searchParams.get("ordem") === opt.value;
+              return (
+                <Button
+                  key={opt.value}
+                  type="button"
+                  className={`flex max-w-min! flex-row items-center gap-3 px-5 py-3 shadow-md shadow-blue-100 ${isActive ? "bg-blue-600" : "bg-blue-400"}`}
+                  onClick={() => {
+                    const params = new URLSearchParams(searchParams);
+                    if (isActive) {
+                      params.delete("ordem");
+                    } else {
+                      params.set("ordem", opt.value);
+                    }
+                    setSearchParams(params);
+                  }}
+                >
+                  <P
+                    title={opt.title}
+                    className="text-sm font-medium whitespace-nowrap text-white!"
+                  />
+                  <FontAwesomeIcon icon={opt.icon} className="text-white!" />
+                </Button>
+              );
+            })}
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."

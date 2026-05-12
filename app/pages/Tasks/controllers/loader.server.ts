@@ -5,6 +5,48 @@ import { getTasksWeek } from "../service/get-week.server";
 import { getTasksMonth } from "../service/get-month.server";
 import { getTasksAllPeriod } from "../service/get-all-period.server";
 import { tokenContext } from "../../../utils/context/context.server";
+import type { dataTasks, Task } from "../type.server";
+
+function filterTasks(tasks: Task[], url: URL): Task[] {
+  let filtered = [...tasks];
+
+  const status = url.searchParams.get("status");
+  if (status === "completed") {
+    filtered = filtered.filter((t) => t.completed === "Concluída");
+  } else if (status === "pending") {
+    filtered = filtered.filter((t) => t.completed === "Incompleta");
+  }
+
+  const categoria = url.searchParams.get("categoria");
+  if (categoria) {
+    filtered = filtered.filter((t) => {
+      if (typeof t.category === "object" && t.category) {
+        return t.category.title === categoria;
+      }
+      return false;
+    });
+  }
+
+  const ordem = url.searchParams.get("ordem");
+  if (ordem) {
+    filtered.sort((a, b) => {
+      switch (ordem) {
+        case "desc":
+          return new Date(b.createAt).getTime() - new Date(a.createAt).getTime();
+        case "asc":
+          return new Date(a.createAt).getTime() - new Date(b.createAt).getTime();
+        case "alphabetical-asc":
+          return a.title.localeCompare(b.title);
+        case "alphabetical-desc":
+          return b.title.localeCompare(a.title);
+        default:
+          return 0;
+      }
+    });
+  }
+
+  return filtered;
+}
 
 async function loader({ request, context }: LoaderFunctionArgs) {
   const cookiesSession = request.headers.get("Cookie");
@@ -16,18 +58,31 @@ async function loader({ request, context }: LoaderFunctionArgs) {
     throw new Error("Não encontramos nenhum cookie de sessão");
   }
 
+  let result: dataTasks;
+
   switch (periodo) {
     case "hoje":
-      return await getTasksToday({ cookiesSession, context: token });
+      result = (await getTasksToday({ cookiesSession, context: token })) as unknown as dataTasks;
+      break;
     case "semana":
-      return await getTasksWeek({ cookiesSession, context: token });
+      result = (await getTasksWeek({ cookiesSession, context: token })) as unknown as dataTasks;
+      break;
     case "mes":
-      return await getTasksMonth({ cookiesSession, context: token });
+      result = (await getTasksMonth({ cookiesSession, context: token })) as unknown as dataTasks;
+      break;
     case "todos":
-      return await getTasksAllPeriod({ cookiesSession, context: token });
+      result = (await getTasksAllPeriod({ cookiesSession, context: token })) as unknown as dataTasks;
+      break;
     default:
-      return await getTasksUser({ cookiesSession, context: token });
+      result = (await getTasksUser({ cookiesSession, context: token })) as unknown as dataTasks;
+      break;
   }
+
+  if (result.data && Array.isArray(result.data)) {
+    result = { ...result, data: filterTasks(result.data, url) };
+  }
+
+  return result;
 }
 
 export { loader };
