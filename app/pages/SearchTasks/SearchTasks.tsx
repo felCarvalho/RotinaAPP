@@ -114,6 +114,7 @@ export function SearchTasks() {
                                 ? "Incompleta"
                                 : "Concluída",
                             idTask: t.id,
+                            idUser: t.user,
                             intent: "update-task",
                           },
                           { method: "PATCH", action: "/home" },
@@ -183,7 +184,7 @@ export function SearchTasks() {
                         setPopup((s) => ({ itemId: "", popup: !s.popup }))
                       }
                     >
-                      <PopupOptionsTasks id={isPopup.itemId} />
+                      <PopupOptionsTasks id={isPopup.itemId} idUser={t.user} />
                     </div>
                   </div>
                 </FloatingPortal>

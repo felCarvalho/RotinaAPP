@@ -43,39 +43,6 @@ export function Tasks() {
   });
   const navigate = useNavigate();
 
-  const useEvent = useEffectEvent(() => {
-    const notification: dataTasks | null = fetcher.data;
-    if (!notification) {
-      return;
-    }
-
-    const successMessage = notification.notification.find(
-      (s) => s.type === "INFO",
-    );
-    const errorMessage = notification.notification.find(
-      (s) => s.type === "ERROR",
-    );
-    const warningMessage = notification.notification.find(
-      (s) => s.type === "WARNING",
-    );
-
-    if (successMessage) {
-      return success({ success: successMessage.message });
-    }
-
-    if (errorMessage) {
-      return error({ error: errorMessage.message });
-    }
-
-    if (warningMessage) {
-      return warning({ warning: warningMessage.message });
-    }
-  });
-
-  useEffect(() => {
-    useEvent();
-  }, [data?.data]);
-
   return (
     <div className="h-full w-full">
       <div className="sticky top-0 z-40 mb-6 bg-white/80 px-2 py-4 backdrop-blur-md">
@@ -91,7 +58,7 @@ export function Tasks() {
           <H1 title="Inicio" className="w-max text-blue-400" />
         </button>
       </div>
-      {data?.data ? (
+      {data?.data?.length ? (
         data.data.map((t: Task) => (
           <div className="pt-3" key={t.id}>
             <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none">
@@ -117,7 +84,8 @@ export function Tasks() {
                             idUser: t.user,
                             titleTask: t.title,
                             descriptionTask: t.description,
-                            intent: "update-status-task",
+                            intent: "update-task",
+                            formId: "status-checkbox",
                           },
                           {
                             method: "PATCH",

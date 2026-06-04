@@ -9,7 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@felipe-lib/schema-local": "^1.5.0",
+    "@felipe-lib/schema-local": "^2.0.5",
     "@floating-ui/react": "^0.27.16",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-brands-svg-icons": "^7.2.0",

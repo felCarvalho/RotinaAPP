@@ -5,7 +5,6 @@ import {
   getSession,
 } from "../../../utils/cookies/cookies.server";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
-import type { Data } from "~/utils/typesGlobals/type.server";
 import type { CreateUserProps } from "~/utils/schemas/user.schema";
 
 export async function createAccountAction({
@@ -18,7 +17,7 @@ export async function createAccountAction({
   const cookieSession = await getSession(cookiesSession);
 
   try {
-    const response: Data<unknown> = await axios.post(
+    const response = await axios.post(
       "/criar-conta",
       {
         name: validatedData.name,
@@ -30,10 +29,8 @@ export async function createAccountAction({
         baseURL: LOCAL_URL,
       },
     );
-    cookieSession.flash(
-      "notification",
-      response.notification?.find((m) => m.type === "INFO")?.message,
-    );
+
+    console.log(response);
 
     return redirect("/login", {
       headers: {
@@ -41,33 +38,14 @@ export async function createAccountAction({
       },
     });
   } catch (error) {
+    console.error(error);
     if (axios.isAxiosError(error)) {
-      const resultData: Data<unknown> = error.response?.data;
-
-      return data(
-        {
-          data: resultData.data,
-          success: resultData.success,
-          notification: resultData.notification,
-          code: resultData.code,
-        },
-        {
-          status: error.response?.status,
-        },
-      );
+      return data(error.response?.data, { status: error.response?.status });
     }
 
     return data(
-      {
-        data: {
-          message: "Ops! tivemos algum problema ao enviar seus dados",
-          error: error,
-          status: 500,
-        },
-      },
-      {
-        status: 500,
-      },
+      { message: "Ops! Servidor indisponível no momento" },
+      { status: 500 },
     );
   }
 }

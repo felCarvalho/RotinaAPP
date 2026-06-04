@@ -7,7 +7,7 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../../utils/context/type.server";
-import type { CreateTaskRascunhoProps } from "../../controllers/schemas";
+import type { CreateTaskRascunhoProps } from "../../../../utils/schemas/index";
 
 export async function createTaskRascunho({
   validatedData,

@@ -7,37 +7,38 @@ import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { UpdateTaskStatusProps } from "../../../utils/schemas/task.schema";
 
-export async function updateStatusTasks({
+interface UpdateTaskData {
+  completed?: string;
+  titleTask?: string;
+  descriptionTask?: string;
+  idUser: string;
+  idTask: string;
+}
+
+export async function updateTasks({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: UpdateTaskStatusProps;
+  validatedData: UpdateTaskData;
   cookieSession: string | null;
   context: Token | null;
 }) {
   const setCookie = await getSession(cookieSession);
 
   if (context) {
-    setCookie.set("accessToken", context?.accessToken);
-    setCookie.set("refreshToken", context?.refreshToken);
-    setCookie.set("expAccessToken", context?.expAccessToken);
+    setCookie.set("accessToken", context.accessToken);
+    setCookie.set("refreshToken", context.refreshToken);
+    setCookie.set("expAccessToken", context.expAccessToken);
   }
 
   const session = await getCookieTokens({ cookiesSession: cookieSession });
 
   try {
     const response = await axios.patch(
-      `/home/${validatedData.idTask}`,
-      {
-        completed: validatedData.completed,
-        titleTask: validatedData.titleTask,
-        descriptionTask: validatedData.descriptionTask,
-        idUser: validatedData.idUser,
-        idTask: validatedData.idTask,
-      },
+      `home/${validatedData.idTask}`,
+      validatedData,
       {
         baseURL: LOCAL_URL,
         headers: {
@@ -45,6 +46,8 @@ export async function updateStatusTasks({
         },
       },
     );
+
+    console.log(response.data);
 
     return data(response.data, {
       headers: {

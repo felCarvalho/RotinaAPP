@@ -32,9 +32,13 @@ function filterTasks(tasks: Task[], url: URL): Task[] {
     filtered.sort((a, b) => {
       switch (ordem) {
         case "desc":
-          return new Date(b.createAt).getTime() - new Date(a.createAt).getTime();
+          return (
+            new Date(b.createAt).getTime() - new Date(a.createAt).getTime()
+          );
         case "asc":
-          return new Date(a.createAt).getTime() - new Date(b.createAt).getTime();
+          return (
+            new Date(a.createAt).getTime() - new Date(b.createAt).getTime()
+          );
         case "alphabetical-asc":
           return a.title.localeCompare(b.title);
         case "alphabetical-desc":
@@ -54,6 +58,8 @@ async function loader({ request, context }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const periodo = url.searchParams.get("periodo");
 
+  console.log(token);
+
   if (!cookiesSession) {
     throw new Error("Não encontramos nenhum cookie de sessão");
   }
@@ -62,19 +68,34 @@ async function loader({ request, context }: LoaderFunctionArgs) {
 
   switch (periodo) {
     case "hoje":
-      result = (await getTasksToday({ cookiesSession, context: token })) as unknown as dataTasks;
+      result = (await getTasksToday({
+        cookiesSession,
+        context: token,
+      })) as unknown as dataTasks;
       break;
     case "semana":
-      result = (await getTasksWeek({ cookiesSession, context: token })) as unknown as dataTasks;
+      result = (await getTasksWeek({
+        cookiesSession,
+        context: token,
+      })) as unknown as dataTasks;
       break;
     case "mes":
-      result = (await getTasksMonth({ cookiesSession, context: token })) as unknown as dataTasks;
+      result = (await getTasksMonth({
+        cookiesSession,
+        context: token,
+      })) as unknown as dataTasks;
       break;
     case "todos":
-      result = (await getTasksAllPeriod({ cookiesSession, context: token })) as unknown as dataTasks;
+      result = (await getTasksAllPeriod({
+        cookiesSession,
+        context: token,
+      })) as unknown as dataTasks;
       break;
     default:
-      result = (await getTasksUser({ cookiesSession, context: token })) as unknown as dataTasks;
+      result = (await getTasksUser({
+        cookiesSession,
+        context: token,
+      })) as unknown as dataTasks;
       break;
   }
 

@@ -12,7 +12,7 @@ import { P } from "../../component/paragrafo";
 import { H3 } from "../../component/subTitle";
 import { H1 } from "../../component/title";
 
-export function LoginJSX() {
+export function LoginJSX({ notification }: { notification: string | null }) {
   const [isOpenPassword, setOpenPassword] = useState(false);
 
   return (
@@ -101,7 +101,7 @@ export function LoginJSX() {
             </Form>
           </div>
           <div className="mt-5 flex w-full flex-row items-center justify-between">
-            <P title={""} className="font-medium text-red-400" />
+            <P title={notification ?? ""} className="font-medium text-red-400" />
             <NavLink to="/redefinir-senha">
               <P title="Esqueceu a senha?" className="text-blue-300" />
             </NavLink>

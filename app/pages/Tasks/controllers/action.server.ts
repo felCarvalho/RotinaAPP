@@ -1,24 +1,17 @@
 import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
-import { updateStatusTasks } from "../service/update-status.server";
-import { updateTitleTasks } from "../service/update-title.server";
+import { updateTasks } from "../service/update.server";
 import { deleteTasks } from "../service/delete.server";
+import { restoreTasks } from "../service/restore.server";
 import { tokenContext } from "../../../utils/context/context.server";
 import {
-  updateTaskStatusRules,
-  updateTaskTitleRules,
-  deleteTaskRules,
-  type UpdateTaskStatusProps,
-  type UpdateTaskTitleProps,
+  updateTaskValidator,
+  deleteTaskValidator,
+  idTaskValidator,
+  type UpdateTaskProps,
   type DeleteTaskProps,
-} from "../../../utils/schemas/task.schema";
-import { makeValidator } from "../../../utils/schemas/factory";
-
-const updateStatusValidator =
-  makeValidator<UpdateTaskStatusProps>(updateTaskStatusRules);
-const updateTitleValidator =
-  makeValidator<UpdateTaskTitleProps>(updateTaskTitleRules);
-const deleteValidator = makeValidator<DeleteTaskProps>(deleteTaskRules);
+  type IdTaskProps,
+} from "../../../utils/schemas/index";
 
 async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -27,25 +20,15 @@ async function action({ request, context }: ActionFunctionArgs) {
   const token = context.get(tokenContext);
 
   switch (intent) {
-    case "update-status-task": {
-      const form = Object.fromEntries(formData) as unknown as UpdateTaskStatusProps;
-      const result = await updateStatusValidator.execute(form);
+    case "update-task": {
+      const form = Object.fromEntries(formData) as unknown as UpdateTaskProps;
+      const result = await updateTaskValidator.execute(form, {});
+
+      console.log(result);
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
-      return await updateStatusTasks({
-        validatedData: result.data,
-        cookieSession,
-        context: token,
-      });
-    }
-    case "update-title-task": {
-      const form = Object.fromEntries(formData) as unknown as UpdateTaskTitleProps;
-      const result = await updateTitleValidator.execute(form);
-      if (!result.success) {
-        return data(result.notification, { status: 400 });
-      }
-      return await updateTitleTasks({
+      return await updateTasks({
         validatedData: result.data,
         cookieSession,
         context: token,
@@ -53,11 +36,23 @@ async function action({ request, context }: ActionFunctionArgs) {
     }
     case "delete-task": {
       const form = Object.fromEntries(formData) as unknown as DeleteTaskProps;
-      const result = await deleteValidator.execute(form);
+      const result = await deleteTaskValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
       return await deleteTasks({
+        validatedData: result.data,
+        cookieSession,
+        context: token,
+      });
+    }
+    case "restore-task": {
+      const form = Object.fromEntries(formData) as unknown as IdTaskProps;
+      const result = await idTaskValidator.execute(form, {});
+      if (!result.success) {
+        return data(result.notification, { status: 400 });
+      }
+      return await restoreTasks({
         validatedData: result.data,
         cookieSession,
         context: token,

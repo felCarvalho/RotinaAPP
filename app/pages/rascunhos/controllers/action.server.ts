@@ -11,7 +11,7 @@ import {
   createCategoryRascunhoValidator,
   createTaskRascunhoValidator,
   updateCategoryValidator,
-  updateTaskValidator,
+  updateTaskRascunhoValidator,
   idCategoryValidator,
   idTaskValidator,
   type CreateCategoryRascunhoProps,
@@ -20,7 +20,7 @@ import {
   type UpdateTaskRascunhoProps,
   type IdCategoryProps,
   type IdTaskProps,
-} from "./schemas";
+} from "../../../utils/schemas/index";
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -31,7 +31,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   switch (intent) {
     case "create-category-rascunho": {
       const form = Object.fromEntries(formData) as unknown as CreateCategoryRascunhoProps;
-      const result = await createCategoryRascunhoValidator.execute(form);
+      const result = await createCategoryRascunhoValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
@@ -43,7 +43,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     }
     case "create-task-rascunho": {
       const form = Object.fromEntries(formData) as unknown as CreateTaskRascunhoProps;
-      const result = await createTaskRascunhoValidator.execute(form);
+      const result = await createTaskRascunhoValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
@@ -55,7 +55,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     }
     case "update-category": {
       const form = Object.fromEntries(formData) as unknown as UpdateCategoryProps;
-      const result = await updateCategoryValidator.execute(form);
+      const result = await updateCategoryValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
@@ -67,7 +67,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     }
     case "update-task": {
       const form = Object.fromEntries(formData) as unknown as UpdateTaskRascunhoProps;
-      const result = await updateTaskValidator.execute(form);
+      const result = await updateTaskRascunhoValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
@@ -79,7 +79,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     }
     case "delete-category": {
       const form = Object.fromEntries(formData) as unknown as IdCategoryProps;
-      const result = await idCategoryValidator.execute(form);
+      const result = await idCategoryValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }
@@ -91,7 +91,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     }
     case "delete-task": {
       const form = Object.fromEntries(formData) as unknown as IdTaskProps;
-      const result = await idTaskValidator.execute(form);
+      const result = await idTaskValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }

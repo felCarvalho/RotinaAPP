@@ -4,8 +4,6 @@ import {
   faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
-import { useNavigate } from "react-router";
 import { Button } from "../../component/btn";
 import { HeaderContent } from "../../component/headerContent";
 import { P } from "../../component/paragrafo";
@@ -81,7 +79,9 @@ export function Perfil() {
               <div>
                 <Button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => {
+                    "";
+                  }}
                   className="flex flex-row items-center justify-center gap-2"
                 >
                   <P title="Redefinir" />
@@ -93,7 +93,9 @@ export function Perfil() {
               <div>
                 <Button
                   type="button"
-                  onClick={() => {}}
+                  onClick={() => {
+                    "";
+                  }}
                   className="flex flex-row items-center justify-center gap-2 bg-red-400! shadow-red-50! focus:shadow-red-50! focus:outline-red-400!"
                 >
                   <P title="Deletar" />

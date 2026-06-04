@@ -17,8 +17,7 @@ const AuthMiddleware: MiddlewareFunction = async (
   const session = await getSession(cookiesSession);
   const expAccessToken = session.get("expAccessToken");
 
-  const expDate = new Date(expAccessToken);
-  const date = new Date();
+  const date = new Date().getTime();
 
   if (!isPublicRoute && !expAccessToken) {
     session.flash("notification", "Ops, Faça login para poder entrar");
@@ -30,7 +29,7 @@ const AuthMiddleware: MiddlewareFunction = async (
     });
   }
 
-  if (!isPublicRoute && date > expDate) {
+  if (!isPublicRoute && date > expAccessToken) {
     try {
       const refresh = await axios.post(
         "refresh-token",
@@ -43,11 +42,23 @@ const AuthMiddleware: MiddlewareFunction = async (
         },
       );
 
+      const data = refresh.data.data;
+
+      session.set("accessToken", data.accessToken);
+      session.set("refreshToken", data.refreshToken);
+      session.set("expAccessToken", data.expAccessToken);
+
       context.set(tokenContext, {
-        ...refresh.data,
-        expAccessToken: Number(refresh.data.expAccessToken),
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        expAccessToken: data.expAccessToken,
       });
+
+      const response = (await next()) as Response;
+      response.headers.append("Set-Cookie", await commitSession(session));
+      return response;
     } catch (e) {
+      console.error(e);
       session.set("accessToken", "");
       session.set("expAccessToken", "");
       session.set("refreshToken", "");

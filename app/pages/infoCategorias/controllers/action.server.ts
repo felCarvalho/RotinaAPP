@@ -5,21 +5,13 @@ import { updateCategoryTitle } from "../services/update-category-title.server";
 import { updateCategoryTasksStatus } from "../services/update-category-status.server";
 import { tokenContext } from "../../../utils/context/context.server";
 import {
-  deleteCategoryTaskRules,
-  updateCategoryRules,
-  updateCategoryStatusRules,
+  deleteCategoryValidator,
+  updateCategoryValidator,
+  updateCategoryStatusValidator,
   type DeleteCategoryTaskProps,
   type UpdateCategoryProps,
   type UpdateCategoryStatusProps,
-} from "../../../utils/schemas/category.schema";
-import { makeValidator } from "../../../utils/schemas/factory";
-
-const deleteCategoryValidator =
-  makeValidator<DeleteCategoryTaskProps>(deleteCategoryTaskRules);
-const updateCategoryTitleValidator =
-  makeValidator<UpdateCategoryProps>(updateCategoryRules);
-const updateCategoryStatusValidator =
-  makeValidator<UpdateCategoryStatusProps>(updateCategoryStatusRules);
+} from "../../../utils/schemas/index";
 
 export async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -32,7 +24,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const form = Object.fromEntries(
         formData,
       ) as unknown as DeleteCategoryTaskProps;
-      const result = await deleteCategoryValidator.execute(form);
+      const result = await deleteCategoryValidator.execute(form, {});
       if (!result.success) {
         return data({ errors: result.notification }, { status: 400 });
       }
@@ -47,7 +39,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const form = Object.fromEntries(
         formData,
       ) as unknown as UpdateCategoryProps;
-      const result = await updateCategoryTitleValidator.execute(form);
+      const result = await updateCategoryValidator.execute(form, {});
       if (!result.success) {
         return data({ errors: result.notification }, { status: 400 });
       }
@@ -62,7 +54,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const form = Object.fromEntries(
         formData,
       ) as unknown as UpdateCategoryStatusProps;
-      const result = await updateCategoryStatusValidator.execute(form);
+      const result = await updateCategoryStatusValidator.execute(form, {});
       if (!result.success) {
         return data({ errors: result.notification }, { status: 400 });
       }

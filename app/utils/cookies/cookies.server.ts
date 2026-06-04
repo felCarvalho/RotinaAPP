@@ -9,7 +9,7 @@ const cookies = createCookieSessionStorage({
     name: "user",
     httpOnly: true,
     path: "/",
-    secure: import.meta.env.AMBIENTE === "PRODUCTION",
+    secure: import.meta.env.PROD,
     sameSite: "lax",
   },
 });

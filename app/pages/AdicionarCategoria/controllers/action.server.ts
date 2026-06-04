@@ -3,12 +3,9 @@ import { createCategory } from "../services/create-categoria.server";
 import { tokenContext } from "../../../utils/context/context.server";
 import { data } from "react-router";
 import {
-  createCategoryRules,
+  createCategoryValidator,
   type CreateCategoryProps,
-} from "../../../utils/schemas/category.schema";
-import { makeValidator } from "../../../utils/schemas/factory";
-
-const categoriaSchemaValidator = makeValidator<CreateCategoryProps>(createCategoryRules);
+} from "../../../utils/schemas/index";
 
 async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -19,7 +16,7 @@ async function action({ request, context }: ActionFunctionArgs) {
   switch (intent) {
     case "adicionar-categoria": {
       const form = Object.fromEntries(formData) as unknown as CreateCategoryProps;
-      const result = await categoriaSchemaValidator.execute(form);
+      const result = await createCategoryValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }

@@ -7,6 +7,7 @@ import {
   faLayerGroup,
   faPenToSquare,
   faPlus,
+  faRobot,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,6 +29,12 @@ export const NAV_LINKS = [
     link: "home/buscar",
     icon: faSearch,
     description: "Encontre tarefas específicas"
+  },
+  {
+    title: "Chat IA",
+    link: "home/chat",
+    icon: faRobot,
+    description: "Adicione tarefas, crie rotinas e gerencie categorias com IA"
   },
   {
     title: "Configurações",

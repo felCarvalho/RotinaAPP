@@ -39,42 +39,11 @@ export function RenomearTarefaTSX() {
   //form
   const fetcher = useFetcher();
 
-  const useEvent = useEffectEvent(() => {
-    const notification: dataTasks | null = fetcher.data ?? null;
-    if (!notification) {
-      return;
-    }
-
-    const successMessage = notification.notification?.find(
-      (s) => s.type === "INFO",
-    );
-    const errorMessage = notification.notification?.find(
-      (s) => s.type === "ERROR",
-    );
-    const warningMessage = notification.notification?.find(
-      (s) => s.type === "WARNING",
-    );
-
-    if (successMessage) {
-      return success({ success: successMessage.message });
-    }
-
-    if (errorMessage) {
-      return error({ error: errorMessage.message });
-    }
-
-    if (warningMessage) {
-      return warning({ warning: warningMessage.message });
-    }
-  });
-
-  useEffect(() => {
-    useEvent();
-  }, [fetcher.data]);
-
   const dataError = fetcher.data?.titleTask
     ? fetcher.data.titleTask.at(-1)
     : null;
+
+  console.log(loaderHome);
 
   return (
     <>
@@ -115,11 +84,20 @@ export function RenomearTarefaTSX() {
                 form="task-update-form"
                 className={`peer ${dataError ? "bg-red-50! text-red-400! placeholder-red-400! outline-red-400!" : ""}`}
               />
-              <input name="intent" type="hidden" value="update-title-task" />
+              <input name="intent" type="hidden" value="update-task" />
+              <input name="formId" type="hidden" value="rename-modal" />
               <input name="idTask" type="hidden" value={paramsHome ?? ""} />
               <input name="idUser" type="hidden" value={task?.user ?? ""} />
-              <input name="descriptionTask" type="hidden" value={task?.description ?? ""} />
-              <input name="completed" type="hidden" value={task?.completed ?? ""} />
+              <input
+                name="descriptionTask"
+                type="hidden"
+                value={task?.description ?? ""}
+              />
+              <input
+                name="completed"
+                type="hidden"
+                value={task?.completed ?? ""}
+              />
               <div>
                 <P
                   title={dataError ?? ""}

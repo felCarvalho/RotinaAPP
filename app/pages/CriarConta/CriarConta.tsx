@@ -16,7 +16,7 @@ import { useActionData } from "react-router";
 import { error as Alert } from "../../utils/FunctionUtils/FunctionUtils";
 
 export function CriarContaJSX() {
-  const data: Data<unknown> = useActionData();
+  const data: Data<unknown> | undefined = useActionData();
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

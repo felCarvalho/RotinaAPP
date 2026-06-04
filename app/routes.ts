@@ -9,7 +9,12 @@ export default [
   layout("./layout/LayoutHome/layout.tsx", [
     route("home", "./pages/Tasks/component.tsx", [
       route("criar-rotina", "./pages/CreateRotina/component.tsx"),
-      route("configuracoes", "./pages/Configuracao/component.tsx"),
+      route("configuracoes", "./pages/Configuracao/component.tsx", [
+        route("tema", "./pages/Temas/component.tsx"),
+        route("conta", "./pages/Perfil/component.tsx"),
+        route("Permissoes", "./pages/Permissoes/component.tsx"),
+        route("lixeira", "./pages/Lixeira/component.tsx"),
+      ]),
       route("buscar", "./pages/SearchTasks/component.tsx", [
         route("renomear/:id", "./modais/Renomear-tarefa/component.tsx", {
           id: "renomear-buscar",
@@ -44,6 +49,7 @@ export default [
         id: "detalhes-rotina",
       }),
 
+      route("chat", "./pages/Chat/component.tsx"),
       route("rascunhos", "./pages/rascunhos/component.tsx", [
         route(
           "renomear/:id",

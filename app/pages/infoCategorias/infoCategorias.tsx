@@ -11,7 +11,7 @@ import {
   faX,
   faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate, useFetcher, NavLink, useLocation } from "react-router";
+import { useNavigate, useFetcher, useLocation } from "react-router";
 import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
 import { handle, type HandleCategorias } from "./controllers/handle";
 import type { dataCategorias, Category } from "./type.server";
@@ -45,16 +45,17 @@ export function InfoCategoria() {
 
   return (
     <div className="h-full w-full">
-      <div className="sticky top-0 z-40 mb-6 bg-white/80 py-4 px-2 backdrop-blur-md">
+      <div className="sticky top-0 z-40 mb-6 bg-white/80 px-2 py-4 backdrop-blur-md">
         <button
           onClick={() => navigate(-1)}
           className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
-          <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" size="lg" />
-          <H1
-            title="Informações Categorias"
-            className="w-max text-blue-400"
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="text-blue-400"
+            size="lg"
           />
+          <H1 title="Informações Categorias" className="w-max text-blue-400" />
         </button>
       </div>
       <div className="h-full w-full pt-3">
@@ -112,7 +113,7 @@ export function InfoCategoria() {
                     <div>
                       <Button
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() => navigate(`renomear/${c.id}`)}
                       >
                         <i>
@@ -123,12 +124,12 @@ export function InfoCategoria() {
                     <div>
                       <Button
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() =>
                           fetcher.submit(
                             {
                               idCategory: c.id,
-                              intent: "delete-category-task-category",
+                              intent: "delete-category-task",
                             },
                             {
                               method: "DELETE",
@@ -145,7 +146,7 @@ export function InfoCategoria() {
                     <div>
                       <Button
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() =>
                           fetcher.submit(
                             {
@@ -168,7 +169,7 @@ export function InfoCategoria() {
                     <div>
                       <Button
                         type="button"
-                        className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
+                        className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() =>
                           fetcher.submit(
                             {
@@ -211,7 +212,7 @@ export function InfoCategoria() {
                 )}
               </div>
 
-              <div className="w-full text-center hidden md:block mt-3">
+              <div className="mt-3 hidden w-full text-center md:block">
                 <Button
                   type="button"
                   className="text-base font-medium"

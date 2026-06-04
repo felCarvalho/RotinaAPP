@@ -2,19 +2,19 @@ import {
   getSession,
   commitSession,
   getCookieTokens,
-} from "../../../utils/cookies/cookies.server";
+} from "~/utils/cookies/cookies.server";
 import { data } from "react-router";
 import axios from "axios";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 import type { Token } from "../../../utils/context/type.server";
-import type { UpdateTaskTitleProps } from "../../../utils/schemas/task.schema";
+import type { IdTaskProps } from "../../../utils/schemas/task.schema";
 
-export async function updateTitleTasks({
+export async function restoreTasks({
   validatedData,
   cookieSession,
   context,
 }: {
-  validatedData: UpdateTaskTitleProps;
+  validatedData: IdTaskProps;
   cookieSession: string | null;
   context: Token | null;
 }) {
@@ -30,14 +30,8 @@ export async function updateTitleTasks({
 
   try {
     const response = await axios.patch(
-      `/home/${validatedData.idTask}`,
-      {
-        completed: validatedData.completed,
-        titleTask: validatedData.titleTask,
-        descriptionTask: validatedData.descriptionTask,
-        idUser: validatedData.idUser,
-        idTask: validatedData.idTask,
-      },
+      `/home/${validatedData.idTask}/restaurar`,
+      {},
       {
         baseURL: LOCAL_URL,
         headers: {
@@ -50,11 +44,11 @@ export async function updateTitleTasks({
       headers: {
         "Set-Cookie": await commitSession(setCookie),
       },
-      status: 200,
+      status: response.data.code,
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      return data(error.response?.data, {
+      return data(error.response?.status, {
         headers: {
           "Set-Cookie": await commitSession(setCookie),
         },
@@ -64,7 +58,7 @@ export async function updateTitleTasks({
 
     return data(
       {
-        message: "Ops! erro interno ao atualizar a rotina",
+        message: "Ops! erro interno ao restaurar a rotina",
         error: error,
         status: 500,
       },

@@ -3,12 +3,9 @@ import { createTarefa } from "../services/create-tarefa.server";
 import { tokenContext } from "../../../utils/context/context.server";
 import { data } from "react-router";
 import {
-  createTaskRules,
+  createTaskValidator,
   type CreateTaskProps,
-} from "../../../utils/schemas/task.schema";
-import { makeValidator } from "../../../utils/schemas/factory";
-
-const createTarefaValidator = makeValidator<CreateTaskProps>(createTaskRules);
+} from "../../../utils/schemas/index";
 
 async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -19,7 +16,7 @@ async function action({ request, context }: ActionFunctionArgs) {
   switch (intent) {
     case "adicionar-tarefa": {
       const form = Object.fromEntries(formData) as unknown as CreateTaskProps;
-      const result = await createTarefaValidator.execute(form);
+      const result = await createTaskValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }

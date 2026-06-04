@@ -1,7 +1,9 @@
+import { useLoaderData } from "react-router";
 import { LoginJSX } from "./Login";
 import { action } from "./controllers/action.server";
+import { loader } from "./controllers/loader.server";
 
-export { action };
+export { action, loader };
 
 export const handle = {
   title: "Login",
@@ -9,5 +11,6 @@ export const handle = {
 };
 
 export default function LoginComponent() {
-  return <LoginJSX />;
+  const { notification } = useLoaderData<typeof loader>();
+  return <LoginJSX notification={notification} />;
 }

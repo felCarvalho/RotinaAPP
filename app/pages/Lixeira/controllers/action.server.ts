@@ -2,10 +2,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { data } from "react-router";
 import { restoreTasks } from "../../Tasks/service/restore.server";
 import { tokenContext } from "../../../utils/context/context.server";
-import { idTaskRules, type IdTaskProps } from "../../../utils/schemas/task.schema";
-import { makeValidator } from "../../../utils/schemas/factory";
-
-const restoreValidator = makeValidator<IdTaskProps>(idTaskRules);
+import { idTaskValidator, type IdTaskProps } from "../../../utils/schemas/index";
 
 async function action({ request, context }: ActionFunctionArgs) {
   const cookieSession = request.headers.get("Cookie");
@@ -16,7 +13,7 @@ async function action({ request, context }: ActionFunctionArgs) {
   switch (intent) {
     case "restore-task": {
       const form = Object.fromEntries(formData) as unknown as IdTaskProps;
-      const result = await restoreValidator.execute(form);
+      const result = await idTaskValidator.execute(form, {});
       if (!result.success) {
         return data(result.notification, { status: 400 });
       }

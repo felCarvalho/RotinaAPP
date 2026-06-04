@@ -3,10 +3,10 @@ import { data, redirect } from "react-router";
 import { commitSession, getSession } from "~/utils/cookies/cookies.server";
 import { LOCAL_URL } from "~/utils/constants/contants.server";
 
-type LoginInput = {
+interface LoginInput {
   identifier: string;
   password: string;
-};
+}
 
 export async function loginAccount({
   data: parsedData,
@@ -29,12 +29,12 @@ export async function loginAccount({
       },
     );
 
-    const { accessToken, refreshToken, expAccessToken } = response.data;
-    const expAccessTokenDate = new Date(expAccessToken * 1000);
+    const data = response.data.data;
+
     session.flash("notification", `Seja bem-vindo(a) ao Minha Rotina!`);
-    session.set("accessToken", accessToken);
-    session.set("refreshToken", refreshToken);
-    session.set("expAccessToken", expAccessTokenDate);
+    session.set("accessToken", data.accessToken);
+    session.set("refreshToken", data.refreshToken);
+    session.set("expAccessToken", data.expAccessToken);
 
     return redirect("/home", {
       headers: {
@@ -42,6 +42,7 @@ export async function loginAccount({
       },
     });
   } catch (error) {
+    console.error(error);
     if (isAxiosError(error)) {
       return data(
         {
