@@ -13,7 +13,7 @@ export function PopupFilterStatus() {
           className="flex w-full flex-row items-center gap-3 bg-white hover:bg-blue-50 transition-colors py-2 px-4 shadow-none!"
         >
           <FontAwesomeIcon icon={option.icon} className="text-blue-400 w-5" />
-          <P title={option.title} className="text-blue-900 font-medium" />
+          <P title={option.title} className="text-blue-500 font-medium" />
         </Button>
       ))}
     </div>

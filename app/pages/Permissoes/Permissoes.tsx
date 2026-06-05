@@ -23,7 +23,7 @@ export function Permissoes() {
                 <H3 title="Em desenvolvimento" className="text-blue-400" />
                 <P
                   title="As permissoes de acesso estarao disponiveis em breve."
-                  className="text-blue-300"
+                  className="text-blue-500"
                 />
               </div>
             </div>

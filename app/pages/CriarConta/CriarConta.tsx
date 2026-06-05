@@ -34,7 +34,7 @@ export function CriarContaJSX() {
                 />
                 <H3
                   title="Faça login agora mesmo clicando no botão abaixo."
-                  className="my-1 tracking-wide text-blue-300"
+                  className="my-1 tracking-wide text-blue-500"
                 />
               </div>
               <div>
@@ -45,7 +45,7 @@ export function CriarContaJSX() {
             </div>
           )}
         </div>
-        <div className="flex-col items-center justify-center gap-2 rounded-4xl max-md:p-2 shadow-2xs shadow-blue-50 md:w-full md:p-2">
+        <div className="flex-col items-center justify-center gap-2 rounded-4xl max-md:p-2 shadow-2xs shadow-blue-100 md:w-full md:p-2">
           <div className="text-center">
             <H1
               title="Criar Conta"
@@ -54,60 +54,68 @@ export function CriarContaJSX() {
           </div>
           <div className="w-full rounded-4xl max-md:p-4 md:p-4">
             <Form method="POST" className="flex flex-col gap-5 md:w-full">
-              <label className="flex w-full flex-col items-start gap-1.5">
+              <label htmlFor="create-name" className="flex w-full flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Usuario:" className="text-blue-400" />
                   <input name="intent" type="hidden" value="login" />
                   <Input
+                    id="create-name"
                     name="name"
                     type="text"
+                    autoComplete="username"
                     placeholder="Digite seu nome de usuário"
                   />
                 </div>
               </label>
-              <label className="flex flex-col items-start gap-1.5">
+              <label htmlFor="create-email" className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Email:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
+                      id="create-email"
                       name="identifier"
                       type="email"
-                      placeholder="Digite novamente seu email"
+                      autoComplete="email"
+                      placeholder="Digite seu email"
                     />
                   </div>
                 </div>
               </label>
-              <label className="flex flex-col items-start gap-1.5">
+              <label htmlFor="create-password" className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
+                      id="create-password"
                       type={showPassword ? "text" : "password"}
                       name="password"
-                      placeholder="Digite seus senha"
+                      autoComplete="new-password"
+                      placeholder="Digite sua senha"
                     />
                     <Button
                       onClick={() => setShowPassword((s) => !s)}
                       type="button"
                       className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     >
-                      <i>
+                      <span aria-hidden="true">
                         <FontAwesomeIcon
                           icon={showPassword ? faEyeSlash : faEye}
                           size="lg"
                         />
-                      </i>
+                      </span>
                     </Button>
                   </div>
                 </div>
               </label>
-              <label className="flex flex-col items-start gap-1.5">
+              <label htmlFor="create-password-confirm" className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col gap-1">
                   <P title="Repetir senha:" className="text-blue-400" />
                   <div className="flex w-full flex-row items-center justify-center gap-2">
                     <Input
+                      id="create-password-confirm"
                       type={showConfirmPassword ? "text" : "password"}
                       name="passwordConfirm"
+                      autoComplete="new-password"
                       placeholder="Digite novamente sua senha"
                     />
                     <Button
@@ -115,12 +123,12 @@ export function CriarContaJSX() {
                       type="button"
                       className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     >
-                      <i>
+                      <span aria-hidden="true">
                         <FontAwesomeIcon
                           icon={showConfirmPassword ? faEyeSlash : faEye}
                           size="lg"
                         />
-                      </i>
+                      </span>
                     </Button>
                   </div>
                 </div>
@@ -145,7 +153,7 @@ export function CriarContaJSX() {
           <div className="w-full text-end">
             <NavLink
               to="/redefinir-senha"
-              className="min-w-max font-medium text-blue-300"
+              className="min-w-max font-medium text-blue-500"
             >
               Esqueceu a senha?
             </NavLink>
@@ -157,9 +165,9 @@ export function CriarContaJSX() {
         className="flex flex-row items-center justify-center gap-2 text-blue-400 underline underline-offset-4"
       >
         <P title="Fazer login" className="font-medium" />
-        <i>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={faAngleRight} size="lg" />
-        </i>
+        </span>
       </NavLink>
     </div>
   );

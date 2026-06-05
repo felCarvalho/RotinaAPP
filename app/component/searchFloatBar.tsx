@@ -14,7 +14,7 @@ interface SearchFloat {
 export function SearchFloatBar({ onBack, onChange, value }: SearchFloat) {
   return (
     <motion.form
-      className="fixed right-5 bottom-15 left-5 flex items-center justify-center gap-5"
+      className="fixed right-5 bottom-20 left-5 z-50 flex items-center justify-center gap-5"
       initial={{ y: 100, scaleX: 0, opacity: 0 }}
       animate={{ y: 0, scaleX: 1, opacity: 1 }}
       exit={{ y: 100, scaleX: 0, opacity: 0 }}
@@ -31,13 +31,13 @@ export function SearchFloatBar({ onBack, onChange, value }: SearchFloat) {
         type="button"
         className="flex flex-row items-center justify-center gap-2"
       >
-        <i>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={faAngleLeft} />
-        </i>
+        </span>
         <P title="Voltar" className="font-medium text-white" />
       </Button>
       <Input
-        type=""
+        type="search"
         onChange={onChange}
         value={value}
         placeholder="Pesquise suas Rotinas..."

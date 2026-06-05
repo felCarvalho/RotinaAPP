@@ -55,13 +55,13 @@ export function Tasks() {
             className="text-blue-400"
             size="lg"
           />
-          <H1 title="Inicio" className="w-max text-blue-400" />
+          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Inicio</span>
         </button>
       </div>
       {data?.data?.length ? (
         data.data.map((t: Task) => (
           <div className="pt-3" key={t.id}>
-            <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none">
+            <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-3 select-none hover:bg-blue-50/70 transition-colors">
               <div className="mx-3 flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <div className="flex flex-row items-center">
@@ -99,11 +99,11 @@ export function Tasks() {
                       className="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white text-center peer-checked:bg-blue-400"
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 300 }}
-                      aria-label={""}
+                      aria-label={`Marcar "${t.title}" como ${t.completed === "Concluída" ? "incompleta" : "concluída"}`}
                     >
-                      <i className="text-white">
+                      <span aria-hidden="true" className="text-white">
                         <FontAwesomeIcon icon={faCheck} size="lg" />
-                      </i>
+                      </span>
                     </motion.label>
                   </div>
                   <div>
@@ -124,9 +124,9 @@ export function Tasks() {
                       setPopup((s) => ({ itemId: t.id, popup: !s.popup }))
                     }
                   >
-                    <i>
+                    <span aria-hidden="true">
                       <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
-                    </i>
+                    </span>
                   </button>
                   <div className="flex flex-row items-center justify-center gap-2 max-md:hidden">
                     <Button
@@ -134,9 +134,9 @@ export function Tasks() {
                       className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                       onClick={() => navigate(`renomear/${t.id}`)}
                     >
-                      <i>
+                      <span aria-hidden="true">
                         <FontAwesomeIcon icon={faPen} size="lg" />
-                      </i>
+                      </span>
                     </Button>
                     <Button
                       type="button"
@@ -154,9 +154,9 @@ export function Tasks() {
                         )
                       }
                     >
-                      <i>
+                      <span aria-hidden="true">
                         <FontAwesomeIcon icon={faTrash} size="lg" />
-                      </i>
+                      </span>
                     </Button>
                   </div>
                   {isPopup.popup && (
@@ -171,7 +171,7 @@ export function Tasks() {
                             itemId: "",
                           }))
                         }
-                        className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-50"
+                        className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-100"
                       >
                         <span>
                           <PopupOptionsTasks id={t.id} />
@@ -189,7 +189,7 @@ export function Tasks() {
                   />
                   <NavLink
                     to={`/home/info-categoria/${typeof t.category === "object" ? t.category.id : t.category}`}
-                    className="truncate font-medium text-blue-300 hover:underline"
+                    className="truncate font-medium text-blue-500 hover:underline"
                   >
                     {typeof t.category === "object"
                       ? t.category.title
@@ -212,7 +212,7 @@ export function Tasks() {
                     title="Criada em:"
                     className="hidden font-medium text-blue-400 sm:block"
                   />
-                  <P title={t.createAt} className="font-medium text-blue-300" />
+                  <P title={t.createAt} className="font-medium text-blue-500" />
                 </div>
               </div>
             </div>

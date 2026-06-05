@@ -62,7 +62,7 @@ export function Rascunhos() {
                 className="text-blue-400"
                 size="lg"
               />
-              <H1 title="Rascunhos" className="w-max text-blue-400" />
+              <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Rascunhos</span>
             </button>
           </div>
 
@@ -114,7 +114,7 @@ export function Rascunhos() {
               dataTasks.map((t: Task) => (
                 <div
                   key={t.id}
-                  className="flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-4 shadow-xs"
+                  className="flex flex-col justify-center gap-2 rounded-2xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-4 shadow-xs"
                 >
                   <div className="flex flex-row justify-between gap-4">
                     <div className="flex flex-col justify-center gap-1.5 overflow-hidden">
@@ -132,7 +132,7 @@ export function Rascunhos() {
                         />
                         <P
                           title={t.description ?? "Sem descrição"}
-                          className="truncate text-blue-300"
+                          className="truncate text-blue-500"
                         />
                       </div>
                     </div>
@@ -171,7 +171,7 @@ export function Rascunhos() {
               <div className="flex items-center justify-center py-20">
                 <P
                   title="Nenhuma tarefa encontrada"
-                  className="text-blue-300"
+                  className="text-blue-500"
                 />
               </div>
             )}
@@ -206,7 +206,7 @@ export function Rascunhos() {
               dataCategory.map((c: Category) => (
                 <div
                   key={c.id}
-                  className="flex flex-col justify-center gap-2 rounded-2xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-4 shadow-xs"
+                  className="flex flex-col justify-center gap-2 rounded-2xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-4 shadow-xs"
                 >
                   <div className="flex flex-row justify-between gap-4">
                     <div className="flex flex-col justify-center gap-1.5 overflow-hidden">
@@ -224,7 +224,7 @@ export function Rascunhos() {
                         />
                         <P
                           title={c.description ?? "Sem descrição"}
-                          className="truncate text-blue-300"
+                          className="truncate text-blue-500"
                         />
                       </div>
                     </div>
@@ -263,7 +263,7 @@ export function Rascunhos() {
               <div className="flex items-center justify-center py-20">
                 <P
                   title="Nenhuma categoria encontrada"
-                  className="text-blue-300"
+                  className="text-blue-500"
                 />
               </div>
             )}
@@ -273,7 +273,7 @@ export function Rascunhos() {
 
       {/* Botão Flutuante (Floating Action Button) - Centralizado na parte inferior para Mobile, acima do HeaderMobile */}
       <div
-        className={`fixed bottom-24 left-1/2 z-50 -translate-x-1/2 transition-opacity duration-300 lg:static lg:bottom-auto lg:left-auto lg:mt-4 lg:mb-10 lg:flex lg:translate-x-0 lg:justify-center ${
+        className={`fixed bottom-28 left-1/2 z-50 -translate-x-1/2 transition-opacity duration-300 lg:static lg:bottom-auto lg:left-auto lg:mt-4 lg:mb-10 lg:flex lg:translate-x-0 lg:justify-center ${
           isVisible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
@@ -305,9 +305,9 @@ export function Rascunhos() {
               }}
               className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
             >
-              <i className="w-5 text-center text-blue-400">
+              <span aria-hidden="true" className="w-5 text-center text-blue-400">
                 <FontAwesomeIcon icon={faFile} size="lg" />
-              </i>
+              </span>
               <P
                 title="Criar rascunho de tarefa"
                 className="font-medium text-blue-400"
@@ -320,9 +320,9 @@ export function Rascunhos() {
               }}
               className="flex w-full items-center gap-3 rounded-xl px-4 py-2 text-left transition-colors hover:bg-blue-50"
             >
-              <i className="w-5 text-center text-blue-400">
+              <span aria-hidden="true" className="w-5 text-center text-blue-400">
                 <FontAwesomeIcon icon={faFolder} size="lg" />
-              </i>
+              </span>
               <P
                 title="Criar rascunho de categoria"
                 className="font-medium text-blue-400"

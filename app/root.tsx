@@ -27,7 +27,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ height: "100%", width: "100%" }}>
+    <html lang="pt-BR" style={{ height: "100%", width: "100%" }}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -35,8 +35,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body style={{ height: "100%", width: "100%" }}>
+        <a href="#main-content" className="skip-link">
+          Pular para o conteúdo principal
+        </a>
         {children}
-        <Toaster />
+        <div aria-live="polite" aria-atomic="true">
+          <Toaster />
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>

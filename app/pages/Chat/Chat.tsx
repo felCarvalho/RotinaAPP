@@ -21,7 +21,7 @@ export function Chat() {
             className="text-blue-400"
             size="lg"
           />
-          <H1 title="Chat IA" className="w-max text-blue-400" />
+          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Chat IA</span>
         </button>
       </div>
 
@@ -50,7 +50,7 @@ export function Chat() {
               <P title="Adicionar tarefa" className="text-blue-400" />
               <P
                 title='Ex: "adicione a tarefa Estudar React na categoria Pessoal com a descrição revisar hooks e contextos"'
-                className="mt-1 text-sm text-blue-300"
+                className="mt-1 text-sm text-blue-500"
               />
             </div>
 
@@ -58,7 +58,7 @@ export function Chat() {
               <P title="Atualizar tarefa" className="text-blue-400" />
               <P
                 title='Ex: "marque a tarefa Estudar React como concluída" ou "altere o título da tarefa que fala sobre hooks para React Avançado"'
-                className="mt-1 text-sm text-blue-300"
+                className="mt-1 text-sm text-blue-500"
               />
             </div>
 
@@ -66,7 +66,7 @@ export function Chat() {
               <P title="Criar rotina" className="text-blue-400" />
               <P
                 title='Ex: "crie uma rotina chamada Saúde com a descrição exercícios e alimentação"'
-                className="mt-1 text-sm text-blue-300"
+                className="mt-1 text-sm text-blue-500"
               />
             </div>
           </div>

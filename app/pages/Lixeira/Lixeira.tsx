@@ -45,7 +45,7 @@ export function Lixeira() {
           <div className="flex flex-col gap-3 px-4 pb-20">
             <P
               title="Tarefas deletadas recentemente. Você pode restaurá-las."
-              className="mb-2 text-sm text-blue-300 italic"
+              className="mb-2 text-sm text-blue-500 italic"
             />
             {deletedTasks.map((t: Task) => (
               <motion.div
@@ -54,7 +54,7 @@ export function Lixeira() {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
                 transition={{ type: "spring", duration: 0.4 }}
-                className="flex flex-col gap-3 rounded-[25px] bg-white p-4 shadow-sm"
+                className="flex flex-col gap-3 rounded-[25px] bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex flex-row items-center justify-between">
                   <div className="flex flex-col gap-1">
@@ -64,18 +64,18 @@ export function Lixeira() {
                     </div>
                     <div className="flex flex-row items-center gap-1">
                       <H3 title="Status:" className="text-xs text-blue-400/60" />
-                      <P title={t.completed} className="text-xs text-blue-300" />
+                      <P title={t.completed} className="text-xs text-blue-500" />
                     </div>
                     {typeof t.category === "object" && t.category && (
                       <div className="flex flex-row items-center gap-1">
                         <H3 title="Categoria:" className="text-xs text-blue-400/60" />
-                        <P title={t.category.title} className="text-xs text-blue-300" />
+                        <P title={t.category.title} className="text-xs text-blue-500" />
                       </div>
                     )}
                   </div>
                   <Button
                     type="button"
-                    className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-blue-400 p-0! shadow-sm shadow-blue-100"
+                    className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-blue-400! p-0! shadow-sm shadow-blue-100"
                     onClick={() =>
                       fetcher.submit(
                         { intent: "restore-task", idTask: t.id },

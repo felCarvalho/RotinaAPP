@@ -10,7 +10,7 @@ export function P({ children, title, className, ...props }: typeP) {
   return (
     <motion.p
       {...props}
-      className={`${className} truncate text-base font-medium tracking-wide`}
+      className={`${className} truncate text-sm sm:text-base font-medium tracking-wide`}
     >
       {children}
       {title}

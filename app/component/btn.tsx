@@ -30,6 +30,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonType>(
     },
     ref,
   ) => {
+    const motionProps = layoutId ? { layoutId } : {};
+
     return (
       <motion.button
         ref={ref}
@@ -40,10 +42,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonType>(
         transition={{ type: "spring", stiffness: 300 }}
         type={type}
         disabled={status}
-        layoutId={layoutId}
         id={id}
         aria-label={ariaLabel}
-        className={`${className} cursor-pointer truncate rounded-full border-none bg-blue-400 px-5 py-2.5 text-base font-medium text-white shadow-md shadow-blue-50 outline-2 outline-offset-4 outline-transparent transition-discrete will-change-auto focus:outline-blue-200 active:bg-blue-200`}
+        {...motionProps}
+        className={`${className} cursor-pointer truncate rounded-full border-none bg-blue-500 px-5 py-2.5 text-base font-medium text-white shadow-md shadow-blue-50 outline-2 outline-offset-4 outline-transparent hover:bg-blue-600 focus:outline-blue-300 active:bg-blue-700`}
       >
         {children}
       </motion.button>

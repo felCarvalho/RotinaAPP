@@ -31,16 +31,16 @@ export function DetalhesRotina() {
       initial={{ scale: 0.2, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
     >
-      <div className="flex w-[95%] min-w-[350px] flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto md:min-w-[1000px] md:max-w-7xl">
+      <div className="flex w-[95%] min-w-0 max-w-lg flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto md:w-full md:max-w-3xl">
         <div className="mb-4 flex flex-row items-center justify-start">
           <H1 title="Detalhes da Rotina" className="text-blue-400" />
         </div>
-        
+
         <div className="flex flex-col gap-3">
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Rotina:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 dataHome?.title ??
                 dataRascunhos?.title ??
@@ -51,7 +51,7 @@ export function DetalhesRotina() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Descrição:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 dataHome?.description ??
                 dataRascunhos?.description ??
@@ -62,7 +62,7 @@ export function DetalhesRotina() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Categoria:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 typeof dataHome?.category === "object"
                   ? dataHome?.category?.title
@@ -75,7 +75,7 @@ export function DetalhesRotina() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Status:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 dataHome?.completed ??
                 dataRascunhos?.completed ??
@@ -86,14 +86,19 @@ export function DetalhesRotina() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="ID Rotina:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
-              title={dataHome?.id ?? dataRascunhos?.id ?? "Ops, id indisponivel"}
+              className="truncate text-blue-500"
+              title={
+                dataHome?.id ?? dataRascunhos?.id ?? "Ops, id indisponivel"
+              }
             />
           </div>
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
-            <H3 title="ID Categoria:" className="shrink-0 text-base font-bold" />
+            <H3
+              title="ID Categoria:"
+              className="shrink-0 text-base font-bold"
+            />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 typeof dataHome?.category === "object"
                   ? dataHome?.category?.id
@@ -112,9 +117,9 @@ export function DetalhesRotina() {
             className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
             onClick={() => navigate(-1)}
           >
-            <i>
+            <span aria-hidden="true">
               <FontAwesomeIcon icon={faX} size="lg" />
-            </i>
+            </span>
           </Button>
         </div>
       </div>

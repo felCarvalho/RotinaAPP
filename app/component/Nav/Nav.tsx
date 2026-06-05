@@ -19,8 +19,8 @@ export function Nav({
 }) {
   return (
     <nav className="w-full">
-      <ul className={`${classNameUL} select-none`}>
-        <motion.li
+      <div className={`${classNameUL} select-none`}>
+        <motion.div
           className={`${classNameLI}`}
           whileTap={{ scale: 0.9, stitchTiles: 300 }}
           key={to}
@@ -31,17 +31,17 @@ export function Nav({
             className={({ isActive }) =>
               !isActive
                 ? "flex flex-row items-center justify-between gap-2 text-base font-medium text-blue-400"
-                : "flex flex-row items-center justify-between gap-2 font-normal text-blue-300"
+                : "flex flex-row items-center justify-between gap-2 font-normal text-blue-500"
             }
           >
             <span className="flex min-w-0 flex-row items-center justify-between gap-3">
-              <i>{""}</i>
+              <span aria-hidden="true"></span>
               <P className="min-w-0" title={title ?? ""} />
             </span>
             {children}
           </NavLink>
-        </motion.li>
-      </ul>
+        </motion.div>
+      </div>
     </nav>
   );
 }

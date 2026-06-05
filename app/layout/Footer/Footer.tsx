@@ -1,24 +1,30 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { Button } from "../../component/btn";
 
 export function Footer() {
   return (
-    <div className="flex flex-row items-center justify-center">
-      <Button
-        type="button"
-        ariaLabel="botão para GitHub"
+    <footer className="flex flex-row items-center justify-center">
+      <a
+        href="https://github.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="GitHub"
         className="text-blue-400"
       >
-        <i>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={faGithub} />
-        </i>
-      </Button>
-      <Button type="button" ariaLabel="botão para Linkedin">
-        <i>
+        </span>
+      </a>
+      <a
+        href="https://linkedin.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+      >
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={faLinkedin} />
-        </i>
-      </Button>
-    </div>
+        </span>
+      </a>
+    </footer>
   );
 }

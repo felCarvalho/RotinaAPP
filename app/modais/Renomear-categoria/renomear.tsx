@@ -32,7 +32,7 @@ export function RenomearCategoriaTSX() {
     <Overlay>
       <div
         onDoubleClick={() => navigate(-1)}
-        className="w-[90%] min-w-[320px] md:min-w-[750px] md:max-w-5xl flex flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:peer-visited:h-full landscape:overflow-auto md:relative md:mx-auto"
+        className="flex w-[90%] min-w-0 max-w-lg flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:h-full md:relative md:mx-auto md:w-[90%] md:max-w-2xl landscape:overflow-auto"
       >
         <fetcher.Form
           method="PATCH"
@@ -43,12 +43,12 @@ export function RenomearCategoriaTSX() {
           <div className="mb-6 flex flex-row items-center gap-2">
             <Button
               type="button"
-              className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0! rounded-full"
+              className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full p-0!"
               onClick={() => navigate(-1)}
             >
-              <i>
+              <span aria-hidden="true">
                 <FontAwesomeIcon icon={faAngleLeft} size="lg" />
-              </i>
+              </span>
             </Button>
             <H1 title="Renomear categoria" className="text-2xl text-blue-400" />
           </div>
@@ -70,29 +70,25 @@ export function RenomearCategoriaTSX() {
             />
           </label>
           <div className="flex w-full flex-row items-center justify-center gap-5">
-            <label>
-              <Button
-                type="submit"
-                className="flex min-h-11 flex-row items-center gap-2"
-              >
-                <i>
-                  <FontAwesomeIcon icon={faCheck} size="lg" />
-                </i>
-                <p className="font-semibold text-white">Confirmar</p>
-              </Button>
-            </label>
-            <label>
-              <Button
-                type="reset"
-                className="flex min-h-11 flex-row items-center gap-2 bg-gray-400"
-                onClick={() => navigate(-1)}
-              >
-                <i>
-                  <FontAwesomeIcon icon={faX} size="lg" />
-                </i>
-                <p className="font-semibold text-white">Cancelar</p>
-              </Button>
-            </label>
+            <Button
+              type="submit"
+              className="flex min-h-11 flex-row items-center gap-2"
+            >
+              <span aria-hidden="true">
+                <FontAwesomeIcon icon={faCheck} size="lg" />
+              </span>
+              <p className="font-semibold text-white">Confirmar</p>
+            </Button>
+            <Button
+              type="reset"
+              className="flex min-h-11 flex-row items-center gap-2 bg-gray-500"
+              onClick={() => navigate(-1)}
+            >
+              <span aria-hidden="true">
+                <FontAwesomeIcon icon={faX} size="lg" />
+              </span>
+              <p className="font-semibold text-white">Cancelar</p>
+            </Button>
           </div>
         </fetcher.Form>
       </div>

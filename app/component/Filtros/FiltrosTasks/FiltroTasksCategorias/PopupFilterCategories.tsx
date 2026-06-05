@@ -19,7 +19,7 @@ export function PopupFilterCategories() {
         className="flex w-full flex-row items-center gap-3 bg-white hover:bg-blue-50 py-2 px-4 shadow-none!"
       >
         <FontAwesomeIcon icon={FILTER_CATEGORY_BASE.all.icon} className="text-blue-400 w-5" />
-        <P title={FILTER_CATEGORY_BASE.all.title} className="text-blue-900 font-medium" />
+        <P title={FILTER_CATEGORY_BASE.all.title} className="text-blue-500 font-medium" />
       </Button>
       
       <div className="h-[1px] bg-blue-50 mx-2 my-1" />
@@ -30,8 +30,8 @@ export function PopupFilterCategories() {
           type="button"
           className="flex w-full flex-row items-center gap-3 bg-white hover:bg-blue-50 py-2 px-4 shadow-none!"
         >
-          <FontAwesomeIcon icon={FILTER_CATEGORY_BASE.item.icon} className="text-blue-300 w-5" />
-          <P title={cat.title} className="text-blue-900 font-medium" />
+          <FontAwesomeIcon icon={FILTER_CATEGORY_BASE.item.icon} className="text-blue-500 w-5" />
+          <P title={cat.title} className="text-blue-500 font-medium" />
         </Button>
       ))}
     </div>

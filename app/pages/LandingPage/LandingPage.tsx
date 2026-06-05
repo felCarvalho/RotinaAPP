@@ -35,9 +35,9 @@ export function LandingPageJSX() {
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-600">
       {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-8 md:px-12 lg:px-24">
+      <nav aria-label="Navegação principal" className="flex items-center justify-between px-6 py-8 md:px-12 lg:px-24">
         <div className="flex items-center gap-2">
-          <div className="h-5 w-5 rounded bg-slate-900" />
+          <span className="h-5 w-5 rounded bg-slate-900" aria-hidden="true" />
           <span className="text-lg font-bold tracking-tight">RotinaAPP</span>
         </div>
         <NavLink to="/login">
@@ -88,14 +88,15 @@ export function LandingPageJSX() {
           <img
             className="h-auto w-full max-w-sm opacity-90 drop-shadow-sm"
             src="assets/Innovation-amico.svg"
-            alt="Productivity"
+            alt=""
+            role="presentation"
             loading="lazy"
           />
         </motion.div>
       </section>
 
       {/* Features Section */}
-      <section className="border-y border-slate-50 bg-slate-50/30 px-6 py-24 md:px-12 lg:px-24">
+      <section className="border-y border-blue-50 bg-slate-50/30 px-6 py-24 md:px-12 lg:px-24">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
@@ -106,7 +107,7 @@ export function LandingPageJSX() {
               viewport={{ once: true }}
               className="flex flex-col items-center text-center md:items-start md:text-left"
             >
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-slate-100 bg-white text-slate-900 shadow-sm">
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl border border-blue-50 bg-white text-slate-900 shadow-sm">
                 <FontAwesomeIcon icon={feature.icon} className="text-lg" />
               </div>
               <H3
@@ -155,24 +156,22 @@ export function LandingPageJSX() {
 
       {/* Footer */}
       <footer className="px-6 py-12 md:px-12 lg:px-24">
-        <div className="flex flex-col items-center justify-between gap-6 border-t border-slate-100 pt-8 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-6 border-t border-blue-50 pt-8 md:flex-row">
           <P
             title="© 2026 RotinaAPP por Felipe Carvalho"
             className="text-xs font-semibold text-slate-400 shadow-none!"
           />
           <div className="flex gap-8">
-            <a
-              href="#"
-              className="text-xs font-semibold text-slate-400 transition-colors hover:text-slate-600"
+            <span
+              className="text-xs font-semibold text-slate-400"
             >
-              Termos
-            </a>
-            <a
-              href="#"
-              className="text-xs font-semibold text-slate-400 transition-colors hover:text-slate-600"
+              Termos (em breve)
+            </span>
+            <span
+              className="text-xs font-semibold text-slate-400"
             >
-              Privacidade
-            </a>
+              Privacidade (em breve)
+            </span>
           </div>
         </div>
       </footer>

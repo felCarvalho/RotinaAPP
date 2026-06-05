@@ -48,7 +48,7 @@ export function SearchTasks() {
   });
 
   return (
-    <div className="flex h-full min-h-[calc(100vh-160px)] flex-col">
+    <div className="flex h-full min-h-[calc(100vh-8rem)] flex-col">
       <div className="sticky top-0 z-40 mb-6 bg-white/80 px-2 py-4 backdrop-blur-md">
         <button
           onClick={() => navigate(-1)}
@@ -59,7 +59,7 @@ export function SearchTasks() {
             size="lg"
             className="text-blue-400"
           />
-          <H1 title="Pesquisar" className="w-max text-blue-400" />
+          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Pesquisar</span>
         </button>
       </div>
 
@@ -79,7 +79,7 @@ export function SearchTasks() {
                 <div>
                   <div className="flex flex-row items-center gap-1">
                     <H3 title="Rotina:" className="text-blue-400" />
-                    <P title={t.title} className="text-blue-300" />
+                    <P title={t.title} className="text-blue-500" />
                   </div>
                   <div className="flex flex-row items-center gap-1">
                     <H3
@@ -92,12 +92,12 @@ export function SearchTasks() {
                           ? t.category.title
                           : "Ops, sem categoria"
                       }
-                      className="text-blue-300"
+                      className="text-blue-500"
                     />
                   </div>
                   <div className="flex flex-row items-center gap-1">
                     <H3 title="Status:" className="truncate text-blue-400/80" />
-                    <P title={t.completed} className="text-blue-300" />
+                    <P title={t.completed} className="text-blue-500" />
                   </div>
                   <div className="flex flex-row items-center gap-2">
                     <H3
@@ -126,7 +126,7 @@ export function SearchTasks() {
                           : "bg-blue-400! text-white"
                       }`}
                     >
-                      <i className={""}>
+                      <span aria-hidden="true" className={""}>
                         <FontAwesomeIcon
                           icon={t.completed === "Concluída" ? faX : faCheck}
                           size="lg"
@@ -136,7 +136,7 @@ export function SearchTasks() {
                               : "text-white"
                           }
                         />
-                      </i>
+                      </span>
                       <P
                         title={
                           t.completed === "Concluída"
@@ -167,9 +167,9 @@ export function SearchTasks() {
                   }
                   className="flex aspect-square min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full bg-white text-blue-400 shadow-md shadow-blue-50"
                 >
-                  <i>
+                  <span aria-hidden="true">
                     <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
-                  </i>
+                  </span>
                 </button>
               </div>
               {isPopup.popup && isPopup.itemId === t.id && (
@@ -177,7 +177,7 @@ export function SearchTasks() {
                   <div
                     ref={refs.setFloating}
                     style={{ ...floatingStyles }}
-                    className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-50"
+                    className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-100"
                   >
                     <div
                       onClick={() =>
@@ -200,9 +200,9 @@ export function SearchTasks() {
                     }))
                   }
                 >
-                  <i className="text-blue-400">
+                  <span aria-hidden="true" className="text-blue-400">
                     <FontAwesomeIcon icon={faAngleUp} size="lg" />
-                  </i>
+                  </span>
                 </Button>
               </div>
               {t.id === itemId.item && itemId.status && (
@@ -220,9 +220,9 @@ export function SearchTasks() {
                         type="button"
                         className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
-                        <i className="text-blue-300">
+                        <span aria-hidden="true" className="text-blue-500">
                           <FontAwesomeIcon icon={faTrash} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -240,9 +240,9 @@ export function SearchTasks() {
                         type="button"
                         className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
-                        <i className="text-blue-300">
+                        <span aria-hidden="true" className="text-blue-500">
                           <FontAwesomeIcon icon={faTrashCanArrowUp} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">
@@ -260,9 +260,9 @@ export function SearchTasks() {
                         type="button"
                         className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-white p-0!"
                       >
-                        <i className="text-blue-300">
+                        <span aria-hidden="true" className="text-blue-500">
                           <FontAwesomeIcon icon={faPen} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </label>
                     <label className="mr-3 flex flex-row items-center gap-2">

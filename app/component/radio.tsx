@@ -29,7 +29,7 @@ export function Radio({
       className={`${classNameLabel} relative flex items-center`}
     >
       <input
-        type="checkbox"
+        type="radio"
         checked={checked}
         id={id}
         onChange={onChange}

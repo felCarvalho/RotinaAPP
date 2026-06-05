@@ -21,36 +21,42 @@ export function Perfil() {
         classNameBtn="bg-white !text-blue-400"
         classNameBtnClosed="!min-w-0 !min-h-0 bg-transparent"
       />
-      <div className="scrol-hide mx-5 h-full overflow-auto rounded-3xl pt-25">
+      <div className="scrollbar-hide mx-5 h-full overflow-auto rounded-3xl pt-25">
         <div className="mb-5 flex w-full flex-col items-start justify-start gap-2 rounded-3xl">
           <H3 title="Dados Pessoais" className="text-blue-400" />
           <div className="flex w-full flex-col items-start justify-start gap-5 rounded-2xl bg-white p-4">
             <form name="user">
-              <label className="flex flex-row items-center justify-center gap-2">
+              <label htmlFor="perfil-nome" className="flex flex-row items-center justify-center gap-2">
                 <P title="Nome:" className="text-blue-400" />
                 <Input
+                  id="perfil-nome"
                   name="user"
                   type="text"
+                  autoComplete="name"
                   className="rounded-2xl! text-blue-800!"
                 />
               </label>
             </form>
             <form name="email">
-              <label className="flex flex-row items-center justify-center gap-2">
+              <label htmlFor="perfil-email" className="flex flex-row items-center justify-center gap-2">
                 <P title="Email:" className="text-blue-400" />
                 <Input
+                  id="perfil-email"
                   name="email"
                   type="email"
+                  autoComplete="email"
                   className="rounded-2xl! text-blue-800!"
                 />
               </label>
             </form>
             <form name="password">
-              <label className="flex flex-row items-center justify-center gap-2">
+              <label htmlFor="perfil-password" className="flex flex-row items-center justify-center gap-2">
                 <P title="Senha:" className="text-blue-400" />
                 <Input
+                  id="perfil-password"
                   name="password"
-                  type="text"
+                  type="password"
+                  autoComplete="current-password"
                   className="rounded-2xl! text-blue-800!"
                 />
               </label>
@@ -68,9 +74,9 @@ export function Perfil() {
                   className="flex flex-row items-center justify-center gap-2 py-1!"
                 >
                   <P title="Sair da conta" />
-                  <i>
+                  <span aria-hidden="true">
                     <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                  </i>
+                  </span>
                 </Button>
               </div>
             </label>

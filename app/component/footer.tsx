@@ -8,16 +8,18 @@ interface footerType {
 
 export function Footer({ github, linkedin }: footerType) {
   return (
-    <div className="absolute right-0 left-0 flex items-center">
+    <footer className="absolute right-0 left-0 flex items-center">
       <div className="flex flex-row items-center gap-5">
-        <i>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={github} />
-        </i>
-        <i>
+        </span>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={linkedin} />
-        </i>
+        </span>
       </div>
-      <h2 className="text-blue-200">Felipe Carvalho @2025</h2>
-    </div>
+      <p className="text-blue-200">
+        <small>Felipe Carvalho @2025</small>
+      </p>
+    </footer>
   );
 }

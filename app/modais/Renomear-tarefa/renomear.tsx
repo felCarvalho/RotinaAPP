@@ -6,14 +6,9 @@ import { H1 } from "../../component/title";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { useFetcher, useNavigate } from "react-router";
-import {
-  useMatchesTypeds,
-  success,
-  error,
-  warning,
-} from "../../utils/FunctionUtils/FunctionUtils";
+import { useMatchesTypeds } from "../../utils/FunctionUtils/FunctionUtils";
 import type { dataTasks } from "../../pages/Tasks/type.server";
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState } from "react";
 
 export function RenomearTarefaTSX() {
   //carregando dados de rotas
@@ -50,7 +45,7 @@ export function RenomearTarefaTSX() {
       <Overlay>
         <div
           onDoubleClick={() => navigate(-1)}
-          className="flex w-[90%] min-w-[320px] flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:peer-visited:h-full md:relative md:mx-auto md:max-w-5xl md:min-w-[750px] landscape:overflow-auto"
+          className="flex w-[90%] min-w-0 max-w-lg flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 max-md:h-full md:relative md:mx-auto md:w-[90%] md:max-w-2xl landscape:overflow-auto"
         >
           <fetcher.Form
             method="PATCH"
@@ -64,9 +59,9 @@ export function RenomearTarefaTSX() {
                 className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                 onClick={() => navigate(-1)}
               >
-                <i>
+                <span aria-hidden="true">
                   <FontAwesomeIcon icon={faAngleLeft} size="lg" />
-                </i>
+                </span>
               </Button>
               <H1 title={"Renomear rotina"} className="text-blue-400" />
             </div>
@@ -106,29 +101,25 @@ export function RenomearTarefaTSX() {
               </div>
             </label>
             <div className="flex w-full flex-row items-center justify-center gap-5">
-              <label>
-                <Button
-                  type="submit"
-                  className="flex flex-row items-center gap-2"
-                >
-                  <i>
-                    <FontAwesomeIcon icon={faCheck} size="lg" />
-                  </i>
-                  <p className="font-semibold text-white">Confirmar</p>
-                </Button>
-              </label>
-              <label>
-                <Button
-                  type="reset"
-                  className="flex flex-row items-center gap-2 bg-gray-400"
-                  onClick={() => navigate(-1)}
-                >
-                  <i>
-                    <FontAwesomeIcon icon={faX} size="lg" />
-                  </i>
-                  <p className="font-semibold text-white">Cancelar</p>
-                </Button>
-              </label>
+              <Button
+                type="submit"
+                className="flex flex-row items-center gap-2"
+              >
+                <span aria-hidden="true">
+                  <FontAwesomeIcon icon={faCheck} size="lg" />
+                </span>
+                <p className="font-semibold text-white">Confirmar</p>
+              </Button>
+              <Button
+                type="reset"
+                className="flex flex-row items-center gap-2 bg-gray-500"
+                onClick={() => navigate(-1)}
+              >
+                <span aria-hidden="true">
+                  <FontAwesomeIcon icon={faX} size="lg" />
+                </span>
+                <p className="font-semibold text-white">Cancelar</p>
+              </Button>
             </div>
           </fetcher.Form>
         </div>

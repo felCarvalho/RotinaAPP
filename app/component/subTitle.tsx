@@ -17,5 +17,4 @@ export function H3({ children, title, className, ...props }: H3) {
     </motion.h3>
   );
 }
-
-//text-sm font-medium tracking-wide text-shadow-blue-50 text-shadow-sm
+}

@@ -30,7 +30,7 @@ export function LoginJSX({ notification }: { notification: string | null }) {
           </div>
           <div className="p-5">
             <H3 title={""} className="my-1 tracking-wide text-blue-400" />
-            <H3 title={""} className="my-1 tracking-wide text-blue-300" />
+            <H3 title={""} className="my-1 tracking-wide text-blue-500" />
           </div>
           <div>
             <Button type="button" className="min-h-11" onClick={() => ""}>
@@ -38,7 +38,7 @@ export function LoginJSX({ notification }: { notification: string | null }) {
             </Button>
           </div>
         </div>
-        <div className="flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xs shadow-blue-50 md:w-full md:py-4">
+        <div className="flex-col items-center justify-center gap-2 rounded-4xl border border-blue-50 p-2 shadow-2xs shadow-blue-100 md:w-full md:py-4">
           <div className="text-center">
             <H1
               title="Login"
@@ -47,13 +47,15 @@ export function LoginJSX({ notification }: { notification: string | null }) {
           </div>
           <div className="w-full rounded-4xl p-4 md:p-2">
             <Form method="POST" className="flex flex-col gap-5">
-              <label className="flex flex-col items-start gap-1.5">
+              <label htmlFor="login-email" className="flex flex-col items-start gap-1.5">
                 <div className="flex w-full flex-col items-start">
                   <P title="Email:" className="text-blue-400" />
                   <Input
+                    id="login-email"
                     name="identifier"
                     type="email"
-                    placeholder="Digite seu nome de Usuário"
+                    autoComplete="email"
+                    placeholder="Digite seu email"
                     className="bg-white shadow-none!"
                   />
                   <Input
@@ -64,13 +66,15 @@ export function LoginJSX({ notification }: { notification: string | null }) {
                   />
                 </div>
               </label>
-              <label className="flex flex-col items-start gap-1.5">
+              <label htmlFor="login-password" className="flex flex-col items-start gap-1.5">
                 <P title="Senha:" className="text-blue-400" />
                 <div className="flex w-full flex-row items-center justify-center gap-2">
                   <Input
+                    id="login-password"
                     type={isOpenPassword ? "text" : "password"}
                     name="password"
-                    placeholder="Digite seus senha"
+                    autoComplete="current-password"
+                    placeholder="Digite sua senha"
                     className="bg-white shadow-none!"
                   />
                   <Button
@@ -78,12 +82,12 @@ export function LoginJSX({ notification }: { notification: string | null }) {
                     className="min-h-11! min-w-11! bg-white! text-blue-400!"
                     onClick={() => setOpenPassword((s) => !s)}
                   >
-                    <i>
+                    <span aria-hidden="true">
                       <FontAwesomeIcon
                         icon={isOpenPassword ? faEyeSlash : faEye}
                         size="lg"
                       />
-                    </i>
+                    </span>
                   </Button>
                 </div>
               </label>
@@ -103,7 +107,7 @@ export function LoginJSX({ notification }: { notification: string | null }) {
           <div className="mt-5 flex w-full flex-row items-center justify-between">
             <P title={notification ?? ""} className="font-medium text-red-400" />
             <NavLink to="/redefinir-senha">
-              <P title="Esqueceu a senha?" className="text-blue-300" />
+              <P title="Esqueceu a senha?" className="text-blue-500" />
             </NavLink>
           </div>
         </div>
@@ -113,9 +117,9 @@ export function LoginJSX({ notification }: { notification: string | null }) {
         className="flex flex-row items-center justify-center gap-2 text-blue-400 underline underline-offset-4"
       >
         <P title="Abrir conta" className="font-medium" />
-        <i>
+        <span aria-hidden="true">
           <FontAwesomeIcon icon={faAngleRight} size="lg" />
-        </i>
+        </span>
       </NavLink>
     </div>
   );

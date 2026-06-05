@@ -39,9 +39,9 @@ export function Temas() {
               </div>
               <div className="flex flex-row items-center justify-center gap-2 pt-2">
                 <H3 title={""} className="text-blue-400" />
-                <i className="text-lg text-blue-400">
+                <span aria-hidden="true" className="text-lg text-blue-400">
                   <FontAwesomeIcon icon={faOctopusDeploy} />
-                </i>
+                </span>
               </div>
             </motion.button>
             <motion.button
@@ -59,9 +59,9 @@ export function Temas() {
               </div>
               <div className="flex flex-row items-center justify-center gap-2 pt-2">
                 <H3 title={"Modo escuro"} className="" />
-                <i className={`text-lg`}>
+                <span aria-hidden="true" className={`text-lg`}>
                   <FontAwesomeIcon icon={faOdysee} />
-                </i>
+                </span>
               </div>
             </motion.button>
           </div>
@@ -72,12 +72,12 @@ export function Temas() {
                 <Radio
                   checked={true}
                   onChange={() => {}}
-                  name="automatico"
+                  name="tema"
                   classNameLabel="flex flex-row items-center justify-center gap-5"
                 />
                 <P
                   title="Aplicando o modo automatico voçê ficará como a interface no mesmo modo que o seu dispositivo está... ideal para quem quer seguir sua preferencial pessoal."
-                  className={"text-blue-300"}
+                  className={"text-blue-500"}
                 />
               </div>
             </label>
@@ -85,14 +85,14 @@ export function Temas() {
               <H3 title="Modo claro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
                 <Radio
-                  checked={true}
+                  checked={false}
                   onChange={() => {}}
-                  name="claro"
+                  name="tema"
                   classNameLabel="flex flex-row items-center justify-center gap-5"
                 />
                 <P
                   title="Aplica o modo claro para toda a interface, melhorando a visão dos elementos de tela para uma melhor legibilidade."
-                  className={"text-blue-300"}
+                  className={"text-blue-500"}
                 />
               </div>
             </label>
@@ -100,14 +100,14 @@ export function Temas() {
               <H3 title="Modo escuro" className="text-blue-400" />
               <div className="flex flex-row items-center justify-start gap-5 rounded-2xl border border-blue-50 bg-blue-100/5 p-2">
                 <Radio
-                  checked={true}
+                  checked={false}
                   onChange={() => {}}
-                  name="escuro"
+                  name="tema"
                   classNameLabel="flex flex-row items-center justify-center gap-5"
                 />
                 <P
                   title="Aplica o modo escuro para toda a interface, deixano a visão dos elementos de tela menos brilhantes e deixando o foco apenas nos textos..."
-                  className={"text-blue-300"}
+                  className={"text-blue-500"}
                 />
               </div>
             </label>

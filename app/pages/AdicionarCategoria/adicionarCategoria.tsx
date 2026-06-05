@@ -16,7 +16,7 @@ export function AdicionarCategoria() {
 
   return (
     <div className="h-full w-full">
-      <div className="sticky top-0 z-40 mb-6 w-full bg-white/80 py-4 px-2 backdrop-blur-md">
+      <div className="sticky top-0 z-40 mb-6 w-full bg-white/80 px-2 py-4 backdrop-blur-md">
         <button
           onClick={() => navigate(-1)}
           className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
@@ -44,7 +44,7 @@ export function AdicionarCategoria() {
         className="flex flex-col gap-3 pt-3"
       >
         <div className="flex h-full flex-col gap-2.5 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
-          <label className="flex flex-col gap-1">
+          <label htmlFor="categoria-titulo" className="flex flex-col gap-1">
             <P title="Categoria:" className="text-blue-400" />
             <input
               type="hidden"
@@ -61,14 +61,16 @@ export function AdicionarCategoria() {
               value={isAdicionarCategoria ? "Ativa" : "Inativa"}
             />
             <Input
+              id="categoria-titulo"
               type="text"
               placeholder="Exemplo: 'Criar uma lading page...'"
               name="titleCategory"
             />
           </label>
-          <label className="flex flex-col gap-1">
+          <label htmlFor="categoria-descricao" className="flex flex-col gap-1">
             <P title="Descrição para categoria:" className="text-blue-400" />
             <Input
+              id="categoria-descricao"
               type="text"
               className=""
               placeholder="Exemplo: 'landing page deve ter...'"
@@ -82,17 +84,17 @@ export function AdicionarCategoria() {
             className="flex flex-row items-center justify-center gap-1.5"
           >
             <p className="text-base font-medium text-white">Confirmar</p>
-            <i>
+            <span aria-hidden="true">
               <FontAwesomeIcon
                 icon={faCheck}
                 className="text-white"
                 size="lg"
               />
-            </i>
+            </span>
           </Button>
           <Button
             type="reset"
-            className="flex flex-row items-center justify-center gap-1.5 bg-gray-400!"
+            className="flex flex-row items-center justify-center gap-1.5 bg-gray-500!"
             onClick={() => navigate(-1)}
           >
             <p className="text-base font-medium text-white">cancelar</p>

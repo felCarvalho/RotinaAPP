@@ -38,7 +38,7 @@ export function DetalhesCategoriaTSX() {
       initial={{ scale: 0.2, opacity: 0.3 }}
       animate={{ scale: 1, opacity: 1 }}
     >
-      <div className="flex w-[95%] min-w-[350px] flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto md:max-w-7xl md:min-w-[1000px]">
+      <div className="flex w-[95%] min-w-0 max-w-lg flex-col justify-center gap-4 rounded-[50px] bg-white p-6 shadow-2xs shadow-blue-100 md:relative md:mx-auto md:w-full md:max-w-3xl">
         <div className="mb-4 flex flex-row items-center justify-start">
           <H1
             title="Detalhes da Categoria"
@@ -50,7 +50,7 @@ export function DetalhesCategoriaTSX() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Categoria:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 categoriaInfo?.title ??
                 categoriaRascunho?.title ??
@@ -61,7 +61,7 @@ export function DetalhesCategoriaTSX() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Descrição:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 categoriaInfo?.description ??
                 categoriaRascunho?.description ??
@@ -72,7 +72,7 @@ export function DetalhesCategoriaTSX() {
           <div className="flex flex-row items-center gap-2 overflow-hidden whitespace-nowrap text-blue-400">
             <H3 title="Status:" className="shrink-0 text-base font-bold" />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 categoriaInfo?.status ??
                 categoriaRascunho?.status ??
@@ -86,7 +86,7 @@ export function DetalhesCategoriaTSX() {
               className="shrink-0 text-base font-bold"
             />
             <P
-              className="truncate text-blue-300"
+              className="truncate text-blue-500"
               title={
                 categoriaInfo?.id ??
                 categoriaRascunho?.id ??
@@ -103,9 +103,9 @@ export function DetalhesCategoriaTSX() {
             className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full p-0!"
             onClick={() => navigate(-1)}
           >
-            <i>
+            <span aria-hidden="true">
               <FontAwesomeIcon icon={faX} size="lg" />
-            </i>
+            </span>
           </Button>
         </div>
       </div>

@@ -47,14 +47,11 @@ export function AdicionarTarefa() {
           className="flex w-min cursor-pointer flex-row items-center gap-2 rounded-full px-2 hover:bg-blue-50"
         >
           <FontAwesomeIcon icon={faAngleLeft} className="text-blue-400" size="lg" />
-          <H1
-            title={
-              isAdicionarTarefa
-                ? "Adicione uma tarefa"
-                : "Criar tarefa de rascunho"
-            }
-            className="w-max text-blue-400"
-          />
+          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">
+            {isAdicionarTarefa
+              ? "Adicione uma tarefa"
+              : "Criar tarefa de rascunho"}
+          </span>
         </button>
       </div>
       <fetcher.Form
@@ -66,11 +63,10 @@ export function AdicionarTarefa() {
         }
       >
         <div className="relative flex h-full flex-col gap-3 rounded-2xl border border-solid border-blue-50/85 bg-blue-50/10 p-3">
-          <label className="flex flex-col gap-1">
+          <label htmlFor="tarefa-rotina" className="flex flex-col gap-1">
             <P title="Rotina:" className="text-blue-400" />
             <Input
               type="hidden"
-              readOnly
               name="intent"
               value={
                 isAdicionarTarefa ? "adicionar-tarefa" : "create-task-rascunho"
@@ -79,12 +75,12 @@ export function AdicionarTarefa() {
             {isAdicionarTarefa && (
               <Input
                 type="hidden"
-                readOnly
                 name="idCategory"
                 value={categorias.id ? categorias.id : ""}
               />
             )}
             <Input
+              id="tarefa-rotina"
               type="text"
               placeholder="Exemplo: 'Criar uma lading page...'"
               name="titleTask"
@@ -100,9 +96,9 @@ export function AdicionarTarefa() {
                   setSearchParams({ categorias: "lista-categorias" })
                 }
               >
-                <i>
+                <span aria-hidden="true">
                   <FontAwesomeIcon icon={faList} size="lg" />
-                </i>
+                </span>
                 <p className="min-w-max font-medium">
                   {categorias?.title
                     ? categorias.title
@@ -113,16 +109,16 @@ export function AdicionarTarefa() {
           )}
           {isOpenModal && isAdicionarTarefa && (
             <Overlay className="p-5 lg:px-80 lg:py-20">
-              <div className="relative h-full w-full rounded-[50px] bg-white shadow-2xs shadow-blue-50">
+              <div className="relative h-full w-full rounded-[50px] bg-white shadow-2xs shadow-blue-100">
                 <div className="absolute top-0 right-0 left-0 z-10 flex flex-row items-center gap-2 rounded-t-[50px] bg-white/15 p-5 backdrop-blur-3xl">
                   <Button
                     type="button"
                     className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0!"
                     onClick={() => navigate(-1)}
                   >
-                    <i>
+                    <span aria-hidden="true">
                       <FontAwesomeIcon icon={faAngleLeft} size="lg" />
-                    </i>
+                    </span>
                   </Button>
                   <H1
                     title="Selecionar uma categoria"
@@ -134,7 +130,7 @@ export function AdicionarTarefa() {
                     {loaderHome?.data.map((c) =>
                       typeof c.category === "object" ? (
                         <div
-                          className="mb-2 w-full rounded-2xl border border-blue-50 p-3 shadow-2xs shadow-blue-50 transition-all hover:border-blue-200 hover:bg-blue-50"
+                          className="mb-2 w-full rounded-2xl border border-blue-50 p-3 shadow-2xs shadow-blue-100 transition-all hover:border-blue-200 hover:bg-blue-50"
                           onClick={() => {
                             setCategorias((s) => ({
                               ...s,
@@ -163,9 +159,10 @@ export function AdicionarTarefa() {
               </div>
             </Overlay>
           )}
-          <label className="flex flex-col gap-1">
+          <label htmlFor="tarefa-descricao" className="flex flex-col gap-1">
             <P title="Descrição para rotina:" className="text-blue-400" />
             <Input
+              id="tarefa-descricao"
               type="text"
               className=""
               placeholder="Exemplo: 'landing page deve ter...'"
@@ -179,13 +176,13 @@ export function AdicionarTarefa() {
             className="flex flex-row items-center justify-center gap-1.5"
           >
             <p className="text-base font-medium text-white">Confirmar</p>
-            <i>
+            <span aria-hidden="true">
               <FontAwesomeIcon icon={faCheck} className="text-white" size="lg" />
-            </i>
+            </span>
           </Button>
           <Button
             type="reset"
-            className="flex flex-row items-center justify-center gap-1.5 bg-gray-400!"
+            className="flex flex-row items-center justify-center gap-1.5 bg-gray-500!"
           >
             <p className="text-base font-medium text-white">cancelar</p>
             <FontAwesomeIcon icon={faX} className="text-white" size="lg" />

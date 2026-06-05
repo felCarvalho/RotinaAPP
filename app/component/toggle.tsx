@@ -16,13 +16,30 @@ interface ToggleProps {
   ariaLabel?: string;
 }
 
-export function Toggle({ boleano, setBoleano, name, bgTrack, bgTrackActive, bgThumb, ariaLabel }: ToggleProps) {
+export function Toggle({
+  boleano,
+  setBoleano,
+  name,
+  bgTrack,
+  bgTrackActive,
+  bgThumb,
+  ariaLabel,
+}: ToggleProps) {
   function isChecked({ checked }: { checked: boolean }) {
     return checked ? bgTrackActive || "bg-blue-400" : bgTrack || "bg-blue-100";
   }
   return (
     <label className="cursor-pointer">
-      <input type="checkbox" checked={boleano} className="sr-only" name={name} aria-label={ariaLabel} onChange={setBoleano} />
+      <input
+        type="checkbox"
+        checked={boleano}
+        className="sr-only"
+        name={name}
+        aria-label={ariaLabel}
+        role="switch"
+        aria-checked={boleano}
+        onChange={setBoleano}
+      />
       <motion.div
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 100 }}

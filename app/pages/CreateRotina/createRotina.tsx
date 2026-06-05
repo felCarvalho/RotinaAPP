@@ -92,6 +92,7 @@ export function CreateRotina() {
               />
               <input type="hidden" name="intent" value="create" />
               <Input
+                id="create-rotina-titulo"
                 type="text"
                 placeholder="Exemplo: 'Criar uma lading page...'"
                 name="titleTask"
@@ -114,6 +115,7 @@ export function CreateRotina() {
                 className={`text-base font-bold ${errors.descriptionTask?.at(-1) ? "text-red-400" : "text-blue-400"}`}
               />
               <Input
+                id="create-rotina-descricao"
                 type="text"
                 placeholder="Exemplo: 'landing page deve ter...'"
                 name="descriptionTask"
@@ -137,6 +139,7 @@ export function CreateRotina() {
                 className={`text-base font-bold ${errors.titleCategory?.at(-1) ? "text-red-400!" : "text-blue-400"}`}
               />
               <Input
+                id="create-rotina-categoria"
                 type="text"
                 name="titleCategory"
                 placeholder="Crie sua categoria aqui..."
@@ -159,6 +162,7 @@ export function CreateRotina() {
                 className={`text-base font-bold ${errors.descriptionCategory?.at(-1) ? "text-red-400" : "text-blue-400"}`}
               />
               <Input
+                id="create-rotina-descricao-categoria"
                 type="text"
                 placeholder="Exemplo: 'Essa categoria ficará responsável...'"
                 name="descriptionCategory"
@@ -186,13 +190,13 @@ export function CreateRotina() {
                   ? "Confirmando..."
                   : "Confirmar"}
               </p>
-              <i>
+              <span aria-hidden="true">
                 <FontAwesomeIcon icon={faCheck} size="lg" />
-              </i>
+              </span>
             </Button>
             <Button
               type="reset"
-              className="flex min-h-11 flex-row items-center gap-2 bg-gray-400!"
+              className="flex min-h-11 flex-row items-center gap-2 bg-gray-500!"
               onClick={() => {
                 setErrors((s) => ({
                   ...s,
@@ -204,9 +208,9 @@ export function CreateRotina() {
               }}
             >
               <p className="text-base font-medium text-white">Cancelar</p>
-              <i>
+              <span aria-hidden="true">
                 <FontAwesomeIcon icon={faX} size="lg" />
-              </i>
+              </span>
             </Button>
           </div>
         </fetcher.Form>

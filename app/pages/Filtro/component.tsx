@@ -67,14 +67,14 @@ export default function FiltroPage() {
           <FontAwesomeIcon icon={faFilter} size="lg" />
           <P
             title="Refine sua visualização de tarefas"
-            className="text-blue-300"
+            className="text-blue-500"
           />
         </div>
 
         <section className="flex flex-col">
           <H3
             title="Status da Tarefa"
-            className="mb-4 font-bold text-blue-900 opacity-70"
+            className="mb-4 font-semibold text-blue-600"
           />
           <div className="flex flex-wrap gap-2 p-2">
             {FILTER_STATUS_OPTIONS.map((opt) => (
@@ -83,9 +83,9 @@ export default function FiltroPage() {
                 type="button"
                 className={`flex flex-row items-center gap-2 px-5 py-2.5 shadow-sm shadow-blue-100 ${(() => {
                   const currentStatus = searchParams.get("status");
-                  if (opt.value === "all" && !currentStatus) return "bg-blue-600";
-                  if (opt.value === currentStatus) return "bg-blue-600";
-                  return "bg-blue-400";
+                  if (opt.value === "all" && !currentStatus) return "bg-blue-600!";
+                  if (opt.value === currentStatus) return "bg-blue-600!";
+                  return "bg-blue-400!";
                 })()}`}
                 onClick={() => {
                   const params = new URLSearchParams(searchParams);
@@ -110,14 +110,14 @@ export default function FiltroPage() {
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."
-            className="mt-2 text-[10px] text-blue-300 italic opacity-60"
+            className="mt-2 text-xs text-blue-500 italic opacity-60"
           />
         </section>
 
         <section className="flex flex-col">
           <H3
             title="Por Categoria"
-            className="mb-4 font-bold text-blue-900 opacity-70"
+            className="mb-4 font-semibold text-blue-600"
           />
           <div className="scrollbar-hide flex max-h-48 flex-wrap gap-2 overflow-y-auto p-2">
             {categories.map((cat) => {
@@ -126,7 +126,7 @@ export default function FiltroPage() {
                 <Button
                   key={cat.id}
                   type="button"
-                  className={`border-none px-5 py-2.5 shadow-sm shadow-blue-100 ${isActive ? "bg-blue-600" : "bg-blue-400"}`}
+                  className={`border-none px-5 py-2.5 shadow-sm shadow-blue-100 ${isActive ? "bg-blue-600!" : "bg-blue-400!"}`}
                   onClick={() => {
                     const params = new URLSearchParams(searchParams);
                     if (isActive) {
@@ -147,14 +147,14 @@ export default function FiltroPage() {
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."
-            className="mt-2 text-[10px] text-blue-300 italic opacity-60"
+            className="mt-2 text-xs text-blue-500 italic opacity-60"
           />
         </section>
 
         <section className="flex flex-col">
           <H3
             title="Data de Criação"
-            className="mb-4 font-bold text-blue-900 opacity-70"
+            className="mb-4 font-semibold text-blue-600"
           />
           <div className="flex flex-wrap gap-3 p-2">
             {FILTER_DATE_OPTIONS.map((opt) => {
@@ -164,7 +164,7 @@ export default function FiltroPage() {
                 <Button
                   key={opt.value}
                   type="button"
-                  className={`flex max-w-min! flex-row items-center justify-center gap-2 border-none px-5 py-3 shadow-sm shadow-blue-100 ${isActive ? "bg-blue-600" : "bg-blue-400"}`}
+                  className={`flex max-w-[200px] flex-row items-center justify-center gap-2 border-none px-5 py-3 shadow-sm shadow-blue-100 ${isActive ? "bg-blue-600!" : "bg-blue-400!"}`}
                   onClick={() => {
                     const params = new URLSearchParams(searchParams);
                     if (opt.value === "all") {
@@ -185,14 +185,14 @@ export default function FiltroPage() {
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."
-            className="mt-2 text-[10px] text-blue-300 italic opacity-60"
+            className="mt-2 text-xs text-blue-500 italic opacity-60"
           />
         </section>
 
         <section className="flex flex-col">
           <H3
             title="Ordenar lista por"
-            className="mb-4 font-bold text-blue-900 opacity-70"
+            className="mb-4 font-semibold text-blue-600"
           />
           <div className="flex flex-wrap gap-2 p-2">
             {SORT_DATE_OPTIONS.map((opt) => {
@@ -201,7 +201,7 @@ export default function FiltroPage() {
                 <Button
                   key={opt.value}
                   type="button"
-                  className={`flex max-w-min! flex-row items-center gap-3 px-5 py-3 shadow-md shadow-blue-100 ${isActive ? "bg-blue-600" : "bg-blue-400"}`}
+                  className={`flex max-w-[200px] flex-row items-center gap-3 px-5 py-3 shadow-md shadow-blue-100 ${isActive ? "bg-blue-600!" : "bg-blue-400!"}`}
                   onClick={() => {
                     const params = new URLSearchParams(searchParams);
                     if (isActive) {
@@ -223,14 +223,14 @@ export default function FiltroPage() {
           </div>
           <P
             title="Esses filtros são os padrões que o app utiliza."
-            className="mt-2 text-[10px] text-blue-300 italic opacity-60"
+            className="mt-2 text-xs text-blue-500 italic opacity-60"
           />
         </section>
 
         <div className="mt-6 flex flex-row items-center justify-center gap-4">
           <Button
             type="button"
-            className="flex max-w-[180px] flex-1 flex-row items-center justify-center gap-2 bg-blue-400 shadow-md shadow-blue-100 hover:bg-blue-500"
+            className="flex max-w-[200px] flex-1 flex-row items-center justify-center gap-2 bg-blue-500! shadow-md shadow-blue-100 hover:bg-blue-600!"
             onClick={applyFilters}
           >
             <FontAwesomeIcon icon={faCheck} size="lg" className="text-white!" />
@@ -242,7 +242,7 @@ export default function FiltroPage() {
 
           <Button
             type="button"
-            className="flex max-w-[180px] flex-1 flex-row items-center justify-center gap-2 bg-gray-400 shadow-md shadow-gray-100 hover:bg-gray-500"
+            className="flex max-w-[200px] flex-1 flex-row items-center justify-center gap-2 bg-gray-500 shadow-md shadow-blue-50 hover:bg-gray-600"
             onClick={clearFilters}
           >
             <FontAwesomeIcon icon={faX} size="lg" className="text-white!" />

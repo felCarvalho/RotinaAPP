@@ -70,13 +70,13 @@ export function Config() {
                 />
                 <P
                   title={s.description}
-                  className="xs:max-2xs:w-40 3xs:max-4xs:w-50 truncate font-light whitespace-nowrap text-blue-300 md:w-full"
+                  className="w-40 sm:w-48 md:w-full truncate font-light whitespace-nowrap text-blue-500"
                 />
               </div>
               <Button type="button" className="min-h-11 min-w-11 bg-white">
-                <i className="text-blue-400">
+                <span aria-hidden="true" className="text-blue-400">
                   <FontAwesomeIcon icon={faAngleRight} size="lg" />
-                </i>
+                </span>
               </Button>
             </NavLink>
           </div>

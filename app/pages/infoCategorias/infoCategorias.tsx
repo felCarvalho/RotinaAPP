@@ -55,7 +55,7 @@ export function InfoCategoria() {
             className="text-blue-400"
             size="lg"
           />
-          <H1 title="Informações Categorias" className="w-max text-blue-400" />
+          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Informações Categorias</span>
         </button>
       </div>
       <div className="h-full w-full pt-3">
@@ -63,7 +63,7 @@ export function InfoCategoria() {
           data.data.map((c: Category) => (
             <div
               key={c.id}
-              className="mb-3 flex flex-col justify-center rounded-4xl border border-slate-100 bg-linear-to-r from-blue-50/60 p-3 select-none"
+              className="mb-3 flex flex-col justify-center rounded-4xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-3 select-none hover:bg-blue-50/70 transition-colors"
             >
               <div className="mx-3 flex flex-row justify-between">
                 <div className="flex flex-col justify-center">
@@ -82,7 +82,7 @@ export function InfoCategoria() {
                       />
                       <P
                         title={c.description ?? "Ops, descrição não disponível"}
-                        className="text-blue-300"
+                        className="text-blue-500"
                       />
                     </div>
                   </div>
@@ -103,9 +103,9 @@ export function InfoCategoria() {
                       setPopup((s) => ({ itemId: c.id, popup: !s.popup }))
                     }
                   >
-                    <i>
+                    <span aria-hidden="true">
                       <FontAwesomeIcon icon={faEllipsisVertical} size="lg" />
-                    </i>
+                    </span>
                   </button>
 
                   {/* Botões de Ação para Desktop */}
@@ -116,9 +116,9 @@ export function InfoCategoria() {
                         className="flex aspect-square min-h-11 min-w-11 items-center justify-center p-0!"
                         onClick={() => navigate(`renomear/${c.id}`)}
                       >
-                        <i>
+                        <span aria-hidden="true">
                           <FontAwesomeIcon icon={faPen} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </div>
                     <div>
@@ -138,9 +138,9 @@ export function InfoCategoria() {
                           )
                         }
                       >
-                        <i>
+                        <span aria-hidden="true">
                           <FontAwesomeIcon icon={faTrash} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </div>
                     <div>
@@ -161,9 +161,9 @@ export function InfoCategoria() {
                           )
                         }
                       >
-                        <i>
+                        <span aria-hidden="true">
                           <FontAwesomeIcon icon={faCheck} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </div>
                     <div>
@@ -184,9 +184,9 @@ export function InfoCategoria() {
                           )
                         }
                       >
-                        <i>
+                        <span aria-hidden="true">
                           <FontAwesomeIcon icon={faX} size="lg" />
-                        </i>
+                        </span>
                       </Button>
                     </div>
                   </div>
@@ -204,7 +204,7 @@ export function InfoCategoria() {
                           itemId: "",
                         }))
                       }
-                      className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-50"
+                      className="z-50 rounded-3xl bg-white p-3 shadow-2xs shadow-blue-100"
                     >
                       <PopupOptionsCategorias id={c.id} />
                     </div>

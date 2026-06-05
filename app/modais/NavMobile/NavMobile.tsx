@@ -29,20 +29,20 @@ export function NavMobile() {
               classNameLI="py-2 px-3 border-b border-blue-50 rounded-full my-2"
             >
               <span className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full shadow-md shadow-blue-50">
-                <i className="text-blue-400">
+                <span aria-hidden="true" className="text-blue-400">
                   <FontAwesomeIcon icon={faAngleRight} size="lg" />
-                </i>
+                </span>
               </span>
             </Nav>
             <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center py-5">
               <Button
                 type="button"
-                className="aspect-square flex items-center justify-center min-h-11 min-w-11 p-0! rounded-full"
+                className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full p-0!"
                 onClick={() => {}}
               >
-                <i>
+                <span aria-hidden="true">
                   <FontAwesomeIcon icon={faX} size="lg" />
-                </i>
+                </span>
               </Button>
             </div>
           </div>

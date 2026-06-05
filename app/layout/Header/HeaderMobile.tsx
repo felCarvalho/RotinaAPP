@@ -28,17 +28,18 @@ export function HeaderMobile() {
                   end={s.link === "home"}
                   className="flex shrink-0 flex-col items-center justify-center gap-1"
                 >
-                  <i
+                  <span
+                    aria-hidden="true"
                     className={`flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border transition-all ${
                       isActive
-                        ? "border-blue-100 bg-white text-blue-300"
+                        ? "border-blue-100 bg-white text-blue-500"
                         : "border-transparent text-blue-400"
                     }`}
                   >
                     <FontAwesomeIcon icon={s.icon} size="lg" />
-                  </i>
+                  </span>
                   <span
-                    className={`text-[10px] font-medium transition-colors ${isActive ? "text-blue-300" : "text-blue-400"} whitespace-nowrap`}
+                    className={`text-xs font-medium transition-colors ${isActive ? "text-blue-500" : "text-blue-400"} whitespace-nowrap`}
                   >
                     {s.title}
                   </span>
@@ -51,12 +52,16 @@ export function HeaderMobile() {
           <div className="flex h-full w-20 shrink-0 items-center justify-center border-l border-blue-50 bg-white/95 px-2 backdrop-blur-md">
             <button
               onClick={() => setIsMenuOpen(true)}
+              aria-label="Abrir menu de navegação"
               className="flex flex-col items-center justify-center gap-1"
             >
-              <i className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border border-blue-50 bg-white text-blue-400 active:bg-blue-50">
+              <span
+                aria-hidden="true"
+                className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border border-blue-50 bg-white text-blue-400 active:bg-blue-50"
+              >
                 <FontAwesomeIcon icon={faBars} size="lg" />
-              </i>
-              <span className="text-[10px] font-medium text-blue-400">
+              </span>
+              <span className="text-xs font-medium text-blue-400">
                 Menu
               </span>
             </button>
@@ -71,6 +76,9 @@ export function HeaderMobile() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navegação"
             className="fixed inset-0 z-50 flex flex-col bg-white/95 backdrop-blur-md lg:hidden"
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-50 bg-white/95 px-6 py-4 backdrop-blur-md">
@@ -81,11 +89,12 @@ export function HeaderMobile() {
                 />
                 <P
                   title="Selecione uma opção"
-                  className="text-xs text-blue-300"
+                  className="text-xs text-blue-500"
                 />
               </div>
               <button
                 onClick={() => setIsMenuOpen(false)}
+                aria-label="Fechar menu de navegação"
                 className="flex aspect-square min-h-11 min-w-11 items-center justify-center rounded-full border border-blue-50 bg-white text-blue-400 active:scale-90"
               >
                 <FontAwesomeIcon icon={faXmark} size="lg" />
@@ -109,18 +118,18 @@ export function HeaderMobile() {
                     }`}
                   >
                     <div
-                      className={`flex aspect-square min-h-12 min-w-12 items-center justify-center rounded-full border transition-all ${isActive ? "border-blue-200 text-blue-300" : "border-blue-50 text-blue-400"}`}
+                      className={`flex aspect-square min-h-12 min-w-12 items-center justify-center rounded-full border transition-all ${isActive ? "border-blue-200 text-blue-500" : "border-blue-50 text-blue-400"}`}
                     >
                       <FontAwesomeIcon icon={s.icon} size="lg" />
                     </div>
                     <div className="flex flex-col overflow-hidden">
                       <span
-                        className={`text-base font-medium ${isActive ? "text-blue-300" : "text-blue-400"}`}
+                        className={`text-base font-medium ${isActive ? "text-blue-500" : "text-blue-400"}`}
                       >
                         {s.title}
                       </span>
                       <span
-                        className={`truncate text-xs font-normal ${isActive ? "text-blue-300/80" : "text-blue-300"}`}
+                        className={`truncate text-xs font-normal ${isActive ? "text-blue-500/80" : "text-blue-500"}`}
                       >
                         {s.description}
                       </span>
