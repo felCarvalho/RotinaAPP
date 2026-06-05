@@ -5,6 +5,7 @@ interface OverlayType extends HTMLMotionProps<"div"> {
   className?: string;
   ariaLabel?: string;
   ariaLabelledby?: string;
+  ariaModal?: boolean;
 }
 
 export function Overlay({
@@ -12,13 +13,14 @@ export function Overlay({
   className,
   ariaLabel,
   ariaLabelledby,
+  ariaModal,
   ...props
 }: OverlayType) {
   return (
     <motion.div
       {...props}
       role="dialog"
-      aria-modal="true"
+      aria-modal={ariaModal}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
       className={`${className} fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-md select-none`}
