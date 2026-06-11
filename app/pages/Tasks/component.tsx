@@ -12,9 +12,5 @@ export default function TasksComponent() {
   const { pathname } = useLocation();
   const isHome = pathname === "/home";
 
-  return (
-    <div className="h-full w-full">
-      {isHome ? <Tasks /> : <Outlet />}
-    </div>
-  );
+  return <div className="h-full w-full">{isHome ? <Tasks /> : <Outlet />}</div>;
 }

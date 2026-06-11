@@ -5,7 +5,7 @@ import { getSession, commitSession } from "../utils/cookies/cookies.server";
 import { LOCAL_URL } from "../utils/constants/contants.server";
 import { tokenContext } from "../utils/context/context.server";
 
-const routesPublic = ["login", "criar-conta", "redefinir-senha"];
+const routesPublic = ["/login", "/criar-conta", "/redefinir-senha"];
 
 const AuthMiddleware: MiddlewareFunction = async (
   { request, context },
@@ -18,6 +18,7 @@ const AuthMiddleware: MiddlewareFunction = async (
   const expAccessToken = session.get("expAccessToken");
 
   const date = new Date().getTime();
+  console.log("expAccessToken", expAccessToken, "date", date);
 
   if (!isPublicRoute && !expAccessToken) {
     session.flash("notification", "Ops, Faça login para poder entrar");
@@ -32,7 +33,7 @@ const AuthMiddleware: MiddlewareFunction = async (
   if (!isPublicRoute && date > expAccessToken) {
     try {
       const refresh = await axios.post(
-        "refresh-token",
+        "/refresh-token",
         {},
         {
           baseURL: LOCAL_URL,
@@ -53,6 +54,8 @@ const AuthMiddleware: MiddlewareFunction = async (
         refreshToken: data.refreshToken,
         expAccessToken: data.expAccessToken,
       });
+
+      console.log("refresh", data);
 
       const response = (await next()) as Response;
       response.headers.append("Set-Cookie", await commitSession(session));

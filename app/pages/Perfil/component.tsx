@@ -2,8 +2,8 @@ import { Perfil } from "./Perfil";
 
 export default function PerfilComponent() {
   return (
-    <div className="h-full w-full">
+    <section className="h-full w-full" aria-label="Perfil">
       <Perfil />
-    </div>
+    </section>
   );
 }

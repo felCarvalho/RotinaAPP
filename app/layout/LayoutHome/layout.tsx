@@ -10,7 +10,7 @@ export default function HomeLayout() {
 
       <main
         id="main-content"
-        className="w-full flex-1 p-4 pb-28 lg:p-6 lg:pb-6 max-w-7xl mx-auto"
+        className="mx-auto flex w-full max-w-7xl flex-1 flex-col p-4 pb-28 lg:p-6 lg:pb-6"
       >
         <Outlet />
       </main>

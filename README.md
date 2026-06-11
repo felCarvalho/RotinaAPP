@@ -2,7 +2,7 @@
 
 Aplicação web full-stack para gerenciamento de tarefas e rotinas diárias. Criação, categorização, busca avançada, rascunhos e gestão de categorias com interface fluida, responsiva e acessível.
 
-> **Versão atual:** 1.0.0-beta | **Última atualização:** 5 de Junho de 2026
+> **Versão atual:** 1.0.0-beta | **Última atualização:** 11 de Junho de 2026
 
 ---
 
@@ -22,7 +22,7 @@ Aplicação web full-stack para gerenciamento de tarefas e rotinas diárias. Cri
 | Navegação Mobile (Bottom Bar) | ✅ 100% | Barra inferior fixa com menu hambúrguer fullscreen animado |
 | Página de Perfil | 🚧 60% | Layout implementado; ações de salvar/sair/redefinir ainda não conectadas ao backend |
 | Temas (Claro / Escuro / Auto) | 🚧 30% | Seletor de tema com rádio buttons; lógica de aplicação pendente |
-| Chat com IA | 🚧 20% | Interface do chat pronta; integração com IA pendente |
+| Redefinição de Senha | ✅ 100% | Página e fluxo implementados |
 | Permissões de Acesso | 📋 0% | Placeholder implementado; regras de autorização a definir |
 | Testes automatizados | 📋 0% | A definir framework e cobertura |
 
@@ -151,7 +151,7 @@ app/
 │   │                 #   services/ (chamadas API), type.server.ts
 │   ├── AdicionarCategoria/
 │   ├── AdicionarTarefa/
-│   ├── Chat/
+│   ├── Chat/ (removido)           # Substituído por comunicação futura
 │   ├── Configuracao/
 │   ├── CreateRotina/
 │   ├── CriarConta/
@@ -164,6 +164,7 @@ app/
 │   ├── Permissoes/
 │   ├── popups/
 │   ├── rascunhos/
+│   ├── RedefinirSenha/
 │   ├── SearchTasks/
 │   ├── Tasks/
 │   └── Temas/
@@ -248,6 +249,36 @@ LOCAL_URL=http://localhost:3001/api
 
 ## 📋 Changelog
 
+### [1.0.0-beta] — 11 Jun 2026
+
+**Refatoração de UI e Acessibilidade (Rodada 4)**
+- Página de redefinição de senha implementada (`/redefinir-senha`)
+- Página Chat removida (será substituída por comunicação futura)
+- Refatoração dos cabeçalhos: `HeaderContent` substituído por headers sticky com `NavLink` + `FontAwesomeIcon`
+- Componentes wrapper (`component.tsx`): `<div>` substituído por `<section>` com `aria-label` semântico
+- Middleware: prefixo `/` adicionado às rotas públicas (`/login`, `/criar-conta`, `/redefinir-senha`)
+- Endpoint `refresh-token` corrigido com prefixo `/`
+- Páginas refatoradas: Configuração, Perfil, Permissões, Temas, Lixeira
+- Ajustes menores de classes Tailwind e formatação de imports
+
+**Adicionado:**
+- `app/pages/RedefinirSenha/` — fluxo completo (component, controller, service)
+
+**Removido:**
+- `app/pages/Chat/` — removido em espera de nova estratégia de comunicação
+
+**Alterado:**
+- `app/layout/LayoutHome/layout.tsx` — ajuste de classes flex
+- `app/middleware/middleware.server.ts` — prefixo `/` em rotas públicas e refresh token
+- `app/routes.ts` — rota redefinir-senha adicionada, rota chat removida
+- `app/pages/Configuracao/Config.tsx` — header refatorado
+- `app/pages/Lixeira/Lixeira.tsx` — componente reescrito com header sticky
+- `app/pages/Perfil/Perfil.tsx` — header refatorado
+- `app/pages/Permissoes/Permissoes.tsx` — header refatorado
+- `app/pages/Temas/Temas.tsx` — header refatorado
+- `app/pages/Tasks/Tasks.tsx` — ajuste de classes Tailwind
+- `app/pages/*/component.tsx` — `<div>` → `<section>` com `aria-label`
+
 ### [1.0.0-beta] — 5 Jun 2026
 
 **Refatoração de Responsividade (Rodada 3)**
@@ -278,4 +309,4 @@ LOCAL_URL=http://localhost:3001/api
 
 ---
 
-*Documentação mantida por Felipe Carvalho — atualizada em 5 de Junho de 2026.*
+*Documentação mantida por Felipe Carvalho — atualizada em 11 de Junho de 2026.*

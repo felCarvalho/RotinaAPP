@@ -1,15 +1,9 @@
-import { Lixeira } from "./Lixeira";
-import { Outlet } from "react-router";
-import { loader } from "./controllers/loader.server";
+import { LixeiraJSX } from "./Lixeira";
 import { action } from "./controllers/action.server";
+import { loader } from "./controllers/loader.server";
 
-export { loader, action };
+export { action, loader };
 
 export default function LixeiraComponent() {
-  return (
-    <div className="h-full w-full">
-      <Lixeira />
-      <Outlet />
-    </div>
-  );
+  return <LixeiraJSX />;
 }

@@ -1,103 +1,118 @@
-import { faAngleLeft, faP, faTrashCanArrowUp, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faTrashArrowUp,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { HeaderContent } from "../../component/headerContent";
-import { P } from "../../component/paragrafo";
+import { useFetcher, useLoaderData, useNavigate } from "react-router";
 import { H3 } from "../../component/subTitle";
+import { P } from "../../component/paragrafo";
 import { Button } from "../../component/btn";
-import { motion } from "framer-motion";
-import { useLoaderData, useFetcher } from "react-router";
-import type { dataTasks, Task } from "../Tasks/type.server";
-import { useEffect } from "react";
-import { success, error as toastError } from "../../utils/FunctionUtils/FunctionUtils";
+import type { loader } from "./controllers/loader.server";
+import type { Task } from "../Tasks/type.server";
 
-export function Lixeira() {
-  const loaderData = useLoaderData<dataTasks | null>();
-  const fetcher = useFetcher<dataTasks>();
-  const deletedTasks = loaderData?.data ?? [];
+export function LixeiraJSX() {
+  const data = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+  const fetcher = useFetcher();
 
-  useEffect(() => {
-    const notification = fetcher.data;
-    if (!notification?.notification) return;
-
-    const successMessage = notification.notification.find((s) => s.type === "INFO");
-    const errorMessage = notification.notification.find((s) => s.type === "ERROR");
-
-    if (successMessage) {
-      success({ success: successMessage.message });
-    }
-    if (errorMessage) {
-      toastError({ error: errorMessage.message });
-    }
-  }, [fetcher.data]);
+  const tasks: Task[] = data?.data ?? [];
 
   return (
-    <div className="scrollbar-hide z-50 h-full w-full rounded-[50px] bg-blue-50 pb-5 shadow-sm shadow-blue-50">
-      <HeaderContent
-        iconClosed={faP}
-        title="Lixeira"
-        iconBack={faAngleLeft}
-        btnClosed={undefined}
-        classNameBtn="bg-white !text-blue-400"
-        classNameBtnClosed="!min-w-0 !min-h-0 bg-transparent"
-      />
-      <div className="scrollbar-hide h-full overflow-auto rounded-t-[50px] pt-22">
-        {deletedTasks.length > 0 ? (
-          <div className="flex flex-col gap-3 px-4 pb-20">
-            <P
-              title="Tarefas deletadas recentemente. Você pode restaurá-las."
-              className="mb-2 text-sm text-blue-500 italic"
-            />
-            {deletedTasks.map((t: Task) => (
-              <motion.div
-                key={t.id}
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
-                transition={{ type: "spring", duration: 0.4 }}
-                className="flex flex-col gap-3 rounded-[25px] bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex flex-row items-center justify-between">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex flex-row items-center gap-2">
-                      <FontAwesomeIcon icon={faTrash} className="text-red-300" size="sm" />
-                      <P title={t.title} className="text-blue-400" />
-                    </div>
-                    <div className="flex flex-row items-center gap-1">
-                      <H3 title="Status:" className="text-xs text-blue-400/60" />
-                      <P title={t.completed} className="text-xs text-blue-500" />
-                    </div>
-                    {typeof t.category === "object" && t.category && (
-                      <div className="flex flex-row items-center gap-1">
-                        <H3 title="Categoria:" className="text-xs text-blue-400/60" />
-                        <P title={t.category.title} className="text-xs text-blue-500" />
-                      </div>
-                    )}
-                  </div>
-                  <Button
-                    type="button"
-                    className="flex aspect-square min-h-11 min-w-11 items-center justify-center bg-blue-400! p-0! shadow-sm shadow-blue-100"
-                    onClick={() =>
-                      fetcher.submit(
-                        { intent: "restore-task", idTask: t.id },
-                        { method: "POST", action: "/home/configuracoes/lixeira" },
-                      )
-                    }
-                  >
-                    <FontAwesomeIcon icon={faTrashCanArrowUp} size="lg" className="text-white" />
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex h-full items-center justify-center pt-20">
-            <P
-              title="Ops, não existe Rotinas deletadas aqui"
-              className="text-blue-400"
-            />
-          </div>
-        )}
+    <div className="h-full w-full">
+      {/* Cabeçalho fixo — responsivo: margem/padding escalam */}
+      <div className="sticky top-0 z-40 mb-4 bg-white/80 px-2 py-3 backdrop-blur-md sm:mb-6 sm:py-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex w-min cursor-pointer flex-row items-center gap-1.5 rounded-full px-2 hover:bg-blue-50 sm:gap-2"
+          type="button"
+        >
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className="text-blue-400"
+            size="lg"
+          />
+          <span className="w-max text-xl font-medium tracking-wide text-blue-400 sm:text-2xl lg:text-3xl">
+            Lixeira
+          </span>
+        </button>
       </div>
+
+      {/* Lista de tarefas deletadas */}
+      {tasks.length ? (
+        tasks.map((t: Task) => (
+          <div className="pt-2 sm:pt-3" key={t.id}>
+            <div className="mb-3 flex flex-col gap-1.5 overflow-hidden rounded-3xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-2 transition-colors select-none hover:bg-blue-50/70 sm:mb-4 sm:gap-2 sm:p-3">
+              {/* Linha 1: título + botão restaurar */}
+              <div className="mx-2 flex flex-row items-center justify-between gap-2 sm:mx-3 sm:gap-4">
+                <div className="flex min-w-0 flex-row items-center gap-2 overflow-hidden">
+                  <P
+                    title={t.title ?? "Sem título"}
+                    className="truncate text-blue-400"
+                  />
+                </div>
+
+                <div className="flex shrink-0 flex-row items-center">
+                  <fetcher.Form method="POST">
+                    <input type="hidden" name="idTask" value={t.id} />
+                    <input type="hidden" name="intent" value="restore-task" />
+                    <Button
+                      type="submit"
+                      className="flex min-h-11 flex-row items-center gap-1.5 px-3! text-sm! sm:gap-2 sm:px-5! sm:text-base!"
+                    >
+                      <span aria-hidden="true">
+                        <FontAwesomeIcon icon={faTrashArrowUp} size="sm" />
+                      </span>
+                      <p className="text-white">Restaurar</p>
+                    </Button>
+                  </fetcher.Form>
+                </div>
+              </div>
+
+              {/* Linha 2: categoria + data de exclusão */}
+              <div className="mx-2 flex flex-row items-center justify-between gap-2 overflow-hidden sm:mx-3">
+                <div className="flex min-w-0 flex-1 flex-row items-center justify-start gap-1">
+                  <H3
+                    title="categoria:"
+                    className="xs:block hidden shrink-0 font-medium text-blue-400"
+                  />
+                  <span className="truncate text-sm font-medium text-blue-500 sm:text-base">
+                    {typeof t.category === "object"
+                      ? t.category.title
+                      : (t.category ?? "Sem categoria")}
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-row items-center justify-end gap-1">
+                  <H3
+                    title="Deletada em:"
+                    className="hidden shrink-0 font-medium text-blue-400 sm:block"
+                  />
+                  <P
+                    title={t.deleteAt ?? "Data indisponível"}
+                    className="font-medium text-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="flex h-40 w-full items-center justify-center sm:h-60">
+          <div className="flex flex-col items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="text-2xl text-blue-300 sm:text-3xl"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </span>
+            <H3
+              title="Lixeira vazia! Nenhuma tarefa foi deletada."
+              className="text-center text-blue-400"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

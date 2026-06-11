@@ -5,6 +5,7 @@ export default [
   layout("./layout/LayoutRegister/layout.tsx", [
     route("criar-conta", "./pages/CriarConta/component.tsx"),
     route("login", "./pages/Login/component.tsx", { index: true }),
+    route("redefinir-senha", "./pages/redefinir-senha/component.tsx"),
   ]),
   layout("./layout/LayoutHome/layout.tsx", [
     route("home", "./pages/Tasks/component.tsx", [
@@ -49,7 +50,6 @@ export default [
         id: "detalhes-rotina",
       }),
 
-      route("chat", "./pages/Chat/component.tsx"),
       route("rascunhos", "./pages/rascunhos/component.tsx", [
         route(
           "renomear/:id",

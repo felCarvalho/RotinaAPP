@@ -6,8 +6,8 @@ export default function Configurcoes() {
   const isConfig = pathname === "/home/configuracoes";
 
   return (
-    <div className="h-full w-full">
+    <section className="h-full w-full" aria-label="Configurações">
       {isConfig ? <Config /> : <Outlet />}
-    </div>
+    </section>
   );
 }

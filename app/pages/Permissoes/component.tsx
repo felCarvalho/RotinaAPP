@@ -2,8 +2,8 @@ import { Permissoes } from "./Permissoes";
 
 export default function PermissoesComponent() {
   return (
-    <div className="h-full w-full">
+    <section className="h-full w-full" aria-label="Permissões">
       <Permissoes />
-    </div>
+    </section>
   );
 }

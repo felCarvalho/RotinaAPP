@@ -31,6 +31,8 @@ export async function loginAccount({
 
     const data = response.data.data;
 
+    console.log(data, "data + data");
+
     session.flash("notification", `Seja bem-vindo(a) ao Minha Rotina!`);
     session.set("accessToken", data.accessToken);
     session.set("refreshToken", data.refreshToken);

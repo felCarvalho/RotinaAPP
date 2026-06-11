@@ -2,8 +2,8 @@ import { Temas } from "./Temas";
 
 export default function TemasComponent() {
   return (
-    <div className="h-full w-full">
+    <section className="h-full w-full" aria-label="Temas">
       <Temas />
-    </div>
+    </section>
   );
 }

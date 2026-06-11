@@ -55,13 +55,15 @@ export function Tasks() {
             className="text-blue-400"
             size="lg"
           />
-          <span className="w-max text-xl sm:text-2xl lg:text-3xl font-medium tracking-wide text-blue-400">Inicio</span>
+          <span className="w-max text-xl font-medium tracking-wide text-blue-400 sm:text-2xl lg:text-3xl">
+            Inicio
+          </span>
         </button>
       </div>
       {data?.data?.length ? (
         data.data.map((t: Task) => (
           <div className="pt-3" key={t.id}>
-            <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-3 select-none hover:bg-blue-50/70 transition-colors">
+            <div className="mb-4 flex flex-col gap-2 overflow-hidden rounded-3xl border border-blue-50 bg-linear-to-r from-blue-50/60 p-3 transition-colors select-none hover:bg-blue-50/70">
               <div className="mx-3 flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-2">
                   <div className="flex flex-row items-center">
